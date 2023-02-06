@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @vite('resources/sass/app.scss')
+    @vite('resources/css/app.css')
     <title>Main</title>
 </head>
 <body>

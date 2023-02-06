@@ -2,15 +2,17 @@
     <header>
         <nav class="navigation-wrapper">
             <div class="logo-wrapper">
-                <strong>Hungary</strong>
+                <!--                <strong>Hungary</strong>-->
+                <img class="logo" src="../../img/itbook.svg" alt="it">
             </div>
 
+
             <ul class="navigation">
-                <li>
-                    <router-link to="login"><strong>Login</strong></router-link>
+                <li class="navigation__item">
+                    <router-link class="navigation__item-link" to="login"><strong>Login</strong></router-link>
                 </li>
-                <li>
-                    <router-link to="example"><strong>Example</strong></router-link>
+                <li class="navigation__item">
+                    <router-link class="navigation__item-link" to="example"><strong>Example</strong></router-link>
                 </li>
             </ul>
         </nav>
@@ -23,18 +25,9 @@ export default {
 }
 </script>
 
-<style scoped>
-body {
-    background-color: rgb(207 200 231);
-}
-
+<style lang="scss" scoped>
 a {
     text-decoration: none;
-}
-
-#logo {
-    width: 50px;
-    height: 50px;
 }
 
 li {
@@ -46,7 +39,8 @@ li {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
+    width: 100vw;
+    padding: 15px;
     text-transform: uppercase;
     background-color: #222222;
 }
@@ -55,22 +49,40 @@ li {
     font-family: "Times New Roman", Times, serif;
     font-size: 30px;
     color: white;
+
+}
+
+.logo {
+    height: 70px;
+
+    &:hover {
+        opacity: 0.8;
+    }
 }
 
 .navigation {
+    padding: 0;
+    margin: 0;
+    height: 100%;
     display: flex;
+    justify-content: center;
+
+    &__item {
+    }
+
+    &__item-link {
+        color: #7f9cd5;
+        border-radius: 10px;
+        border: solid 2px #7c99d9;
+        padding: 10px;
+        margin: 20px;
+
+        &:hover {
+            border-color: #0c213b;
+            color: rgb(209 207 220);
+        }
+    }
 }
 
-.navigation li {
-    margin: 30px;
-}
-
-.navigation li a {
-    color: rgb(141 131 183);
-}
-
-.navigation li a:hover {
-    color: rgb(209 207 220);
-}
 
 </style>
