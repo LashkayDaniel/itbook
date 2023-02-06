@@ -1,13 +1,13 @@
 <template>
     <header>
-        <nav class="navigation-wrapper">
+        <nav class="navigation-wrapper" :class="{'nav-animation' : isActive}">
             <div class="logo-wrapper">
                 <!--                <strong>Hungary</strong>-->
                 <img class="logo" src="../../img/itbook.svg" alt="it">
             </div>
 
 
-            <ul class="navigation">
+            <ul v-if="isActive" class="navigation">
                 <li class="navigation__item">
                     <router-link class="navigation__item-link" to="login"><strong>Login</strong></router-link>
                 </li>
@@ -21,7 +21,13 @@
 
 <script>
 export default {
-    name: "Header"
+    name: "Header",
+    props: {
+        isActive: Boolean
+    },
+    data() {
+        return {}
+    }
 }
 </script>
 
@@ -38,12 +44,31 @@ li {
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: space-between;
     width: 100vw;
+    justify-content: center;
     padding: 15px;
     text-transform: uppercase;
     background-color: #222222;
 }
+
+.nav-animation {
+    animation: logo 1s linear 1 normal running 0s forwards;
+}
+
+
+@keyframes logo {
+
+    50% {
+        justify-content: space-around;
+    }
+    70% {
+        justify-content: space-evenly;
+    }
+    100% {
+        justify-content: space-between;
+    }
+}
+
 
 .logo-wrapper {
     font-family: "Times New Roman", Times, serif;
