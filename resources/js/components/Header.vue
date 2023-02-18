@@ -2,14 +2,14 @@
     <header>
         <nav class="navigation-wrapper" :class="{'nav-animation' : isActive}">
             <div class="logo-wrapper">
-                <!--                <strong>Hungary</strong>-->
-                <img class="logo" src="../../img/itbook.svg" alt="it">
+                <img class="logo" src="../../img/itbook.svg" alt=logo>
             </div>
 
 
             <ul v-if="isActive" class="navigation">
                 <li class="navigation__item">
-                    <router-link class="navigation__item-link" to="login"><strong>Login</strong></router-link>
+                    <router-link class="navigation__item-link" :to="{name: 'sign-in'}"><strong>Login</strong>
+                    </router-link>
                 </li>
                 <li class="navigation__item">
                     <router-link class="navigation__item-link" to="example"><strong>Example</strong></router-link>
@@ -63,12 +63,24 @@ li {
     }
     70% {
         justify-content: space-evenly;
+
     }
     100% {
         justify-content: space-between;
     }
 }
 
+@keyframes logo-rotate {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
 
 .logo-wrapper {
     font-family: "Times New Roman", Times, serif;
@@ -78,6 +90,7 @@ li {
 }
 
 .logo {
+    animation: logo-rotate 10s ease-out infinite;
     height: 70px;
 
     &:hover {

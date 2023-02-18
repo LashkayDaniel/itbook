@@ -25,8 +25,7 @@ export default {
         changeStep() {
             this.showNext = true;
         }
-    }
-    ,
+    },
 
 }
 </script>

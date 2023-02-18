@@ -1,15 +1,18 @@
 <template>
-    <div class="">
-        login
-    </div>
+    <signIn></signIn>
 </template>
 
 <script>
+import SignIn from "@/components/auth/SignIn.vue";
+
 export default {
-    name: "Login"
+    name: "Login",
+    components: {
+        signIn: SignIn
+    }
 }
 </script>
 
-<style scoped>
+<style>
 
 </style>
