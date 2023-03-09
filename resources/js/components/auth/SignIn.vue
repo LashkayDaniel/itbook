@@ -18,7 +18,7 @@
 
         <div class="block__links">
             <a class="links__link" href="#">Forgot password?</a>
-            <a class="links__link" href="#">Sign Up</a>
+            <router-link class="links__link" :to="{name: 'sign-up'}">Sign Up</router-link>
         </div>
     </div>
     </body>
@@ -27,7 +27,7 @@
 
 <script>
 export default {
-    name: "SignIn"
+    name: " SignIn"
 }
 </script>
 
@@ -43,7 +43,7 @@ body {
 }
 
 .block {
-    min-width: 600px;
+    min-width: 800px;
     padding: 30px 100px;
     margin: auto;
     text-align: center;
@@ -111,15 +111,24 @@ body {
 
 @media (max-width: 880px) {
     .block {
-        min-width: 500px;
+        min-width: 700px;
     }
 }
 
 @media (max-width: 790px) {
     .block {
-        min-width: 400px;
+        min-width: 600px;
     }
 }
 
+@media (max-width: 650px) {
+    .block {
+        min-width: 500px;
+    }
+}
 
+@media (max-width: 540px) {
+    .block {
+    }
+}
 </style>
