@@ -3,13 +3,48 @@
         <div class="block">
             <h1 class="block__title">Main pageee</h1>
             <p class="block__text">text text text</p>
+
         </div>
+
+        <ol>
+            <li v-for="section in this.sections">
+                <a href=""> {{ section.section }} </a>
+                <ol>
+                    <li v-for="theme in section.themes">
+                        <a href="/4234"> {{ theme }}</a>
+                    </li>
+                </ol>
+            </li>
+        </ol>
+
     </div>
 </template>
 
 <script>
 export default {
-    name: "Next"
+    name: "Next",
+    data: function () {
+        return {
+            sections: []
+        }
+    },
+
+    methods: {
+        getSections() {
+            axios.get('api/sections')
+                .then(response => {
+                    this.sections = response.data
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        },
+    },
+
+    mounted() {
+        this.getSections();
+    }
+
 }
 </script>
 
@@ -46,5 +81,24 @@ export default {
             opacity: .8;
         }
     }
+
+
+    // test
+    ul {
+        list-style: circle;
+        padding-left: 40px;
+    }
+
+    ol {
+        list-style: decimal;
+        padding-left: 40px;
+    }
+
+     a {
+        outline: none;
+        text-decoration: none;
+    }
+
+    // end test
 }
 </style>

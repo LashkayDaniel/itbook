@@ -17,7 +17,9 @@ class ThemeFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'title' => $this->faker->name,
+            'section_id' => 1,
+            'description' => $this->faker->text,
         ];
     }
 }
