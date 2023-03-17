@@ -90,7 +90,7 @@ li {
 }
 
 .logo {
-    animation: logo-rotate 10s ease-out infinite;
+    //animation: logo-rotate 10s ease-out infinite;
     height: 70px;
 
     &:hover {

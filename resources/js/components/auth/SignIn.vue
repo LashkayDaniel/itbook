@@ -6,14 +6,21 @@
             <img src="../../../img/logo.svg" alt="logo">
         </div>
         <div class="block__title">Sign In</div>
-        <form class="block__form" method="post" action="#">
-            <p class="form__label">Login</p>
-            <input class="form__input" name="login" type="text" placeholder="Input login" required>
+        <form class="block__form" method="post">
+            <p class="form__label">Email</p>
+            <input v-model="email" class="form__input" name="login" type="email" placeholder="Input email" required>
+            <p v-if="emailError" class="form__label-error">{{ this.emailError }}</p>
 
             <p class="form__label">Password</p>
-            <input class="form__input" name="password" type="password" placeholder="Input password" required>
+            <input v-model="password" class="form__input" name="password" type="password" placeholder="Input password"
+                   required>
+            <p v-if="passwordError" class="form__label-error">{{ this.passwordError }}</p>
 
-            <button class="form__button" type="submit">Login</button>
+            <p v-if="loginError" class="form__label-warning">{{ this.loginError }}</p>
+
+            <p v-if="loginSuccess" class="form__label-success">Успішно авторизовано!</p>
+
+            <button @click.prevent="login" class="form__button" type="submit">Login</button>
         </form>
 
         <div class="block__links">
@@ -26,8 +33,52 @@
 </template>
 
 <script>
+
+import router from "@/router";
+
 export default {
-    name: " SignIn"
+    name: " SignIn",
+    data() {
+        return {
+            email: '',
+            password: '',
+            loginError: '',
+            loginSuccess: false,
+
+        }
+    },
+
+    methods: {
+        login() {
+
+            if (this.email === '' || this.password === '') {
+                this.loginError = "Заповніть поля значеннями";
+                return;
+            }
+
+            axios.post('/api/auth/login', {
+                email: this.email,
+                password: this.password,
+            })
+                .then(response => {
+                    console.log(response.data)
+                    this.loginError = '';
+                    this.loginSuccess = true;
+                    localStorage.setItem('x_xsrf_token', response.config.headers['X-XSRF-TOKEN']);
+                    setTimeout(() => {
+                        router.push({name: 'main'})
+                    }, 2000)
+                })
+                .catch(err => {
+
+                    console.log(err.message);
+                    this.loginSuccess = false;
+                    this.loginError = err.message;
+
+                })
+
+        }
+    }
 }
 </script>
 
@@ -76,17 +127,45 @@ body {
     &__label {
         border: none;
         text-align: start;
-        font-size: 25px;
+        font-size: 20px;
         margin: 5px;
     }
 
+    &__label-error {
+        color: red;
+        font-size: 15px;
+    }
+
+    &__label-warning {
+        padding: 5px;
+        border-radius: 3px;
+        font-weight: bold;
+        color: #5b452c;
+        background-color: orange;
+        font-size: 14px;
+    }
+
+    &__label-success {
+        color: greenyellow;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
     &__input {
+        background-color: transparent;
         border: none;
+        font-weight: bold;
+        color: antiquewhite;
+        border-bottom: 2px solid #8ecae6;
         margin-bottom: 15px;
         width: 100%;
         font-size: 14px;
         border-radius: 5px;
         padding: 10px 5px;
+
+        &:focus {
+            outline: none;
+        }
     }
 
     &__button {

@@ -24,6 +24,7 @@ export default {
     methods: {
         changeStep() {
             this.showNext = true;
+
         }
     },
 

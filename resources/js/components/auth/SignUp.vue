@@ -1,4 +1,6 @@
 <template>
+    <html>
+    <body>
     <form class="signup-form" @submit.prevent="submitForm">
         <div class="form-group">
             <label for="name">Name</label>
@@ -16,11 +18,15 @@
             <label for="confirmPassword">Confirm Password</label>
             <input type="password" id="confirmPassword" v-model="confirmPassword" required/>
         </div>
-        <button type="submit">Sign Up</button>
+        <button @click.prevent="register" type="submit">Sign Up</button>
     </form>
+    </body>
+    </html>
 </template>
 
 <script>
+import router from "@/router";
+
 export default {
     data() {
         return {
@@ -31,18 +37,38 @@ export default {
         };
     },
     methods: {
-        submitForm() {
-            // handle form submission here
+        register() {
+            axios.post('/api/auth/register', {
+                name: this.name,
+                email: this.email,
+                password: this.password
+            })
+                .then(res => {
+                    console.log(res)
+                    localStorage.setItem('x_xsrf_token', res.config.headers['X-XSRF-TOKEN']);
+                    router.push({name: 'admin'})
+                })
         },
     },
 };
 </script>
 
 <style>
+
+
+html,
+body {
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+    background-color: rgb(50 48 54);
+    justify-content: center;
+}
+
 .signup-form {
     display: flex;
     flex-direction: column;
-    max-width: 400px;
+    max-width: 600px;
     margin: 0 auto;
     padding: 20px;
     background-color: #f5f5f5;

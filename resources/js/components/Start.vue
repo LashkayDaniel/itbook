@@ -14,6 +14,13 @@ export default {
     data() {
         return {}
     },
+    mounted() {
+        const token = localStorage.getItem('x_xsrf_token')
+        if (token) {
+            this.change();
+
+        }
+    },
     methods: {
         change() {
             this.$emit("nextStep")
