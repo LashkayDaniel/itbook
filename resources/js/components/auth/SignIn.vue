@@ -1,6 +1,7 @@
 <template>
     <html>
     <body>
+    <!--    <modal v-if="loginError" :title="ok" :message="this.loginError"></modal>-->
     <div class="block">
         <div class="block__logo">
             <img src="../../../img/logo.svg" alt="logo">
@@ -9,12 +10,10 @@
         <form class="block__form" method="post">
             <p class="form__label">Email</p>
             <input v-model="email" class="form__input" name="login" type="email" placeholder="Input email" required>
-            <p v-if="emailError" class="form__label-error">{{ this.emailError }}</p>
 
             <p class="form__label">Password</p>
             <input v-model="password" class="form__input" name="password" type="password" placeholder="Input password"
                    required>
-            <p v-if="passwordError" class="form__label-error">{{ this.passwordError }}</p>
 
             <p v-if="loginError" class="form__label-warning">{{ this.loginError }}</p>
 
@@ -35,9 +34,15 @@
 <script>
 
 import router from "@/router";
+import Modal from "../Modal.vue";
 
 export default {
     name: " SignIn",
+
+    components: {
+        modal: Modal,
+    },
+
     data() {
         return {
             email: '',
@@ -53,6 +58,9 @@ export default {
 
             if (this.email === '' || this.password === '') {
                 this.loginError = "Заповніть поля значеннями";
+                setTimeout(() => {
+                    this.loginError = ''
+                }, 2000);
                 return;
             }
 
@@ -74,6 +82,9 @@ export default {
                     console.log(err.message);
                     this.loginSuccess = false;
                     this.loginError = err.message;
+                    setTimeout(() => {
+                        this.loginError = ''
+                    }, 3000)
 
                 })
 
@@ -123,6 +134,19 @@ body {
     }
 }
 
+@keyframes warning {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+
+}
+
 .form {
     &__label {
         border: none;
@@ -143,6 +167,7 @@ body {
         color: #5b452c;
         background-color: orange;
         font-size: 14px;
+        transition: warning .9s ease;
     }
 
     &__label-success {

@@ -1,126 +1,72 @@
 <template>
     <header>
         <nav class="navigation-wrapper" :class="{'nav-animation' : isActive}">
-            <div class="logo-wrapper">
+            <div class="container">
                 <img class="logo" src="../../img/itbook.svg" alt=logo>
+
+
+                <ul v-if="isActive" class="navigation">
+                    <li v-if="!token" class="navigation__item">
+                        <router-link class="navigation__item-link" :to="{name: 'sign-in'}">Login</router-link>
+                    </li>
+
+                    <li class="navigation__item">
+                        <router-link class="navigation__item-link" to="example">Example</router-link>
+                    </li>
+
+                    <li class="navigation__item">
+                        <router-link class="navigation__item-link" to="dictionary">Словник</router-link>
+                    </li>
+
+                    <li v-if="token" class="navigation__item dropdown">
+                        <img src="https://www.w3schools.com/howto/img_avatar.png" alt="avatar" class="dropdown__avatar"
+                             @click="showDropdown = !showDropdown"
+                             :class="{'dropdown__avatar-active' : this.showDropdown}">
+                        <ul v-if="showDropdown" class="dropdown__list">
+                            <li class="dropdown__item"><a href="">пункт 1</a></li>
+                            <li class="dropdown__item"><a href="">пункт 1</a></li>
+                            <li class="dropdown__item">
+                                <button @click.prevent="logout">Logout</button>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
             </div>
-
-
-            <ul v-if="isActive" class="navigation">
-                <li class="navigation__item">
-                    <router-link class="navigation__item-link" :to="{name: 'sign-in'}"><strong>Login</strong>
-                    </router-link>
-                </li>
-                <li class="navigation__item">
-                    <router-link class="navigation__item-link" to="example"><strong>Example</strong></router-link>
-                </li>
-            </ul>
         </nav>
     </header>
 </template>
 
 <script>
+
+import router from "@/router";
+
 export default {
     name: "Header",
     props: {
         isActive: Boolean
     },
     data() {
-        return {}
-    }
+        return {
+            showDropdown: false,
+            token: false,
+        }
+    },
+    mounted() {
+        this.token = localStorage.getItem('x_xsrf_token') ? true : false
+    },
+    methods: {
+        logout() {
+            axios.get('/logout')
+                .then(res => {
+                    localStorage.removeItem('x_xsrf_token')
+                    router.go(0)
+                })
+        }
+    },
 }
 </script>
 
 <style lang="scss" scoped>
-a {
-    text-decoration: none;
-}
-
-li {
-    list-style-type: none;
-}
-
-.navigation-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 100vw;
-    justify-content: center;
-    padding: 15px;
-    text-transform: uppercase;
-    background-color: #222222;
-}
-
-.nav-animation {
-    animation: logo 1s linear 1 normal running 0s forwards;
-}
-
-
-@keyframes logo {
-
-    50% {
-        justify-content: space-around;
-    }
-    70% {
-        justify-content: space-evenly;
-
-    }
-    100% {
-        justify-content: space-between;
-    }
-}
-
-@keyframes logo-rotate {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.2);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-
-.logo-wrapper {
-    font-family: "Times New Roman", Times, serif;
-    font-size: 30px;
-    color: white;
-
-}
-
-.logo {
-    //animation: logo-rotate 10s ease-out infinite;
-    height: 70px;
-
-    &:hover {
-        opacity: 0.8;
-    }
-}
-
-.navigation {
-    padding: 0;
-    margin: 0;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-
-    &__item {
-    }
-
-    &__item-link {
-        color: #7f9cd5;
-        border-radius: 10px;
-        border: solid 2px #7c99d9;
-        padding: 10px;
-        margin: 20px;
-
-        &:hover {
-            border-color: #0c213b;
-            color: rgb(209 207 220);
-        }
-    }
-}
-
-
+@import '@/../sass/main/_header.scss';
 </style>

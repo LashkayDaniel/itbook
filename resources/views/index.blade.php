@@ -9,6 +9,7 @@
     @vite('resources/sass/app.scss')
     @vite('resources/css/app.css')
     <title>IT book</title>
+
 </head>
 <body>
 <div id="app"></div>
