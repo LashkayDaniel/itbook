@@ -1,27 +1,60 @@
 <template>
-    <html>
-    <body>
-    <form class="signup-form" @submit.prevent="submitForm">
-        <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" id="name" v-model="name" required/>
+
+    <div class="wrapper">
+        <div class="block">
+            <div class="block__logo">
+                <router-link to="main">
+                    <img src="../../../img/logo.svg" alt="logo">
+                </router-link>
+            </div>
+            <div class="block__title">Реєстрація</div>
+            <form class="block__form" method="post">
+
+                <label for="name" class="form__label">Ім'я</label>
+                <input type="text"
+                       id="name"
+                       v-model="name"
+                       class="form__input"
+                       placeholder="Введіть ім'я"
+                       required/>
+
+                <label for="email" class="form__label">Email</label>
+                <input type="email"
+                       id="email"
+                       v-model="email"
+                       class="form__input"
+                       placeholder="Введіть email"
+                       required/>
+
+                <label for="password" class="form__label">Пароль</label>
+                <input type="password"
+                       id="password"
+                       v-model="password"
+                       class="form__input"
+                       placeholder="Введіть пароль"
+                       required/>
+
+                <label for="confirmPassword" class="form__label">Підтвердіть пароль</label>
+                <input type="password"
+                       id="confirmPassword"
+                       v-model="confirmPassword"
+                       class="form__input"
+                       placeholder="Введіть пароль"
+                       required/>
+
+                <p v-if="loginError" class="form__label-warning">{{ this.loginError }}</p>
+
+                <p v-if="loginSuccess" class="form__label-success">Успішно авторизовано!</p>
+
+                <button @click.prevent="register" class="form__button" type="submit">Зареєструватися</button>
+            </form>
+
+            <div class="block__links">
+                <router-link class="links__link" :to="{name: 'sign-in'}">Авторизація</router-link>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" v-model="email" required/>
-        </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" v-model="password" required/>
-        </div>
-        <div class="form-group">
-            <label for="confirmPassword">Confirm Password</label>
-            <input type="password" id="confirmPassword" v-model="confirmPassword" required/>
-        </div>
-        <button @click.prevent="register" type="submit">Sign Up</button>
-    </form>
-    </body>
-    </html>
+    </div>
+
 </template>
 
 <script>
@@ -34,6 +67,8 @@ export default {
             email: '',
             password: '',
             confirmPassword: '',
+
+            errors: {}
         };
     },
     methods: {
@@ -48,62 +83,15 @@ export default {
                     localStorage.setItem('x_xsrf_token', res.config.headers['X-XSRF-TOKEN']);
                     router.push({name: 'admin'})
                 })
+                .catch(err => {
+                    console.log(err);
+                })
         },
     },
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+@import '@/../sass/auth/_sign.scss';
 
-
-html,
-body {
-    height: 100vh;
-    padding: 0;
-    margin: 0;
-    background-color: rgb(50 48 54);
-    justify-content: center;
-}
-
-.signup-form {
-    display: flex;
-    flex-direction: column;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f5f5f5;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
-}
-
-label {
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-input {
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-}
-
-button {
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    background-color: #4caf50;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #3e8e41;
-}
 </style>

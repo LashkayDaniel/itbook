@@ -20,7 +20,8 @@ html {
 
 body {
     margin: 0;
-    line-height: inherit
+    line-height: inherit;
+    background-color: rgb(50 48 54);
 }
 
 hr {

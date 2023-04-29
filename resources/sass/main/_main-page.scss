@@ -1,18 +1,14 @@
 .themes {
     height: 100%;
-    overflow: auto;
-    //background-color: #9ca3af;
     margin: 10px;
+    position: sticky;
+    top: 20px;
 
     &__list {
         font-weight: bold;
         color: #387493;
         margin-top: 10px;
         padding: 0 20px 20px;
-
-        //border: 1px dashed #96bce7;
-        //border-radius: 5px;
-
 
         li {
             list-style: none;
@@ -99,6 +95,11 @@
         font-size: 18px;
         color: #8894af;
         margin-left: 20px;
+        border-bottom: 1px dashed #6f7b8f;
+
+        &:before {
+            content: '';
+        }
 
         &:hover {
             color: #5f86be;
@@ -136,8 +137,7 @@
     display: flex;
     flex: 1 1;
     flex-direction: column;
-    padding: 0px 25px;
-    height: 100%;
+    padding: 0 25px;
 
     &__panel {
         display: flex;
@@ -148,13 +148,9 @@
     }
 
     &__description {
-        //max-height
-        //: 600px;
         overflow: auto;
-        height: auto;
-
         color: #819fb0;
-        scroll-behavior: smooth;
+
 
         &::-webkit-scrollbar-track {
             -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
@@ -183,17 +179,52 @@
         margin-bottom: 10px;
         margin-top: 10px;
     }
+
+    &__image {
+        max-width: 70%;
+        margin: 15px auto;
+    }
+
+    &__paragraph {
+        text-align: justify;
+        font-size: 17px;
+        text-indent: 25px;
+        margin-bottom: 10px;
+    }
+
+    &__code {
+        width: 90%;
+        margin: 10px auto;
+        color: #6c7bad;
+        background-color: rgba(156, 163, 175, 0.17);
+        font-weight: bold;
+        font-size: 16px;
+        padding: 0;
+        border-left: 2px solid #9ca3af;
+        border-radius: 15px;
+
+        code {
+            padding: 0;
+            margin: 0;
+        }
+    }
 }
 
 .navigation {
+
     &__link {
-        color: #0dcaf0;
+        color: #7586c2;
 
         &:first-child:before {
-            content: '+';
+            content: '';
+            background-image: url('../../img/home-icon.png');
+            background-size: 100% 100%;
             margin-right: 5px;
-            color: #9ca3af;
-            font-weight: bold;
+            display: inline-block;
+            height: 20px;
+            width: 20px;
+            opacity: .4;
+            transform: translate(0%, 20%);
         }
 
         &:not(:last-child):after {

@@ -1,4 +1,5 @@
 <template>
+    <to-top/>
     <div class="container">
         <!--        <div class="block">-->
         <!--            <h1 class="block__title">Main pageee</h1>-->
@@ -23,7 +24,17 @@
             <!--                </li>-->
             <!--            </ol>-->
 
-            <ol class="themes__list">
+            <ol v-if="preloader.themes" class="themes__list--preloader">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ol>
+
+            <ol v-else class="themes__list">
                 <li v-for="(section,index) in this.sections">
                     <div class="list__item" @click="section.isExpand=!section.isExpand">
                         <div class="item__name"
@@ -38,9 +49,9 @@
                     <ol v-if="section.isExpand" class="themes__link">
 
                         <li v-for="theme in section.themes">
-                            <transition name="accordion-fade">
-                                <a class="link__name" href=""> {{ theme }}</a>
-                            </transition>
+                            <!--                            <transition name="accordion-fade">-->
+                            <a class="link__name" href=""> {{ theme }}</a>
+                            <!--                            </transition>-->
                         </li>
                         <hr>
                         <p class="labs__title">Лабораторні роботи:</p>
@@ -75,152 +86,102 @@
             </article>
             <article class="block__description">
                 <h2 class="description__title">Історія баз даних</h2>
-                <p>This Intermediate/Advanced SQL Tutorial will cover the SELECT statement in great detail. The
-                    SELECT
-                    statement is the core of SQL, and it is likely that the vast majority of your SQL commands will
-                    be
-                    SELECT statements. Due to the enormous amount of options available for the SELECT statement,
-                    this
-                    entire tutorial has been dedicated to it.
 
-                    When constructing SQL Queries (with the SELECT statement), it is very useful to know all of the
-                    possible options and the best or more efficient way to do things. This Tutorial will help
-                    provide
-                    you with those skills.
+                <p class="description__paragraph">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium autem commodi, cum, cumque
+                    dignissimos distinctio dolore doloremque ducimus est eveniet, exercitationem id illo ipsum
+                    laudantium magnam mollitia natus nemo neque optio quia repellendus saepe sapiente sed temporibus
+                    tenetur totam vel voluptatem. Accusantium aliquam animi at autem beatae consequatur consequuntur
+                    cupiditate distinctio doloribus, eveniet excepturi ipsa molestias nemo porro quisquam quo totam vero
+                    voluptates! At consequatur doloribus modi mollitia nisi numquam, officiis quod soluta. Accusantium
+                    amet asperiores assumenda culpa delectus deserunt dolores doloribus eaque eligendi enim fugiat ipsum
+                    nostrum odio perferendis perspiciatis possimus praesentium quaerat quisquam ratione rem,
+                    repudiandae, sapiente vero!
+                </p>
+                <img
+                    class="description__image"
+                    src="https://assets.datacamp.com/production/repositories/6051/datasets/828b5e4e65e978b6ad1b1b9d19ada4c0f9e5d772/employees_db.png"
+                    alt="image">
+                <p class="description__paragraph">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium autem commodi, cum, cumque
+                    dignissimos distinctio dolore doloremque ducimus est eveniet, exercitationem id illo ipsum
+                    laudantium magnam mollitia natus nemo neque optio quia repellendus saepe sapiente sed temporibus
+                    tenetur totam vel voluptatem. Accusantium aliquam animi at autem beatae consequatur consequuntur
+                    cupiditate distinctio doloribus, eveniet excepturi ipsa molestias nemo porro quisquam quo totam vero
+                    voluptates! At consequatur doloribus modi mollitia nisi numquam, officiis quod soluta. Accusantium
+                    amet asperiores assumenda culpa delectus deserunt dolores doloribus eaque eligendi enim fugiat ipsum
+                    nostrum odio perferendis perspiciatis possimus praesentium quaerat quisquam ratione rem,
+                    repudiandae, sapiente vero!
+                </p>
+                <p class="description__paragraph">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium autem commodi, cum, cumque
+                    dignissimos distinctio dolore doloremque ducimus est eveniet, exercitationem id illo ipsum
+                    laudantium magnam mollitia natus nemo neque optio quia repellendus saepe sapiente sed temporibus
+                    tenetur totam vel voluptatem. Accusantium aliquam animi at autem beatae consequatur consequuntur
+                    cupiditate distinctio doloribus, eveniet excepturi ipsa molestias nemo porro quisquam quo totam vero
+                    voluptates! At consequatur doloribus modi mollitia nisi numquam, officiis quod soluta. Accusantium
+                    amet asperiores assumenda culpa delectus deserunt dolores doloribus eaque eligendi enim fugiat ipsum
+                    nostrum odio perferendis perspiciatis possimus praesentium quaerat quisquam ratione rem,
+                    repudiandae, sapiente vero!
+                </p>
 
-                    Although it is recommended that you go through the Beginner Course first, or at least the SELECT
-                    statement lesson, it is not required. The Beginner Course covers four other SQL Commands and
-                    allows
-                    you to practice those as well.
+                <pre class="description__code">
+                    <code>
+                        INSERT INTO `users`
+                        VALUE AS (...)
 
-                    You can submit all of your SQL commands in the Text submission box at the bottom of each of the
-                    main
-                    pages.</p>
-                <p>This Intermediate/Advanced SQL Tutorial will cover the SELECT statement in great detail. The
-                    SELECT
-                    statement is the core of SQL, and it is likely that the vast majority of your SQL commands will
-                    be
-                    SELECT statements. Due to the enormous amount of options available for the SELECT statement,
-                    this
-                    entire tutorial has been dedicated to it.
+                        &lt;?php&gt;
+                    </code>
+                </pre>
+                <p class="description__paragraph">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium autem commodi, cum, cumque
+                    dignissimos distinctio dolore doloremque ducimus est eveniet, exercitationem id illo ipsum
+                    laudantium magnam mollitia natus nemo neque optio quia repellendus saepe sapiente sed temporibus
+                    tenetur totam vel voluptatem. Accusantium aliquam animi at autem beatae consequatur consequuntur
+                    cupiditate distinctio doloribus, eveniet excepturi ipsa molestias nemo porro quisquam quo totam vero
+                    voluptates! At consequatur doloribus modi mollitia nisi numquam, officiis quod soluta. Accusantium
+                    amet asperiores assumenda culpa delectus deserunt dolores doloribus eaque eligendi enim fugiat ipsum
+                    nostrum odio perferendis perspiciatis possimus praesentium quaerat quisquam ratione rem,
+                    repudiandae, sapiente vero!
+                </p>
+                <pre class="description__code">
+                    <code>
+                        SELECT * FROM Customers;
+                    </code>
+                </pre>
+                <p class="description__paragraph">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium autem commodi, cum, cumque
+                    dignissimos distinctio dolore doloremque ducimus est eveniet, exercitationem id illo ipsum
+                    laudantium magnam mollitia natus nemo neque optio quia repellendus saepe sapiente sed temporibus
+                    tenetur totam vel voluptatem. Accusantium aliquam animi at autem beatae consequatur consequuntur
+                    cupiditate distinctio doloribus, eveniet excepturi ipsa molestias nemo porro quisquam quo totam vero
+                    voluptates! At consequatur doloribus modi mollitia nisi numquam, officiis quod soluta. Accusantium
+                    amet asperiores assumenda culpa delectus deserunt dolores doloribus eaque eligendi enim fugiat ipsum
+                    nostrum odio perferendis perspiciatis possimus praesentium quaerat quisquam ratione rem,
+                    repudiandae, sapiente vero!
+                </p>
 
-                    When constructing SQL Queries (with the SELECT statement), it is very useful to know all of the
-                    possible options and the best or more efficient way to do things. This Tutorial will help
-                    provide
-                    you with those skills.
-
-                    Although it is recommended that you go through the Beginner Course first, or at least the SELECT
-                    statement lesson, it is not required. The Beginner Course covers four other SQL Commands and
-                    allows
-                    you to practice those as well.
-
-                    You can submit all of your SQL commands in the Text submission box at the bottom of each of the
-                    main
-                    pages.</p>
-                <p>This Intermediate/Advanced SQL Tutorial will cover the SELECT statement in great detail. The
-                    SELECT
-                    statement is the core of SQL, and it is likely that the vast majority of your SQL commands will
-                    be
-                    SELECT statements. Due to the enormous amount of options available for the SELECT statement,
-                    this
-                    entire tutorial has been dedicated to it.
-
-                    When constructing SQL Queries (with the SELECT statement), it is very useful to know all of the
-                    possible options and the best or more efficient way to do things. This Tutorial will help
-                    provide
-                    you with those skills.
-
-                    Although it is recommended that you go through the Beginner Course first, or at least the SELECT
-                    statement lesson, it is not required. The Beginner Course covers four other SQL Commands and
-                    allows
-                    you to practice those as well.
-
-                    You can submit all of your SQL commands in the Text submission box at the bottom of each of the
-                    main
-                    pages.</p>
-                <p>This Intermediate/Advanced SQL Tutorial will cover the SELECT statement in great detail. The
-                    SELECT
-                    statement is the core of SQL, and it is likely that the vast majority of your SQL commands will
-                    be
-                    SELECT statements. Due to the enormous amount of options available for the SELECT statement,
-                    this
-                    entire tutorial has been dedicated to it.
-
-                    When constructing SQL Queries (with the SELECT statement), it is very useful to know all of the
-                    possible options and the best or more efficient way to do things. This Tutorial will help
-                    provide
-                    you with those skills.
-
-                    Although it is recommended that you go through the Beginner Course first, or at least the SELECT
-                    statement lesson, it is not required. The Beginner Course covers four other SQL Commands and
-                    allows
-                    you to practice those as well.
-
-                    You can submit all of your SQL commands in the Text submission box at the bottom of each of the
-                    main
-                    pages.</p>
-                <p>This Intermediate/Advanced SQL Tutorial will cover the SELECT statement in great detail. The
-                    SELECT
-                    statement is the core of SQL, and it is likely that the vast majority of your SQL commands will
-                    be
-                    SELECT statements. Due to the enormous amount of options available for the SELECT statement,
-                    this
-                    entire tutorial has been dedicated to it.
-
-                    When constructing SQL Queries (with the SELECT statement), it is very useful to know all of the
-                    possible options and the best or more efficient way to do things. This Tutorial will help
-                    provide
-                    you with those skills.
-
-                    Although it is recommended that you go through the Beginner Course first, or at least the SELECT
-                    statement lesson, it is not required. The Beginner Course covers four other SQL Commands and
-                    allows
-                    you to practice those as well.
-
-                    You can submit all of your SQL commands in the Text submission box at the bottom of each of the
-                    main
-                    pages.</p>
             </article>
         </section>
     </div>
 </template>
 
 <script>
+import ToTop from "@/components/ToTop.vue";
+
 export default {
     name: "Next",
+    components: {
+        ToTop
+    },
     data: function () {
         return {
+            preloader: {
+                themes: true,
+            },
+
             sections: [],
-            items: [
-                {
-                    id: 1,
-                    title: "Sample Title 1",
-                    content: "Lorem ipsum dolor sit amet",
-                    isExpand: true,
-                    computedHeight: 0,
-                },
-                {
-                    id: 2,
-                    title: "Sample Title 2",
-                    content: "Felis eget nunc lobortis mattis aliquam faucibus purus in massa. Maecenas volutpat blandit aliquam etiam.",
-                    isExpand: false,
-                    computedHeight: 0,
-                },
-                {
-                    id: 3,
-                    title: "Sample Title 3",
-                    content: "Pretium quam vulputate dignissim suspendisse. Tristique senectus et netus et. Vulputate ut pharetra sit amet aliquam. Leo urna molestie at elementum eu facilisis sed odio morbi. Ut morbi tincidunt augue interdum velit euismod in pellentesque massa.",
-                    isExpand: false,
-                    computedHeight: 0,
-                },
-                {
-                    id: 4,
-                    title: "Sample Title 4",
-                    content: "Odio euismod lacinia at quis risus sed vulputate. Nulla pharetra diam sit amet nisl suscipit adipiscing bibendum est. Proin sagittis nisl rhoncus mattis rhoncus urna neque viverra justo. Ut pharetra sit amet aliquam id diam maecenas. Enim ut tellus elementum sagittis vitae et leo. Egestas fringilla phasellus faucibus scelerisque eleifend. Odio euismod lacinia at quis risus sed vulputate odio.",
-                    isExpand: false,
-                    computedHeight: 0,
-                },
-            ],
+
         }
     },
 
@@ -250,6 +211,7 @@ export default {
                     })
 
                     this.sections = data;
+                    this.preloader.themes = false;
 
                     console.log(data);
                 })
@@ -259,9 +221,6 @@ export default {
         },
 
 
-        //accordion
-
-        // end accordion
     },
 
     created() {
@@ -279,13 +238,14 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/../sass/main/_main-page.scss';
+@import '@/../sass/main/_main-page-preloaders.scss';
 
 .container {
     max-width: 1500px;
     padding: 0 20px;
     margin: 20px auto;
     display: flex;
-    align-content: space-between;
+    justify-content: space-between;
 }
 
 
