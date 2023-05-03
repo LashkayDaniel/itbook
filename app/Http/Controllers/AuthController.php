@@ -24,9 +24,10 @@ class AuthController extends Controller
             $validateUser = Validator::make(
                 $request->all(),
                 [
-                    'name' => 'required',
+                    'name' => 'required|min:3',
                     'email' => 'required|email|unique:users,email',
-                    'password' => 'required',
+                    'password' => 'required|min:6',
+                    'confirm_password' => 'required|min:6',
                 ]
             );
 
@@ -35,14 +36,25 @@ class AuthController extends Controller
                     'status' => false,
                     'message' => 'validation error',
                     'errors' => $validateUser->errors(),
-                ], 401);
+                ], 422);
             }
 
+            $password = $request->input('password');
+            $confirmPassword = $request->input('confirm_password');
+
+            $roleId = Role::where('name', 'Student')->first()->id;
+
+            if ($password !== $confirmPassword) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'passwords do not match',
+                ], 422);
+            }
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
-                'role_id' => 2,
+                'role_id' => $roleId,
             ]);
 
             return response()->json([
@@ -81,14 +93,15 @@ class AuthController extends Controller
                     'status' => false,
                     'message' => 'validation error',
                     'errors' => $validateUser->errors(),
-                ], 401);
+                ], 422);
             }
 
+            $roleId = Role::where('name', 'Admin')->first()->id;
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
-                'role_id' => 1,
+                'role_id' => $roleId,
             ]);
 
             return response()->json([

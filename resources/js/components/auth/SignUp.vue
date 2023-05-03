@@ -17,6 +17,7 @@
                        class="form__input"
                        placeholder="Введіть ім'я"
                        required/>
+                <p class="form__label-error">{{ errors.name }}</p>
 
                 <label for="email" class="form__label">Email</label>
                 <input type="email"
@@ -25,6 +26,8 @@
                        class="form__input"
                        placeholder="Введіть email"
                        required/>
+                <p class="form__label-error">{{ errors.email }}</p>
+
 
                 <label for="password" class="form__label">Пароль</label>
                 <input type="password"
@@ -33,6 +36,8 @@
                        class="form__input"
                        placeholder="Введіть пароль"
                        required/>
+                <p class="form__label-error">{{ errors.password }}</p>
+
 
                 <label for="confirmPassword" class="form__label">Підтвердіть пароль</label>
                 <input type="password"
@@ -41,10 +46,11 @@
                        class="form__input"
                        placeholder="Введіть пароль"
                        required/>
+                <p class="form__label-error">{{ errors.confirm_password }}</p>
 
-                <p v-if="loginError" class="form__label-warning">{{ this.loginError }}</p>
 
-                <p v-if="loginSuccess" class="form__label-success">Успішно авторизовано!</p>
+                <p v-if="signUpSuccess" class="form__label-success">Успішно зареєстровано!</p>
+
 
                 <button @click.prevent="register" class="form__button" type="submit">Зареєструватися</button>
             </form>
@@ -67,23 +73,36 @@ export default {
             password: '',
             confirmPassword: '',
 
+            signUpSuccess: false,
+
             errors: {}
         };
     },
     methods: {
         register() {
+            this.errors = {}
+
             axios.post('/api/auth/register', {
                 name: this.name,
                 email: this.email,
-                password: this.password
+                password: this.password,
+                confirm_password: this.confirmPassword
             })
-                .then(res => {
-                    console.log(res)
-                    localStorage.setItem('x_xsrf_token', res.config.headers['X-XSRF-TOKEN']);
-                    this.$router.push({name: 'admin'})
+                .then(response => {
+                    console.log(response)
+                    localStorage.setItem('x_xsrf_token', response.data.token);
+                    this.signUpSuccess = true;
+                    setTimeout(() => {
+                        this.$router.push({name: 'main'})
+                    }, 2000)
                 })
-                .catch(err => {
-                    console.log(err);
+                .catch(error => {
+                    const errors = error.response.data.errors;
+                    errors.hasOwnProperty('name') ? this.errors.name = errors.name[0] : ''
+                    errors.hasOwnProperty('email') ? this.errors.email = errors.email[0] : ''
+                    errors.hasOwnProperty('password') ? this.errors.password = errors.password[0] : ''
+                    errors.hasOwnProperty('confirm_password') ? this.errors.confirm_password = errors.confirm_password[0] : ''
+
                 })
         },
     },

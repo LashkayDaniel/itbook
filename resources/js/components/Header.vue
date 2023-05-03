@@ -39,8 +39,6 @@
 
 <script>
 
-import router from "@/router";
-
 export default {
     name: "Header",
     props: {
@@ -52,10 +50,21 @@ export default {
             token: false,
         }
     },
-    mounted() {
-        this.token = localStorage.getItem('x_xsrf_token') ?? false
-    },
     methods: {
+        checkToken(token) {
+            axios.post('/api/auth/checkToken', {
+                token: token
+            })
+                .then(response => {
+                    console.log(response);
+                    this.token = response.data.status;
+                })
+                .catch(error => {
+                    alert('token Invalid')
+                    localStorage.removeItem('x_xsrf_token')
+
+                })
+        },
         logout() {
             const currentToken = localStorage.getItem('x_xsrf_token');
             axios.defaults.headers.common['Authorization'] = `Bearer ${currentToken}`;
@@ -74,8 +83,15 @@ export default {
             axios.get('/logout')
                 .then(res => {
                     localStorage.removeItem('x_xsrf_token')
-                    router.go(0)
+                    this.$router.go(0)
                 })
+        }
+    },
+
+    created() {
+        const userToken = localStorage.getItem('x_xsrf_token')
+        if (userToken) {
+            this.checkToken(userToken)
         }
     },
 }
