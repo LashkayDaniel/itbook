@@ -2,8 +2,8 @@
     <div class="wrapper">
         <div class="block">
             <div class="block__logo">
-                <router-link to="main">
-                    <img src="../../../img/logo.svg" alt="logo">
+                <router-link :to="{name: 'main'}">
+                    <img src="../../../img/logo.svg" alt="logo" title="На головну">
                 </router-link>
             </div>
             <div class="block__title">Авторизація</div>
@@ -22,10 +22,11 @@
 
                 <p v-if="loginSuccess" class="form__label-success">Успішно авторизовано!</p>
 
-                <button @click.prevent="login" class="form__button" type="submit">Ввійти</button>
+                <button @click.prevent="forAdmin ? loginAdmin() : loginUser()" class="form__button" type="submit">Ввійти
+                </button>
             </form>
 
-            <div class="block__links">
+            <div v-if="!forAdmin" class="block__links">
                 <a class="links__link" href="#">Забули пароль?</a>
                 <router-link class="links__link" :to="{name: 'sign-up'}">Реєстрація</router-link>
             </div>
@@ -35,25 +36,26 @@
 
 <script>
 
-
-import router from "@/router";
-
 export default {
     name: " SignIn",
-
+    props: {
+        forAdmin: {
+            Boolean,
+            default: false
+        }
+    },
     data() {
         return {
             email: '',
             password: '',
             loginError: '',
             loginSuccess: false,
-
         }
     },
 
     methods: {
-        login() {
-
+        loginUser() {
+            console.log('log from user login')
             if (this.email === '' || this.password === '') {
                 this.loginError = "Заповніть поля значеннями";
                 setTimeout(() => {
@@ -70,9 +72,11 @@ export default {
                     console.log(response.data)
                     this.loginError = '';
                     this.loginSuccess = true;
-                    localStorage.setItem('x_xsrf_token', response.config.headers['X-XSRF-TOKEN']);
+                    // localStorage.setItem('x_xsrf_token', response.config.headers['X-XSRF-TOKEN']);
+                    localStorage.setItem('x_xsrf_token', response.data.token);
+
                     setTimeout(() => {
-                        router.push({name: 'main'})
+                        this.$router.push({name: 'main'})
                     }, 2000)
                 })
                 .catch(err => {
@@ -83,10 +87,47 @@ export default {
                     setTimeout(() => {
                         this.loginError = ''
                     }, 3000)
+                });
+        },
+        loginAdmin() {
+            console.log('log from admin login')
+            if (this.email === '' || this.password === '') {
+                this.loginError = "Заповніть поля значеннями";
+                setTimeout(() => {
+                    this.loginError = ''
+                }, 2000);
+                return;
+            }
 
+            axios.post('/api/auth/adminLogin', {
+                email: this.email,
+                password: this.password,
+            })
+                .then(response => {
+                    if (response.data.status) {
+                        console.log(response.data)
+                        this.loginError = '';
+                        this.loginSuccess = true;
+
+                        // localStorage.setItem('x_xsrf_token', response.config.headers['X-XSRF-TOKEN']);
+                        localStorage.setItem('admin_token', response.data.token);
+
+                        setTimeout(() => {
+                            this.$router.push({name: 'admin'})
+                            location.reload();
+                        }, 2000)
+                    }
                 })
+                .catch(err => {
+                    console.log(err.message);
+                    this.loginSuccess = false;
+                    this.loginError = err.message;
+                    setTimeout(() => {
+                        this.loginError = ''
+                    }, 3000)
+                });
+        },
 
-        }
     }
 }
 </script>

@@ -53,10 +53,21 @@ export default {
         }
     },
     mounted() {
-        this.token = localStorage.getItem('x_xsrf_token') ? true : false
+        this.token = localStorage.getItem('x_xsrf_token') ?? false
     },
     methods: {
         logout() {
+            axios.get('/api/auth/logout')
+                .then(resp => {
+                    console.log(resp);
+                    localStorage.removeItem('x_xsrf_token');
+                    location.reload();
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        },
+        logout1() {
             axios.get('/logout')
                 .then(res => {
                     localStorage.removeItem('x_xsrf_token')

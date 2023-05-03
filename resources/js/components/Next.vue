@@ -50,12 +50,16 @@
 
                         <li v-for="theme in section.themes">
                             <!--                            <transition name="accordion-fade">-->
-                            <a class="link__name" href=""> {{ theme }}</a>
+                            <a class="link__name"
+                               href=""
+                               @click.prevent="preloader.description=false">
+                                {{ theme }}
+                            </a>
                             <!--                            </transition>-->
                         </li>
-                        <hr>
-                        <p class="labs__title">Лабораторні роботи:</p>
-                        <li class="labs__item" v-for="labs in section.labs">
+                        <hr v-if="false">
+                        <p v-if="false" class="labs__title">Лабораторні роботи:</p>
+                        <li v-if="false" class="labs__item" v-for="labs in section.labs">
                             <a class="">{{ labs.title }}</a>
                             <img src="@/../../resources/img/lock-icon.png"
                                  width="20"
@@ -68,64 +72,78 @@
 
                 </li>
             </ol>
-
-
         </aside>
 
         <section class="block">
-            <article class="block__panel">
-                <div class="navigation">
-                    <a class="navigation__link" href="">Вступ</a>
-                    <a class="navigation__link" href="">Історія баз даних</a>
-                </div>
-
-                <div class="search">
-                    <input class="search__input" type="text" name="search" placeholder="Пошук у книзі">
-                    <button class="search__btn" type="button">Пошук</button>
-                </div>
+            <article v-if="preloader.description" class="block__start">
+                <img src="@/../../resources/img/book-icon.png" alt="book icon">
+                <div class="">Оберіть певний розділ, який Вас цікавить</div>
+                <img id="arrow" src="@/../../resources/img/img_4.png" alt="book icon">
             </article>
-            <article class="block__description">
-                <h2 class="description__title">Історія баз даних</h2>
 
-                <p class="description__paragraph">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium autem commodi, cum, cumque
-                    dignissimos distinctio dolore doloremque ducimus est eveniet, exercitationem id illo ipsum
-                    laudantium magnam mollitia natus nemo neque optio quia repellendus saepe sapiente sed temporibus
-                    tenetur totam vel voluptatem. Accusantium aliquam animi at autem beatae consequatur consequuntur
-                    cupiditate distinctio doloribus, eveniet excepturi ipsa molestias nemo porro quisquam quo totam vero
-                    voluptates! At consequatur doloribus modi mollitia nisi numquam, officiis quod soluta. Accusantium
-                    amet asperiores assumenda culpa delectus deserunt dolores doloribus eaque eligendi enim fugiat ipsum
-                    nostrum odio perferendis perspiciatis possimus praesentium quaerat quisquam ratione rem,
-                    repudiandae, sapiente vero!
-                </p>
-                <img
-                    class="description__image"
-                    src="https://assets.datacamp.com/production/repositories/6051/datasets/828b5e4e65e978b6ad1b1b9d19ada4c0f9e5d772/employees_db.png"
-                    alt="image">
-                <p class="description__paragraph">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium autem commodi, cum, cumque
-                    dignissimos distinctio dolore doloremque ducimus est eveniet, exercitationem id illo ipsum
-                    laudantium magnam mollitia natus nemo neque optio quia repellendus saepe sapiente sed temporibus
-                    tenetur totam vel voluptatem. Accusantium aliquam animi at autem beatae consequatur consequuntur
-                    cupiditate distinctio doloribus, eveniet excepturi ipsa molestias nemo porro quisquam quo totam vero
-                    voluptates! At consequatur doloribus modi mollitia nisi numquam, officiis quod soluta. Accusantium
-                    amet asperiores assumenda culpa delectus deserunt dolores doloribus eaque eligendi enim fugiat ipsum
-                    nostrum odio perferendis perspiciatis possimus praesentium quaerat quisquam ratione rem,
-                    repudiandae, sapiente vero!
-                </p>
-                <p class="description__paragraph">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium autem commodi, cum, cumque
-                    dignissimos distinctio dolore doloremque ducimus est eveniet, exercitationem id illo ipsum
-                    laudantium magnam mollitia natus nemo neque optio quia repellendus saepe sapiente sed temporibus
-                    tenetur totam vel voluptatem. Accusantium aliquam animi at autem beatae consequatur consequuntur
-                    cupiditate distinctio doloribus, eveniet excepturi ipsa molestias nemo porro quisquam quo totam vero
-                    voluptates! At consequatur doloribus modi mollitia nisi numquam, officiis quod soluta. Accusantium
-                    amet asperiores assumenda culpa delectus deserunt dolores doloribus eaque eligendi enim fugiat ipsum
-                    nostrum odio perferendis perspiciatis possimus praesentium quaerat quisquam ratione rem,
-                    repudiandae, sapiente vero!
-                </p>
+            <div v-else>
+                <article class="block__panel">
+                    <div class="navigation">
+                        <a class="navigation__link" href="">Вступ</a>
+                        <a class="navigation__link" href="">Історія баз даних</a>
+                    </div>
 
-                <pre class="description__code">
+                    <div class="search">
+                        <input class="search__input" type="text" name="search" placeholder="Пошук у книзі">
+                        <button class="search__btn" type="button">Пошук</button>
+                    </div>
+                </article>
+                <article class="block__description">
+                    <h2 class="description__title">Історія баз даних</h2>
+
+                    <p class="description__paragraph">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium autem commodi, cum, cumque
+                        dignissimos distinctio dolore doloremque ducimus est eveniet, exercitationem id illo ipsum
+                        laudantium magnam mollitia natus nemo neque optio quia repellendus saepe sapiente sed temporibus
+                        tenetur totam vel voluptatem. Accusantium aliquam animi at autem beatae consequatur consequuntur
+                        cupiditate distinctio doloribus, eveniet excepturi ipsa molestias nemo porro quisquam quo totam
+                        vero
+                        voluptates! At consequatur doloribus modi mollitia nisi numquam, officiis quod soluta.
+                        Accusantium
+                        amet asperiores assumenda culpa delectus deserunt dolores doloribus eaque eligendi enim fugiat
+                        ipsum
+                        nostrum odio perferendis perspiciatis possimus praesentium quaerat quisquam ratione rem,
+                        repudiandae, sapiente vero!
+                    </p>
+                    <img
+                        class="description__image"
+                        src="https://assets.datacamp.com/production/repositories/6051/datasets/828b5e4e65e978b6ad1b1b9d19ada4c0f9e5d772/employees_db.png"
+                        alt="image">
+                    <p class="description__paragraph">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium autem commodi, cum, cumque
+                        dignissimos distinctio dolore doloremque ducimus est eveniet, exercitationem id illo ipsum
+                        laudantium magnam mollitia natus nemo neque optio quia repellendus saepe sapiente sed temporibus
+                        tenetur totam vel voluptatem. Accusantium aliquam animi at autem beatae consequatur consequuntur
+                        cupiditate distinctio doloribus, eveniet excepturi ipsa molestias nemo porro quisquam quo totam
+                        vero
+                        voluptates! At consequatur doloribus modi mollitia nisi numquam, officiis quod soluta.
+                        Accusantium
+                        amet asperiores assumenda culpa delectus deserunt dolores doloribus eaque eligendi enim fugiat
+                        ipsum
+                        nostrum odio perferendis perspiciatis possimus praesentium quaerat quisquam ratione rem,
+                        repudiandae, sapiente vero!
+                    </p>
+                    <p class="description__paragraph">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium autem commodi, cum, cumque
+                        dignissimos distinctio dolore doloremque ducimus est eveniet, exercitationem id illo ipsum
+                        laudantium magnam mollitia natus nemo neque optio quia repellendus saepe sapiente sed temporibus
+                        tenetur totam vel voluptatem. Accusantium aliquam animi at autem beatae consequatur consequuntur
+                        cupiditate distinctio doloribus, eveniet excepturi ipsa molestias nemo porro quisquam quo totam
+                        vero
+                        voluptates! At consequatur doloribus modi mollitia nisi numquam, officiis quod soluta.
+                        Accusantium
+                        amet asperiores assumenda culpa delectus deserunt dolores doloribus eaque eligendi enim fugiat
+                        ipsum
+                        nostrum odio perferendis perspiciatis possimus praesentium quaerat quisquam ratione rem,
+                        repudiandae, sapiente vero!
+                    </p>
+
+                    <pre class="description__code">
                     <code>
                         INSERT INTO `users`
                         VALUE AS (...)
@@ -133,35 +151,42 @@
                         &lt;?php&gt;
                     </code>
                 </pre>
-                <p class="description__paragraph">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium autem commodi, cum, cumque
-                    dignissimos distinctio dolore doloremque ducimus est eveniet, exercitationem id illo ipsum
-                    laudantium magnam mollitia natus nemo neque optio quia repellendus saepe sapiente sed temporibus
-                    tenetur totam vel voluptatem. Accusantium aliquam animi at autem beatae consequatur consequuntur
-                    cupiditate distinctio doloribus, eveniet excepturi ipsa molestias nemo porro quisquam quo totam vero
-                    voluptates! At consequatur doloribus modi mollitia nisi numquam, officiis quod soluta. Accusantium
-                    amet asperiores assumenda culpa delectus deserunt dolores doloribus eaque eligendi enim fugiat ipsum
-                    nostrum odio perferendis perspiciatis possimus praesentium quaerat quisquam ratione rem,
-                    repudiandae, sapiente vero!
-                </p>
-                <pre class="description__code">
+                    <p class="description__paragraph">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium autem commodi, cum, cumque
+                        dignissimos distinctio dolore doloremque ducimus est eveniet, exercitationem id illo ipsum
+                        laudantium magnam mollitia natus nemo neque optio quia repellendus saepe sapiente sed temporibus
+                        tenetur totam vel voluptatem. Accusantium aliquam animi at autem beatae consequatur consequuntur
+                        cupiditate distinctio doloribus, eveniet excepturi ipsa molestias nemo porro quisquam quo totam
+                        vero
+                        voluptates! At consequatur doloribus modi mollitia nisi numquam, officiis quod soluta.
+                        Accusantium
+                        amet asperiores assumenda culpa delectus deserunt dolores doloribus eaque eligendi enim fugiat
+                        ipsum
+                        nostrum odio perferendis perspiciatis possimus praesentium quaerat quisquam ratione rem,
+                        repudiandae, sapiente vero!
+                    </p>
+                    <pre class="description__code">
                     <code>
                         SELECT * FROM Customers;
                     </code>
                 </pre>
-                <p class="description__paragraph">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium autem commodi, cum, cumque
-                    dignissimos distinctio dolore doloremque ducimus est eveniet, exercitationem id illo ipsum
-                    laudantium magnam mollitia natus nemo neque optio quia repellendus saepe sapiente sed temporibus
-                    tenetur totam vel voluptatem. Accusantium aliquam animi at autem beatae consequatur consequuntur
-                    cupiditate distinctio doloribus, eveniet excepturi ipsa molestias nemo porro quisquam quo totam vero
-                    voluptates! At consequatur doloribus modi mollitia nisi numquam, officiis quod soluta. Accusantium
-                    amet asperiores assumenda culpa delectus deserunt dolores doloribus eaque eligendi enim fugiat ipsum
-                    nostrum odio perferendis perspiciatis possimus praesentium quaerat quisquam ratione rem,
-                    repudiandae, sapiente vero!
-                </p>
+                    <p class="description__paragraph">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium autem commodi, cum, cumque
+                        dignissimos distinctio dolore doloremque ducimus est eveniet, exercitationem id illo ipsum
+                        laudantium magnam mollitia natus nemo neque optio quia repellendus saepe sapiente sed temporibus
+                        tenetur totam vel voluptatem. Accusantium aliquam animi at autem beatae consequatur consequuntur
+                        cupiditate distinctio doloribus, eveniet excepturi ipsa molestias nemo porro quisquam quo totam
+                        vero
+                        voluptates! At consequatur doloribus modi mollitia nisi numquam, officiis quod soluta.
+                        Accusantium
+                        amet asperiores assumenda culpa delectus deserunt dolores doloribus eaque eligendi enim fugiat
+                        ipsum
+                        nostrum odio perferendis perspiciatis possimus praesentium quaerat quisquam ratione rem,
+                        repudiandae, sapiente vero!
+                    </p>
 
-            </article>
+                </article>
+            </div>
         </section>
     </div>
 </template>
@@ -178,6 +203,7 @@ export default {
         return {
             preloader: {
                 themes: true,
+                description: true,
             },
 
             sections: [],

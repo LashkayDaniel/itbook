@@ -40,4 +40,30 @@
     }
 }
 
+.block {
+
+    &__start {
+        color: #8f9dbe;
+        padding: 20px;
+        font-size: 20px;
+        font-style: italic;
+        height: 350px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+
+        img {
+            opacity: .5;
+        }
+
+        #arrow {
+            position: absolute;
+            top: 20px;
+            transform: scale(.9);
+        }
+    }
+}
+
+
 

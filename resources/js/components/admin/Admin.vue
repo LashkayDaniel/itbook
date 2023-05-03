@@ -1,5 +1,8 @@
 <template>
-    <div class="flex flex-col items-center w-40 h-full overflow-hidden text-gray-400 bg-gray-900">
+
+    <sign-in v-if="!isTokenValid" :forAdmin="true"/>
+
+    <div v-else class="flex flex-col items-center w-40 h-full overflow-hidden text-gray-400 bg-gray-900">
         <a class="flex items-center w-full px-3 mt-3" href="#">
             <svg class="w-8 h-8 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                  fill="currentColor">
@@ -90,9 +93,40 @@
 </template>
 
 <script>
+import SignIn from "@/components/auth/SignIn.vue";
+
 export default {
     name: "Admin",
-    methods: {}
+    components: {
+        SignIn
+    },
+    data() {
+        return {
+            isTokenValid: false,
+        }
+    },
+    methods: {
+        checkToken(token) {
+            axios.post('/api/auth/checkToken', {
+                token: token
+            })
+                .then(response => {
+                    console.log(response);
+                    this.isTokenValid = response.data.status;
+                })
+                .catch(error => {
+                    alert('token Invalid')
+                    localStorage.removeItem('admin_token')
+
+                })
+        }
+    },
+    created() {
+        const token = localStorage.getItem('admin_token')
+        if (token) {
+            this.checkToken(token)
+        }
+    },
 };
 </script>
 

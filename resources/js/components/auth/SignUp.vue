@@ -3,8 +3,8 @@
     <div class="wrapper">
         <div class="block">
             <div class="block__logo">
-                <router-link to="main">
-                    <img src="../../../img/logo.svg" alt="logo">
+                <router-link :to="{name: 'main'}">
+                    <img src="../../../img/logo.svg" alt="logo" title="На головну">
                 </router-link>
             </div>
             <div class="block__title">Реєстрація</div>
@@ -58,7 +58,6 @@
 </template>
 
 <script>
-import router from "@/router";
 
 export default {
     data() {
@@ -81,7 +80,7 @@ export default {
                 .then(res => {
                     console.log(res)
                     localStorage.setItem('x_xsrf_token', res.config.headers['X-XSRF-TOKEN']);
-                    router.push({name: 'admin'})
+                    this.$router.push({name: 'admin'})
                 })
                 .catch(err => {
                     console.log(err);

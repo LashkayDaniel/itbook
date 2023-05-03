@@ -101,7 +101,7 @@ li {
 .dropdown {
     position: relative;
     display: inline-block;
-
+    z-index: 1;
 
     &__avatar {
         vertical-align: middle;
@@ -141,6 +141,17 @@ li {
 
         &:last-child {
             border-bottom: none;
+        }
+
+        button {
+            background-color: #5071a1;
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: #b3d4da;
+
+            &:hover {
+                opacity: .8;
+            }
         }
     }
 }

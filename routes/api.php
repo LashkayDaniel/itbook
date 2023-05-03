@@ -68,12 +68,13 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('users/user', [MainController::class, 'createUser']);
     // удалить пользователя
     Route::delete('users/{id}', [MainController::class, 'deleteUser']);
-
-    Route::get('logout', function () {
-        Auth::user()->tokens()->delete();
-    });//[AuthController::class, 'logout']);
 });
 //
 Route::post('/auth/register', [AuthController::class, 'register']);
+Route::post('/auth/registerAdmin', [AuthController::class, 'registerAdmin']);
 Route::post('/auth/login', [AuthController::class, 'login']);
+Route::post('/auth/adminLogin', [AuthController::class, 'adminLogin']);
+Route::post('/auth/checkToken', [AuthController::class, 'checkToken']);
+
+Route::middleware('auth:sanctum')->get('/auth/logout', [AuthController::class, 'logout']);
 // end test
