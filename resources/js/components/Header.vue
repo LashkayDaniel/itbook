@@ -57,6 +57,9 @@ export default {
     },
     methods: {
         logout() {
+            const currentToken = localStorage.getItem('x_xsrf_token');
+            axios.defaults.headers.common['Authorization'] = `Bearer ${currentToken}`;
+
             axios.get('/api/auth/logout')
                 .then(resp => {
                     console.log(resp);

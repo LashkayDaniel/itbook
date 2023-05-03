@@ -89,6 +89,9 @@
             </svg>
             <span class="ml-2 text-sm font-medium">Account</span>
         </a>
+
+
+        <button @click.prevent="logout" style="color: red; font-weight: bold">LOGOUT</button>
     </div>
 </template>
 
@@ -119,7 +122,21 @@ export default {
                     localStorage.removeItem('admin_token')
 
                 })
-        }
+        },
+
+        logout() {
+            const currentToken = localStorage.getItem('admin_token');
+            axios.defaults.headers.common['Authorization'] = `Bearer ${currentToken}`;
+            axios.get('/api/auth/logout')
+                .then(resp => {
+                    console.log(resp);
+                    localStorage.removeItem('admin_token');
+                    location.reload();
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        },
     },
     created() {
         const token = localStorage.getItem('admin_token')

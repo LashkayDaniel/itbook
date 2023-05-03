@@ -44,22 +44,24 @@ axios.interceptors.response.use(
     }
 )
 
-axios.interceptors.request.use(
-    config => {
-        const userToken = localStorage.getItem('x_xsrf_token'); // отримуємо токен з локального сховища
-        // const adminToken = localStorage.getItem('admin_token'); // отримуємо токен з локального сховища
-        if (userToken) {
-            config.headers.authorization = `Bearer ${userToken}`; // додаємо токен в заголовок запиту
-        }
-        // else if (adminToken) {
-        //     config.headers.authorization = `Bearer ${adminToken}`; // додаємо токен в заголовок запиту
-        // }
-        return config;
-    },
-    error => {
-        return Promise.reject(error);
-    }
-);
+// axios.interceptors.request.use(
+//     config => {
+//         const userToken = localStorage.getItem('x_xsrf_token'); // отримуємо токен з локального сховища
+//         // const adminToken = localStorage.getItem('admin_token'); // отримуємо токен з локального сховища
+//         if (userToken) {
+//             config.headers.authorization = `Bearer ${userToken}`; // додаємо токен в заголовок запиту
+//         }
+//         // else if (adminToken) {
+//         //     config.headers.authorization = `Bearer ${adminToken}`; // додаємо токен в заголовок запиту
+//         // }
+//         return config;
+//     },
+//     error => {
+//         return Promise.reject(error);
+//     }
+// );
+
+
 // window.axios.interceptors.response.use({}, error => {
 //     if (error.response.status === 401 || error.response.status === 419) {
 //         const token = localStorage.getItem('x_xsrf_token')
