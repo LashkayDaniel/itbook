@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Sanctum\PersonalAccessToken;
 
@@ -47,7 +48,11 @@ class AuthController extends Controller
             if ($password !== $confirmPassword) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'passwords do not match',
+                    'errors' => [
+                        'confirm_password' => [
+                            'Паролі не збігаються',
+                        ],
+                    ],
                 ], 422);
             }
             $user = User::create([
@@ -262,5 +267,18 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Successfully logged out',
         ]);
+    }
+
+    public function forgotPassword(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $request->validate(['email' => 'required|email']);
+
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
+
+        return $status === Password::RESET_LINK_SENT
+            ? response()->json(['message' => 'We have emailed your password reset link!'])
+            : response()->json(['message' => 'Failed to send reset link!'], 500);
     }
 }

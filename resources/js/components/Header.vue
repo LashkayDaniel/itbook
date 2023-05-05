@@ -25,6 +25,8 @@
                         <ul v-if="showDropdown" class="dropdown__list">
                             <li class="dropdown__item"><a href="">пункт 1</a></li>
                             <li class="dropdown__item"><a href="">пункт 1</a></li>
+                            <li class="dropdown__item">{{this.userInfo.name}}</li>
+                            <li class="dropdown__item">{{this.userInfo.email}}</li>
                             <li class="dropdown__item">
                                 <button @click.prevent="logout">Logout</button>
                             </li>
@@ -48,6 +50,7 @@ export default {
         return {
             showDropdown: false,
             token: false,
+            userInfo:{}
         }
     },
     methods: {
@@ -58,6 +61,19 @@ export default {
                 .then(response => {
                     console.log(response);
                     this.token = response.data.status;
+
+
+                    const currentToken = localStorage.getItem('x_xsrf_token');
+                    axios.defaults.headers.common['Authorization'] = `Bearer ${currentToken}`;
+                    axios.get('/api/userInfo')
+                        .then(response => {
+                            this.userInfo = response.data.user
+                        })
+                        .catch(error => {
+                            console.log(error);
+
+                        })
+                    //
                 })
                 .catch(error => {
                     alert('token Invalid')
@@ -79,13 +95,6 @@ export default {
                     console.log(err);
                 })
         },
-        logout1() {
-            axios.get('/logout')
-                .then(res => {
-                    localStorage.removeItem('x_xsrf_token')
-                    this.$router.go(0)
-                })
-        }
     },
 
     created() {

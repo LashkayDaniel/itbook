@@ -76,5 +76,14 @@ Route::post('/auth/login', [AuthController::class, 'login']);
 Route::post('/auth/adminLogin', [AuthController::class, 'adminLogin']);
 Route::post('/auth/checkToken', [AuthController::class, 'checkToken']);
 
+Route::post('/auth/forgotPassword', [AuthController::class, 'forgotPassword']);
+
 Route::middleware('auth:sanctum')->get('/auth/logout', [AuthController::class, 'logout']);
+
+Route::middleware('auth:sanctum')->get('/userInfo', function (Request $request) {
+    $user = Auth::user();
+    return response()->json([
+        'user' => $user,
+    ]);
+});
 // end test

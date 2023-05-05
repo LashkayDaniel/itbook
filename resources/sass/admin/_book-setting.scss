@@ -1,0 +1,244 @@
+.main-block {
+    display: flex;
+    align-items: flex-start;
+    column-gap: 10px;
+    height: 100%;
+}
+
+.right, .left {
+    width: 50%;
+    //background-color: #0a58ca;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 25px;
+    border: dashed 2px #949fb0;
+    border-radius: 5px;
+}
+
+.left {
+    overflow: scroll;
+    max-height: 100%; //calc(100% - 20px);
+    &::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        background-color: transparent;
+
+    }
+
+    &::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #545f6b;
+        border-radius: 15px;
+
+    }
+}
+
+.add-new {
+    &__title {
+        font-size: 22px;
+        font-weight: bold;
+        text-align: center;
+        padding: 10px;
+    }
+
+    &__block {
+        display: flex;
+        flex-wrap: wrap;
+        column-gap: 10px;
+        row-gap: 5px;
+        padding: 15px;
+    }
+
+    &__success {
+        padding: 5px 15px;
+        color: #b0ec52;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+}
+
+.break-line {
+    line-height: 2px;
+    border-top: dashed 2px #e5e8ee;
+
+}
+
+.block {
+    &__input-name {
+        padding: 5px;
+        border-radius: 5px;
+        font-size: 17px;
+        color: #2746b2;
+        font-weight: bold;
+        flex: auto;
+
+    }
+
+    &__select {
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 16px;
+        color: #c2c9e3;
+        background-color: rgba(60, 79, 107, 0.85);
+    }
+
+    &__label {
+        font-size: 17px;
+        padding: 5px 10px;
+        text-align: center;
+    }
+
+    &__btn-add {
+        padding: 5px 10px;
+        background-color: #3080a2;
+        border-radius: 5px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #7fb1bd;
+        letter-spacing: 1px;
+        opacity: .8;
+
+        &:hover {
+            opacity: 1;
+            transition: opacity .2s;
+        }
+    }
+
+
+    &__btn-add-themes {
+        padding: 5px 10px;
+        background-color: #4756bd;
+        border-radius: 5px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #b1afbb;
+        letter-spacing: 1px;
+        cursor: pointer;
+        flex: auto;
+
+        &:before {
+            content: '➕';
+        }
+
+        &:hover {
+            opacity: 1;
+            transition: opacity .2s;
+        }
+    }
+
+}
+
+.right {
+    //background-color: #0a58ca;
+
+    &__title {
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+
+    }
+}
+
+////
+
+::v-deep .description {
+    text-align: center;
+    padding: 10px;
+
+    &__title {
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    &__paragraph {
+        text-align: justify;
+        font-size: 17px;
+        text-indent: 25px;
+        margin-bottom: 10px;
+        word-break: break-all;
+    }
+
+
+    &__image {
+        max-width: 70%;
+        margin: 15px auto;
+    }
+
+    &__code {
+        width: 90%;
+        margin: 10px auto;
+        color: #6c7bad;
+        background-color: rgba(156, 163, 175, 0.17);
+        font-weight: bold;
+        font-size: 16px;
+        padding: 0;
+        border-left: 2px solid #9ca3af;
+        border-radius: 15px;
+
+        code {
+            //background-color: #0a58ca;
+        }
+    }
+
+    &__btn-save {
+        background-color: lawngreen;
+        padding: 5px 10px;
+        margin: 10px;
+        font-size: 19px;
+        letter-spacing: 2px;
+        color: #0c213b;
+        border-radius: 15px;
+
+        &:hover {
+            background-color: #66cb05;
+            transition: .2s;
+        }
+    }
+}
+
+.paragraph {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    &__label {
+        font-weight: bold;
+        font-size: 18px;
+        color: #d6e136;
+    }
+
+    &__input {
+        width: 100%;
+        min-height: 100px;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 16px;
+        color: #0c213b;
+
+    }
+
+    &__btn-add {
+        background-color: #eceb4f;
+        color: #4776c9;
+        font-weight: bold;
+        padding: 5px 20px;
+        margin: 10px auto 0 auto;
+        font-size: 16px;
+        border-radius: 10px;
+
+        &:hover {
+            opacity: .8;
+            transition: opacity .2s;
+        }
+    }
+}
+
+
+
+
+
