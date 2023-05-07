@@ -102,23 +102,18 @@
                 </article>
                 <article class="block__description">
                     <h2 class="description__title">{{ selectedTheme }}</h2>
+                    <loader v-if="showLoader"/>
+
+                    <div v-if="showEmptyPage" class="empty-page">
+                        <img class="empty-page__image" src="@/../../resources/img/empty-page.png"
+                             alt="empty page image">
+                        <h2 class="empty-page__title">Сторінка порожня</h2>
+                        <p class="empty-page__subtitle">Невдовзі за</p>
+                    </div>
+
                     <div v-for="(item, index) in contentHtml" :key="index"
                          v-html="item"></div>
 
-                    <!--                    <p class="description__paragraph">-->
-                    <!--                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium autem commodi, cum, cumque-->
-                    <!--                        dignissimos distinctio dolore doloremque ducimus est eveniet, exercitationem id illo ipsum-->
-                    <!--                        laudantium magnam mollitia natus nemo neque optio quia repellendus saepe sapiente sed temporibus-->
-                    <!--                        tenetur totam vel voluptatem. Accusantium aliquam animi at autem beatae consequatur consequuntur-->
-                    <!--                        cupiditate distinctio doloribus, eveniet excepturi ipsa molestias nemo porro quisquam quo totam-->
-                    <!--                        vero-->
-                    <!--                        voluptates! At consequatur doloribus modi mollitia nisi numquam, officiis quod soluta.-->
-                    <!--                        Accusantium-->
-                    <!--                        amet asperiores assumenda culpa delectus deserunt dolores doloribus eaque eligendi enim fugiat-->
-                    <!--                        ipsum-->
-                    <!--                        nostrum odio perferendis perspiciatis possimus praesentium quaerat quisquam ratione rem,-->
-                    <!--                        repudiandae, sapiente vero!-->
-                    <!--                    </p>-->
                     <!--                    <img-->
                     <!--                        class="description__image"-->
                     <!--                        src="https://assets.datacamp.com/production/repositories/6051/datasets/828b5e4e65e978b6ad1b1b9d19ada4c0f9e5d772/employees_db.png"-->
@@ -133,11 +128,13 @@
 
 <script>
 import ToTop from "@/components/ToTop.vue";
+import Loader from "@/components/Loader.vue";
 
 export default {
     name: "Next",
     components: {
-        ToTop
+        ToTop,
+        Loader
     },
     data: function () {
         return {
@@ -145,6 +142,9 @@ export default {
                 themes: true,
                 description: true,
             },
+
+            showLoader: true,
+            showEmptyPage: false,
 
             sections: [],
             contentHtml: [],
@@ -192,6 +192,9 @@ export default {
         getContent(themeName) {
             this.preloader.description = false
             this.selectedTheme = themeName
+            this.contentHtml = []
+            this.showLoader = true
+            this.showEmptyPage = false
 
             axios.post('api/theme/getContent', {
                 theme_name: themeName
@@ -202,14 +205,16 @@ export default {
 
                     // console.log('response: ' + resp);
                     // console.log('length ' + JSON.parse(resp).length);
-                    if (resp !== "") {
+                    if (resp.description !== "[]") {
                         this.contentHtml = JSON.parse(resp.description);
                         // this.fillingPage.emptyPage = false
 
                     } else {
                         console.log('nooooot')
-                        this.contentHtml = []//[`<h2 class="description__title">${this.fillingPage.selectedTheme}</h2>`]
+                        this.contentHtml = [];//[`<h2 class="description__title">${this.fillingPage.selectedTheme}</h2>`]
+                        this.showEmptyPage = true
                     }
+                    this.showLoader = false
                 })
                 .catch(error => {
                     console.log(error);

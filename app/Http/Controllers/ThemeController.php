@@ -111,7 +111,7 @@ class ThemeController extends Controller
             $theme = new Theme();
             $theme->title = $request->input('title');
             $theme->section_id = $sectionId;
-            $theme->description = '';
+            $theme->description = '[]';
             $theme->save();
 
             return response()->json([

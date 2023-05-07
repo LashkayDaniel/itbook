@@ -4,6 +4,7 @@
     position: sticky;
     top: 20px;
 
+
     &__list {
         font-weight: bold;
         color: #387493;
@@ -171,8 +172,9 @@
 }
 
 ::v-deep .description {
+
     &__title {
-        font-size: 28px;
+        font-size: 30px;
         text-align: center;
         letter-spacing: 1px;
         font-weight: bold;
@@ -207,7 +209,6 @@
 }
 
 .navigation {
-
     &__link {
         color: #7586c2;
 

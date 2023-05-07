@@ -65,5 +65,26 @@
     }
 }
 
+.empty-page {
+    margin: 0 auto;
+    text-align: center;
+    color: #c4d3dc;
+
+    &__image {
+        margin: 0 auto;
+        opacity: .7;
+    }
+
+    &__title {
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+    &__subtitle {
+        font-size: 14px;
+    }
+}
+
+
 
 

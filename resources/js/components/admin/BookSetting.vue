@@ -67,7 +67,9 @@
                          title="Клікніть 2 рази, щоб видалити"
                          v-html="item"></div>
 
-                    <p v-if="fillingPage.emptyPage">Сторінка порожня. Наповніть її </p>
+                    <p v-if="fillingPage.emptyPage"
+                       style="text-align: center; color: #c27868; letter-spacing: 1qpx"
+                    >Сторінка порожня. Наповніть її</p>
                 </div>
 
                 <hr class="break-line">
@@ -279,7 +281,7 @@ VALUE AS (...)
                     // console.log('length ' + JSON.parse(resp).length);
                     const description = resp.description
 
-                    if (description !== "") {
+                    if (description !== "[]") {
                         this.htmlContentArray = JSON.parse(description);
                         this.fillingPage.emptyPage = false
 
