@@ -3,6 +3,8 @@
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\SectionController;
+use App\Http\Controllers\ThemeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -87,3 +89,16 @@ Route::middleware('auth:sanctum')->get('/userInfo', function (Request $request) 
     ]);
 });
 // end test
+
+Route::prefix('/section')->group(function () {
+    Route::get('/getAll', [SectionController::class, 'showAll']);
+    Route::post('/create', [SectionController::class, 'create']);
+});
+
+Route::prefix('/theme')->group(function () {
+    Route::get('/getAll', [ThemeController::class, 'showAll']);
+    Route::post('/get', [ThemeController::class, 'get']);
+    Route::post('/getContent', [ThemeController::class, 'getContent']);
+    Route::post('/create', [ThemeController::class, 'create']);
+    Route::post('/createDescription', [ThemeController::class, 'createDescription']);
+});

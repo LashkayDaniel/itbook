@@ -170,7 +170,7 @@
     }
 }
 
-.description {
+::v-deep .description {
     &__title {
         font-size: 28px;
         text-align: center;
@@ -195,18 +195,14 @@
     &__code {
         width: 90%;
         margin: 10px auto;
-        color: #6c7bad;
+        color: #657bbe;
         background-color: rgba(156, 163, 175, 0.17);
         font-weight: bold;
         font-size: 16px;
-        padding: 0;
+        padding-left: 10%;
         border-left: 2px solid #9ca3af;
         border-radius: 15px;
 
-        code {
-            padding: 0;
-            margin: 0;
-        }
     }
 }
 

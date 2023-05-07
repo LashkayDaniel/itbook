@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Section;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class SectionController extends Controller
 {
@@ -30,11 +32,44 @@ class SectionController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        try {
+            $validateUser = Validator::make(
+                $request->all(),
+                [
+                    'section_name' => 'required',
+                    'insert_after' => 'required',
+                ]
+            );
+
+            if ($validateUser->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'validation error',
+                    'errors' => $validateUser->errors(),
+                ], 422);
+            }
+
+            $insertAfterRow = Section::where('name', $request->input('insert_after'))->first()->id;
+//            $newSection = Section::insert([
+//                'name' => $request->input('section_name'),
+//            ])->after($insertAfterRow);
+
+//            DB::statement('INSERT INTO table (column1, column2) VALUES (?, ?)', [$value1, $value2]);
+
+            return response()->json([
+                'status' => true,
+//                'new_section' => $newSection,
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -51,12 +86,11 @@ class SectionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function show($id)
+    public function showAll()
     {
-        //
+        return Section::all();
     }
 
     /**

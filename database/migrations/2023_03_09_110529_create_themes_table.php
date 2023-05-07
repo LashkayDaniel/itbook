@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->id();
             $table->string('title')->unique();
             $table->foreignId('section_id')->constrained()->cascadeOnDelete();
-            $table->string('description');
+            $table->longText('description');
             $table->timestamps();
         });
     }

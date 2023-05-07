@@ -6,31 +6,38 @@
                 <hr>
                 <div class="add-new__block">
                     <label class="block__label" for="sections">Виберіть розділ: </label>
-                    <select class="block__select" name="sections">
+                    <select class="block__select" name="sections" v-model="fillingPage.selectedSection"
+                            @change="sectionChange">
                         <option value="" selected disabled>-- Розділи --</option>
-                        <option value="">Вступ</option>
-                        <option value="">Моделі даних</option>
-                        <option value="">Структура реляційних бд</option>
-                        <option value="">Проектування баз даних</option>
+                        <option v-for="section in sections" :value="section.name">{{ section.name }}</option>
                     </select>
                 </div>
 
                 <div class="add-new__block">
-                    <label class="block__label  " for="themes">Виберіть тему: </label>
-                    <select class="block__select" name="themes">
+                    <label class="block__label" for="themes">Виберіть тему: </label>
+                    <select class="block__select" name="themes" v-model="fillingPage.selectedTheme"
+                            @change="themeChange">>
                         <option value="" selected disabled>-- Теми --</option>
-                        <option value="">Вступ</option>
-                        <option value="">Моделі даних</option>
-                        <option value="">Структура реляційних бд</option>
-                        <option value="">Проектування баз даних</option>
+                        <option v-for="theme in fillingPage.filteredThemes" :value="theme.title">{{
+                                theme.title
+                            }}
+                        </option>
                     </select>
                 </div>
-
-                <hr class="break-line">
-                <p class="block__label"><b>Вступ > Історія баз даних</b></p>
                 <hr class="break-line">
 
-                <div class="add-new__block" style="position: sticky; top:0px; background-color: rgb(132,132,164)">
+                <p class="block__label"
+                   v-if="fillingPage.selectedSection">
+                    <b>{{ fillingPage.selectedSection }} > {{ fillingPage.selectedTheme }}</b>
+                </p>
+
+                <hr class="break-line">
+
+                <div class="add-new__block"
+                     style="position: sticky; top:0px; background-color: rgb(132,132,164)"
+                     v-if="fillingPage.selectedTheme!=='' && fillingPage.selectedSection!==''"
+                >
+
                     <button class="block__btn-add-themes"
                             @click="addParagraph.showPanel = !addParagraph.showPanel"
                     >Додати текст
@@ -55,40 +62,40 @@
                 </div>
                 <hr class="break-line">
 
-
-                <!--                <div @click="removeElement" class="description">-->
-                <!--                    <div v-html="htmlContent" @input="updateMyHtmlContent"></div>-->
-                <!--                </div>-->
-
-                <div class="description" @click="removeElement">
-                    <div v-for="(item, index) in htmlContentArray" :key="index" @click="removeItem(index)"
+                <div class="description">
+                    <div v-for="(item, index) in htmlContentArray" :key="index" v-on:dblclick="removeItem(index)"
+                         title="Клікніть 2 рази, щоб видалити"
                          v-html="item"></div>
+
+                    <p v-if="fillingPage.emptyPage">Сторінка порожня. Наповніть її </p>
                 </div>
 
                 <hr class="break-line">
-                <button @click="saveHtmlContent" class="description__btn-save">Зберегти</button>
+                <button v-if="fillingPage.selectedTheme!=='' && fillingPage.selectedSection!==''"
+                        @click="saveHtmlContent"
+                        class="description__btn-save">Зберегти
+                </button>
             </div>
         </section>
         <section class="right">
             <div class="add-new">
                 <h2 class="add-new__title">Новий розділ</h2>
                 <hr/>
-                <div class="add-new__block">
+                <form class="add-new__block">
                     <input type="text"
                            class="block__input-name"
                            placeholder="Введіть назву"
+                           required
+                           v-model="newSection.newSectionName"
                     >
-                    <select class="block__select">
+                    <select class="block__select" v-model="newSection.selectedSectionAfter">
                         <option value="" selected disabled>Додати після:</option>
-                        <option value="">Вступ</option>
-                        <option value="">Моделі даних</option>
-                        <option value="">Структура реляційних бд</option>
-                        <option value="">Проектування баз даних</option>
+                        <option v-for="section in sections" :value="section.name">{{ section.name }}</option>
                     </select>
-                    <button @click.prevent="" class="block__btn-add">Додати</button>
-                </div>
+                    <button @click.prevent="addNewSection" class="block__btn-add">Додати</button>
+                </form>
 
-                <p class="add-new__success">✔ Успішно додано!</p>
+                <p v-if="newSection.addSuccess" class="add-new__success">✔ Успішно додано!</p>
             </div>
 
             <hr class="break-line">
@@ -100,13 +107,13 @@
                     <input type="text"
                            class="block__input-name"
                            placeholder="Введіть назву"
+                           v-model="newTheme.newThemeName"
+                           required
                     >
-                    <select class="block__select">
+                    <select class="block__select" v-model="newTheme.selectedSection">
                         <option value="" selected disabled>Додати до розділу:</option>
-                        <option value="">Вступ</option>
-                        <option value="">Моделі даних</option>
-                        <option value="">Структура реляційних бд</option>
-                        <option value="">Проектування баз даних</option>
+                        <option v-for="section in sections" :value="section.name">{{ section.name }}</option>
+
                     </select>
                     <select class="block__select">
                         <option value="" selected disabled>Додати після:</option>
@@ -115,9 +122,11 @@
                         <option value="">Структура реляційних бд</option>
                         <option value="">Проектування баз даних</option>
                     </select>
-                    <button @click.prevent="" class="block__btn-add">Додати</button>
+                    <button @click.prevent="addNewTheme" class="block__btn-add">Додати</button>
                 </div>
             </div>
+            <p v-if="newTheme.addSuccess" class="add-new__success">✔ Успішно додано!</p>
+
         </section>
 
     </article>
@@ -132,8 +141,30 @@ export default {
                 showPanel: false,
                 inputText: '',
             },
-            htmlContent: '<h2 class="description__title">Історія баз даних</h2>',
-            htmlContentArray: ['<h2 class="description__title">Історія баз даних</h2>'],
+            // htmlContentArray: [],
+            htmlContentArray: [],
+            sections: [],
+            themes: [],
+
+            fillingPage: {
+                filteredThemes: [],
+                selectedSection: '',
+                selectedTheme: '',
+                emptyPage: false,
+            },
+
+            newSection: {
+                newSectionName: '',
+                selectedSectionAfter: '',
+                addSuccess: false,
+            },
+
+            newTheme: {
+                newThemeName: '',
+                selectedSection: '',
+                addSuccess: false,
+            },
+
         }
     },
     methods: {
@@ -141,21 +172,26 @@ export default {
             this.htmlContentArray.push(`<p class="description__paragraph">${text}</p>`);
             this.addParagraph.showPanel = false;
             this.addParagraph.inputText = ''
+            this.fillingPage.emptyPage = false
+
         },
 
         addNewImage(imageUrl) {
             this.htmlContentArray.push(`<img src="${imageUrl}" alt="image" class="description__image"/>`);
+            this.fillingPage.emptyPage = false
         },
 
         addNewCode(code) {
             this.htmlContentArray.push(`<pre class="description__code">
-<div>
+<code>
 INSERT INTO \`users\`
 VALUE AS (...)
 
 &lt;?php&gt;
-</div>
+</code>
 </pre>`);
+            this.fillingPage.emptyPage = false
+
         },
 
         updateMyHtmlContent(event) {
@@ -169,18 +205,148 @@ VALUE AS (...)
         },
 
         saveHtmlContent() {
-            console.log(this.htmlContent)
+            // let htmlContent = ''
+            // let arr = []
+            // this.htmlContentArray.forEach(elem => {
+            //     htmlContent += elem;
+            //     arr.push(elem)
+            // })
+            // console.log('From saved: ' + JSON.stringify(htmlContent))
+            // console.log('From array: ' + arr)
+            // console.log('From array 2: ' + JSON.stringify(this.htmlContentArray))
+
+            axios.post('api/theme/createDescription', {
+                theme_name: this.fillingPage.selectedTheme,
+                description: JSON.stringify(this.htmlContentArray)
+            })
+                .then(response => {
+                    console.log(response);
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+
         },
 //////////////////////////////////////////////
-        removeElement(event) {
-            event.target.parentNode.removeChild(event.target);
-        },
         removeItem(index) {
             this.htmlContentArray.splice(index, 1);
         },
 
         beforeExit() {
 
+        },
+
+
+        //// api
+        getAllSections() {
+            axios.get('api/section/getAll')
+                .then(response => {
+                    this.sections = response.data
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        },
+        getAllThemes() {
+            axios.get('api/theme/getAll')
+                .then(response => {
+                    this.themes = response.data
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        },
+
+        getThemes(sectionName) {
+            axios.post('api/theme/get', {
+                section_name: sectionName
+            })
+                .then(response => {
+                    this.fillingPage.filteredThemes = response.data.themes
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        },
+
+        getContent(themeName) {
+            axios.post('api/theme/getContent', {
+                theme_name: themeName
+            })
+                .then(response => {
+                    const resp = response.data.content
+                    // console.log('response: ' + JSON.stringify(resp));
+                    // console.log('length ' + JSON.parse(resp).length);
+                    const description = resp.description
+
+                    if (description !== "") {
+                        this.htmlContentArray = JSON.parse(description);
+                        this.fillingPage.emptyPage = false
+
+                    } else {
+                        console.log('nooooot')
+                        this.htmlContentArray = []//[`<h2 class="description__title">${this.fillingPage.selectedTheme}</h2>`]
+                        this.fillingPage.emptyPage = true
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
+
+////test
+        addNewSection() {
+            axios.post('api/section/create', {
+                section_name: this.newSection.newSectionName,
+                insert_after: this.newSection.selectedSectionAfter,
+            })
+                .then(response => {
+                    console.log(response);
+                    this.newSection.addSuccess = response.data.status;
+
+                    setTimeout(() => {
+                        this.newSection.addSuccess = false
+                    }, 2000);
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        },
+
+        addNewTheme() {
+            console.log(this.newTheme.newThemeName);
+            console.log(this.newTheme.selectedSection);
+
+            axios.post('api/theme/create', {
+                title: this.newTheme.newThemeName,
+                section_name: this.newTheme.selectedSection,
+            })
+                .then(response => {
+                    console.log(response);
+                    this.newTheme.addSuccess = response.data.status;
+
+                    setTimeout(() => {
+                        this.newTheme.addSuccess = false
+                    }, 2000);
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        },
+
+
+        /////////// end api
+
+        sectionChange(event) {
+            const sectionName = event.target.value;
+            this.getThemes(sectionName)
+            this.fillingPage.selectedTheme = ''
+            this.htmlContentArray = []
+        },
+
+        themeChange(event) {
+            const themeName = event.target.value;
+            this.getContent(themeName)
         }
     },
     created() {
@@ -195,6 +361,10 @@ VALUE AS (...)
             (e || window.event).returnValue = confirmationMessage;
             return confirmationMessage;
         });
+
+        //// api call
+        this.getAllSections();
+        this.getAllThemes();
 
     },
 
