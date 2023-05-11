@@ -101,4 +101,7 @@ Route::prefix('/theme')->group(function () {
     Route::post('/getContent', [ThemeController::class, 'getContent']);
     Route::post('/create', [ThemeController::class, 'create']);
     Route::post('/createDescription', [ThemeController::class, 'createDescription']);
+    Route::post('/imageUpload', [ThemeController::class, 'uploadImage']);
+    Route::post('/imageRemove', [ThemeController::class, 'removeImage']);
 });
+

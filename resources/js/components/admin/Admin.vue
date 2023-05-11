@@ -204,22 +204,6 @@ export default {
                 })
         },
 
-        setActiveComponent(componentName) {
-            // this.componentSwitch[componentName] = true;
-            const components = this.componentSwitch;
-
-            components.forEach((item, index) => {
-                item.show = false
-                if (item.name === componentName) {
-                    components[index].show = true
-                }
-
-            });
-            // components[componentName] = true
-            console.log(JSON.stringify(this.componentSwitch));
-            // console.log(this.componentSwitch);
-        },
-
     },
     created() {
         const token = localStorage.getItem('admin_token')

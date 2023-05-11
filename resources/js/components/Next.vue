@@ -48,15 +48,13 @@
                     </div>
 
                     <ol v-if="section.isExpand" class="themes__link">
-
                         <li v-for="theme in section.themes">
-                            <!--                            <transition name="accordion-fade">-->
                             <a class="link__name"
                                href=""
-                               @click.prevent="getContent(theme)">
+                               @click.prevent="getContent(theme)"
+                               :class="{'link__name--active' : theme === selectedTheme}">
                                 {{ theme }}
                             </a>
-                            <!--                            </transition>-->
                         </li>
                         <hr v-if="false">
                         <p v-if="false" class="labs__title">Лабораторні роботи:</p>
@@ -78,7 +76,7 @@
         <section class="block">
             <article v-if="preloader.description" class="block__start">
                 <img src="@/../../resources/img/book-icon.png" alt="book icon">
-                <div class="">Оберіть певний розділ, який Вас цікавить</div>
+                <div class="">Оберіть розділ, який Вас цікавить найбільше</div>
                 <img id="arrow" src="@/../../resources/img/img_4.png" alt="book icon">
             </article>
 
@@ -100,7 +98,7 @@
                         <button class="search__btn" type="button">Пошук</button>
                     </div>
                 </article>
-                <article class="block__description">
+                <article class="block__description" id="content">
                     <h2 class="description__title">{{ selectedTheme }}</h2>
                     <loader v-if="showLoader"/>
 
@@ -108,7 +106,7 @@
                         <img class="empty-page__image" src="@/../../resources/img/empty-page.png"
                              alt="empty page image">
                         <h2 class="empty-page__title">Сторінка порожня</h2>
-                        <p class="empty-page__subtitle">Невдовзі за</p>
+                        <p class="empty-page__subtitle">Невдовзі тут з'явиться інформація</p>
                     </div>
 
                     <div v-for="(item, index) in contentHtml" :key="index"
@@ -120,7 +118,11 @@
                     <!--                        alt="image">-->
 
 
+                    <hr>
                 </article>
+                <button v-if="!showEmptyPage && !showLoader" @click="downloadContent" class="description__btn-download">
+                    Download
+                </button>
             </div>
         </section>
     </div>
@@ -203,12 +205,8 @@ export default {
                     const resp = response.data.content
                     this.selectedSection = resp.section.name
 
-                    // console.log('response: ' + resp);
-                    // console.log('length ' + JSON.parse(resp).length);
                     if (resp.description !== "[]") {
                         this.contentHtml = JSON.parse(resp.description);
-                        // this.fillingPage.emptyPage = false
-
                     } else {
                         console.log('nooooot')
                         this.contentHtml = [];//[`<h2 class="description__title">${this.fillingPage.selectedTheme}</h2>`]
@@ -221,12 +219,35 @@ export default {
                 });
         },
 
+        downloadContent() {
+            const content = document.getElementById('content');
+            // const pdfDoc = new jsPDF();
+
+            // Отримуємо HTML контент блоку
+            // const contentHtml = content.innerHTML;
+            // pdfDoc.output('dataurlnewwindow', {encoding: 'UTF-8'});
+
+            // Додаємо HTML контент до PDF документу
+            // pdfDoc.fromHTML(contentHtml);
+
+            const docx = htmlDocx.asBlob(content.innerHTML);
+
+// Save Word document
+            saveAs(docx, `${this.selectedTheme}.docx`);
+
+            // Зберігаємо PDF документ
+            // pdfDoc.save('document.pdf');
+
+            // html2pdf()
+            //     .from(content)
+            //     .save();
+        },
+
 
     },
 
     created() {
         this.getSections();
-
 
     },
 

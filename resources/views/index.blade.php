@@ -9,7 +9,13 @@
     <link rel="shortcut icon" href="{{ asset('favicon.png') }}" type="image/png" sizes="16x16">
     @vite('resources/sass/app.scss')
     @vite('resources/css/app.css')
-    <title>IT book</title>
+    <title>ІТ книга</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html-docx-js/dist/html-docx.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
 
 </head>
 <body>
@@ -17,3 +23,4 @@
 @vite('resources/js/app.js')
 </body>
 </html>
+

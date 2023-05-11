@@ -247,14 +247,12 @@ class AuthController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => 'Valid token',
-                'input_token' => $request->input('token'),
+                'message' => 'Valid token'
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => false,
-                'message' => $th->getMessage(),
-                'tok' => $request->token,
+                'message' => $th->getMessage()
             ], 500);
         }
     }

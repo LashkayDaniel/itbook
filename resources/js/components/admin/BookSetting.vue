@@ -43,11 +43,17 @@
                     >Додати текст
                     </button>
 
-                    <input type="file" id="upload" hidden @change="imageUpload"/>
+                    <input type="file" id="upload" hidden @change="imageUpload" accept="image/*"/>
                     <label for="upload" class="block__btn-add-themes">Додати зображення</label>
 
                     <button class="block__btn-add-themes"
-                            @click="addNewCode('s')">Додати код
+                            @click="addCode.showPanel = !addCode.showPanel">
+                        Додати код
+                    </button>
+
+                    <button class="block__btn-add-themes"
+                            @click="">
+                        Додати список
                     </button>
 
                     <div v-if="this.addParagraph.showPanel" class="paragraph">
@@ -59,17 +65,30 @@
                         >Додати
                         </button>
                     </div>
+
+                    <div v-if="this.addCode.showPanel" class="paragraph">
+                        <label for="paragraph" class="paragraph__label">Введіть код:</label>
+                        <textarea v-model="addCode.inputCode" name="paragraph" class="paragraph__input"
+                                  placeholder="Введіть код"/>
+                        <button class="paragraph__btn-add"
+                                @click="addNewCode(this.addCode.inputCode)"
+                        >Додати
+                        </button>
+                    </div>
                 </div>
                 <hr class="break-line">
 
                 <div class="description">
-                    <div v-for="(item, index) in htmlContentArray" :key="index" v-on:dblclick="removeItem(index)"
+                    <div v-for="(item, index) in htmlContentArray" :key="index"
+                         v-on:dblclick="removeItem(item,index)"
                          title="Клікніть 2 рази, щоб видалити"
                          v-html="item"></div>
 
                     <p v-if="fillingPage.emptyPage"
-                       style="text-align: center; color: #c27868; letter-spacing: 1qpx"
+                       style="text-align: center; color: #c27868; letter-spacing: 1px"
                     >Сторінка порожня. Наповніть її</p>
+
+                    <!--                    <img :src="`/storage/uploads/images/1683834356.image2.png`" alt="img">-->
                 </div>
 
                 <hr class="break-line">
@@ -143,7 +162,12 @@ export default {
                 showPanel: false,
                 inputText: '',
             },
-            // htmlContentArray: [],
+
+            addCode: {
+                showPanel: false,
+                inputCode: '',
+            },
+
             htmlContentArray: [],
             sections: [],
             themes: [],
@@ -184,14 +208,17 @@ export default {
         },
 
         addNewCode(code) {
-            this.htmlContentArray.push(`<pre class="description__code">
-<code>
-INSERT INTO \`users\`
-VALUE AS (...)
 
-&lt;?php&gt;
-</code>
-</pre>`);
+            this.addCode.inputCode = this.addCode.inputCode.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+            this.htmlContentArray.push(`<pre class="description__code"><code>${this.addCode.inputCode}</code></pre>`);
+
+            // INSERT INTO `users`
+            // VALUE AS (...)
+            //
+            // &lt;?php&gt;
+            this.addCode.showPanel = false;
+            this.addCode.inputCode = ''
             this.fillingPage.emptyPage = false
 
         },
@@ -201,9 +228,27 @@ VALUE AS (...)
         },
 
         imageUpload(event) {
-            const file = event.target.files[0];
-            const imageUrl = URL.createObjectURL(file);
-            this.addNewImage(imageUrl)
+            const imageFile = event.target.files[0];
+            console.log(imageFile);
+            const imageUrl = URL.createObjectURL(imageFile);
+
+
+            const formData = new FormData();
+            formData.append('image', imageFile);
+
+            axios.post('api/theme/imageUpload', formData)
+                .then(response => {
+                    const imageName = response.data.image_name;
+                    console.log('image name: ' + imageName);
+
+                    const imageUrl = `/storage/uploads/images/${imageName}`
+                    this.addNewImage(imageUrl)
+
+
+                })
+                .catch(error => {
+
+                })
         },
 
         saveHtmlContent() {
@@ -230,8 +275,31 @@ VALUE AS (...)
 
         },
 //////////////////////////////////////////////
-        removeItem(index) {
+        removeItem(item, index) {
+            const contentType = item.substring(item.indexOf('<') + 1, item.indexOf(' '));
+            if (contentType === 'img') {
+                const img = document.createElement('div');
+                img.innerHTML = item;
+
+                const src = img.querySelector('img').getAttribute('src');
+                const imageName = src.split('/').pop()
+                img.remove()
+
+
+                axios.post('api/theme/imageRemove', {
+                    image_name: imageName,
+                })
+                    .then(response => {
+                        console.log(response);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+            }
+
             this.htmlContentArray.splice(index, 1);
+
+
         },
 
         beforeExit() {

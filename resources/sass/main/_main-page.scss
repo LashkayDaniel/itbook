@@ -27,8 +27,11 @@
         a {
             padding: 0 10px;
         }
+
+
     }
 }
+
 
 .list {
     &__item {
@@ -97,7 +100,7 @@
         font-size: 18px;
         color: #8894af;
         margin-left: 20px;
-        border-bottom: 1px dashed #6f7b8f;
+        //border-bottom: 1px dashed #6f7b8f;
 
         &:before {
             content: '';
@@ -106,6 +109,17 @@
         &:hover {
             color: #5f86be;
             transition: .2s;
+        }
+
+        &--active {
+            font-weight: bold;
+            color: #5890cb;
+
+            &:before {
+                content: '\27A4';
+                padding-right: 5px;
+                color: #537bb7;
+            }
         }
     }
 }
@@ -200,11 +214,19 @@
         color: #657bbe;
         background-color: rgba(156, 163, 175, 0.17);
         font-weight: bold;
-        font-size: 16px;
-        padding-left: 10%;
+        font-size: 17px;
+        padding: 25px 10%;
         border-left: 2px solid #9ca3af;
         border-radius: 15px;
+    }
 
+    &__btn-download {
+        margin: 10px;
+        padding: 5px 10px;
+        color: #0a58ca;
+        font-size: 18px;
+        border-radius: 10px;
+        border: 1px solid #9ca3af;
     }
 }
 
