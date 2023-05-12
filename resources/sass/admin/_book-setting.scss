@@ -17,8 +17,11 @@
 }
 
 .left {
-    overflow: scroll;
+    overflow: auto;
     max-height: 100%;
+
+    scrollbar-width: thin;
+    scrollbar-color: #8597ab #5b656e;
 
 }
 
@@ -96,7 +99,7 @@
     }
 
 
-    &__btn-add-themes {
+    &__btn-add-new {
         padding: 5px 10px;
         background-color: #4756bd;
         border-radius: 5px;
@@ -183,6 +186,14 @@
         }
     }
 
+    &__subparagraph {
+        font-size: 20px;
+        font-weight: bold;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        letter-spacing: 1px;
+    }
+
 }
 
 
@@ -204,7 +215,26 @@
         border-radius: 5px;
         font-size: 16px;
         color: #0c213b;
+        word-break: break-all;
+    }
 
+    &__input-small {
+        width: 100%;
+        height: 40px;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 16px;
+        color: #0c213b;
+    }
+
+    &__error {
+        color: #912519;
+        font-size: 16px;
+        font-weight: bold;
+
+        &:before {
+            content: '! ';
+        }
     }
 
     &__btn-add {

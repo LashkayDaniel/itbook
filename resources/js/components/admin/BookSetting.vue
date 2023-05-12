@@ -27,31 +27,36 @@
                 <hr class="break-line">
 
                 <p class="block__label"
-                   v-if="fillingPage.selectedSection">
+                   v-if="fillingPage.selectedSection"
+                   style="position: sticky; top:0px; background-color: rgb(132,132,164); color: #b0ced7">
                     <b>{{ fillingPage.selectedSection }} > {{ fillingPage.selectedTheme }}</b>
                 </p>
 
                 <hr class="break-line">
 
                 <div class="add-new__block"
-                     style="position: sticky; top:0px; background-color: rgb(132,132,164)"
-                     v-if="fillingPage.selectedTheme!=='' && fillingPage.selectedSection!==''"
-                >
+                     style="position: sticky; top:35px; background-color: rgb(132,132,164)"
+                     v-if="fillingPage.selectedTheme!=='' && fillingPage.selectedSection!==''">
 
-                    <button class="block__btn-add-themes"
+                    <button class="block__btn-add-new"
                             @click="addParagraph.showPanel = !addParagraph.showPanel"
                     >Додати текст
                     </button>
 
                     <input type="file" id="upload" hidden @change="imageUpload" accept="image/*"/>
-                    <label for="upload" class="block__btn-add-themes">Додати зображення</label>
+                    <label for="upload" class="block__btn-add-new">Додати зображення</label>
 
-                    <button class="block__btn-add-themes"
+                    <button class="block__btn-add-new"
                             @click="addCode.showPanel = !addCode.showPanel">
                         Додати код
                     </button>
 
-                    <button class="block__btn-add-themes"
+                    <button class="block__btn-add-new"
+                            @click="addSubparagraph.showPanel = !addSubparagraph.showPanel">
+                        Додати підпункт
+                    </button>
+
+                    <button class="block__btn-add-new"
                             @click="">
                         Додати список
                     </button>
@@ -60,6 +65,10 @@
                         <label for="paragraph" class="paragraph__label">Введіть текст:</label>
                         <textarea v-model="addParagraph.inputText" name="paragraph" class="paragraph__input"
                                   placeholder="Введіть текст"/>
+                        <p class="paragraph__error"
+                           v-if="addParagraph.error.length!==0">
+                            {{ addParagraph.error }}
+                        </p>
                         <button class="paragraph__btn-add"
                                 @click="addNewParagraph(this.addParagraph.inputText)"
                         >Додати
@@ -70,11 +79,33 @@
                         <label for="paragraph" class="paragraph__label">Введіть код:</label>
                         <textarea v-model="addCode.inputCode" name="paragraph" class="paragraph__input"
                                   placeholder="Введіть код"/>
+                        <p class="paragraph__error"
+                           v-if="addCode.error.length!==0">
+                            {{ addCode.error }}
+                        </p>
                         <button class="paragraph__btn-add"
                                 @click="addNewCode(this.addCode.inputCode)"
                         >Додати
                         </button>
                     </div>
+
+                    <div v-if="this.addSubparagraph.showPanel" class="paragraph">
+                        <label for="paragraph" class="paragraph__label">Введіть підпункт:</label>
+                        <input v-model="addSubparagraph.inputName"
+                               name="paragraph"
+                               class="paragraph__input-small"
+                               placeholder="Введіть назву"/>
+                        <p class="paragraph__error"
+                           v-if="addSubparagraph.error.length!==0">
+                            {{ addSubparagraph.error }}
+                        </p>
+                        <button class="paragraph__btn-add"
+                                @click="addNewSubparagraph(this.addSubparagraph.inputName)"
+                        >Додати
+                        </button>
+                    </div>
+
+
                 </div>
                 <hr class="break-line">
 
@@ -92,7 +123,7 @@
                 </div>
 
                 <hr class="break-line">
-                <button v-if="fillingPage.selectedTheme!=='' && fillingPage.selectedSection!==''"
+                <button v-if="fillingPage.selectedTheme!=='' && fillingPage.selectedSection!=='' && hasEdit"
                         @click="saveHtmlContent"
                         class="description__btn-save">Зберегти
                 </button>
@@ -161,16 +192,25 @@ export default {
             addParagraph: {
                 showPanel: false,
                 inputText: '',
+                error: '',
             },
 
             addCode: {
                 showPanel: false,
                 inputCode: '',
+                error: '',
+            },
+
+            addSubparagraph: {
+                showPanel: false,
+                inputName: '',
+                error: '',
             },
 
             htmlContentArray: [],
             sections: [],
             themes: [],
+            hasEdit: false,
 
             fillingPage: {
                 filteredThemes: [],
@@ -195,43 +235,61 @@ export default {
     },
     methods: {
         addNewParagraph(text) {
+            if (text.length <= 6) {
+                this.addParagraph.error = 'Поле повинно містити щонайменше 6 символів';
+                setTimeout(() => {
+                    this.addParagraph.error = ''
+                }, 3000);
+                return;
+            }
+
             this.htmlContentArray.push(`<p class="description__paragraph">${text}</p>`);
             this.addParagraph.showPanel = false;
             this.addParagraph.inputText = ''
             this.fillingPage.emptyPage = false
-
+            this.hasEdit = true
         },
 
         addNewImage(imageUrl) {
             this.htmlContentArray.push(`<img src="${imageUrl}" alt="image" class="description__image"/>`);
-            this.fillingPage.emptyPage = false
+            this.fillingPage.emptyPage = false;
         },
 
         addNewCode(code) {
-
+            if (code.length <= 6) {
+                this.addCode.error = 'Поле повинно містити щонайменше 6 символів';
+                setTimeout(() => {
+                    this.addCode.error = ''
+                }, 3000);
+                return;
+            }
             this.addCode.inputCode = this.addCode.inputCode.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            this.htmlContentArray.push(`<pre class="description__code"><code>${code}</code></pre>`);
 
-            this.htmlContentArray.push(`<pre class="description__code"><code>${this.addCode.inputCode}</code></pre>`);
-
-            // INSERT INTO `users`
-            // VALUE AS (...)
-            //
-            // &lt;?php&gt;
             this.addCode.showPanel = false;
             this.addCode.inputCode = ''
-            this.fillingPage.emptyPage = false
-
+            this.fillingPage.emptyPage = false;
+            this.hasEdit = true
         },
 
-        updateMyHtmlContent(event) {
-            this.htmlContent = event.target.innerHTML;
+        addNewSubparagraph(name) {
+            if (name.length < 4) {
+                this.addSubparagraph.error = 'Поле повинно містити щонайменше 4 символів';
+                setTimeout(() => {
+                    this.addSubparagraph.error = ''
+                }, 3000);
+                return;
+            }
+            this.htmlContentArray.push(`<h2 class="description__subparagraph">${name}</h2>`);
+
+            this.addSubparagraph.showPanel = false;
+            this.addSubparagraph.inputName = ''
+            this.fillingPage.emptyPage = false;
+            this.hasEdit = true
         },
 
         imageUpload(event) {
             const imageFile = event.target.files[0];
-            console.log(imageFile);
-            const imageUrl = URL.createObjectURL(imageFile);
-
 
             const formData = new FormData();
             formData.append('image', imageFile);
@@ -243,31 +301,21 @@ export default {
 
                     const imageUrl = `/storage/uploads/images/${imageName}`
                     this.addNewImage(imageUrl)
-
-
+                    this.hasEdit = true
                 })
                 .catch(error => {
-
+                    console.log(error);
                 })
         },
 
         saveHtmlContent() {
-            // let htmlContent = ''
-            // let arr = []
-            // this.htmlContentArray.forEach(elem => {
-            //     htmlContent += elem;
-            //     arr.push(elem)
-            // })
-            // console.log('From saved: ' + JSON.stringify(htmlContent))
-            // console.log('From array: ' + arr)
-            // console.log('From array 2: ' + JSON.stringify(this.htmlContentArray))
-
             axios.post('api/theme/createDescription', {
                 theme_name: this.fillingPage.selectedTheme,
                 description: JSON.stringify(this.htmlContentArray)
             })
                 .then(response => {
                     console.log(response);
+                    this.hasEdit = false
                 })
                 .catch(error => {
                     console.log(error);
@@ -298,8 +346,7 @@ export default {
             }
 
             this.htmlContentArray.splice(index, 1);
-
-
+            this.hasEdit = true
         },
 
         beforeExit() {
@@ -420,17 +467,17 @@ export default {
         }
     },
     created() {
-        this.beforeExit();
-        window.addEventListener('beforeunload', function (e) {
-            // Відміна захоплення події, якщо користувач вибирає залишитися на сторінці
-            e.preventDefault();
-            // Встановлення тексту за замовчуванням
-            e.returnValue = '';
-            // Показуємо спливаюче вікно
-            var confirmationMessage = 'Are you sure you want to leave?';
-            (e || window.event).returnValue = confirmationMessage;
-            return confirmationMessage;
-        });
+        // this.beforeExit();
+        // window.addEventListener('beforeunload', function (e) {
+        //     // Відміна захоплення події, якщо користувач вибирає залишитися на сторінці
+        //     e.preventDefault();
+        //     // Встановлення тексту за замовчуванням
+        //     e.returnValue = '';
+        //     // Показуємо спливаюче вікно
+        //     var confirmationMessage = 'Are you sure you want to leave?';
+        //     (e || window.event).returnValue = confirmationMessage;
+        //     return confirmationMessage;
+        // });
 
         //// api call
         this.getAllSections();
@@ -439,17 +486,21 @@ export default {
     },
 
     beforeUnmount() {
-        window.addEventListener('beforeunload', function (e) {
-            // Відміна захоплення події, якщо користувач вибирає залишитися на сторінці
-            e.preventDefault();
-            // Встановлення тексту за замовчуванням
-            e.returnValue = '';
-            // Показуємо спливаюче вікно
-            var confirmationMessage = 'Are you sure you want to leave?';
-            (e || window.event).returnValue = confirmationMessage;
-            return confirmationMessage;
-        });
-        this.beforeExit();
+        // window.addEventListener('beforeunload', function (e) {
+        //     // Відміна захоплення події, якщо користувач вибирає залишитися на сторінці
+        //     e.preventDefault();
+        //     // Встановлення тексту за замовчуванням
+        //     e.returnValue = '';
+        //     // Показуємо спливаюче вікно
+        //
+        // });
+        // this.beforeExit();
+        if (this.hasEdit) {
+            // alert('dasd');
+            return false;
+        } else {
+            alert('ok')
+        }
     },
 
 }
