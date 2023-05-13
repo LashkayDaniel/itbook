@@ -1,4 +1,5 @@
 <template>
+    <msg-popup v-if="popup.show" :message="popup.message" :type="popup.type"/>
     <article class="main-block">
         <section class="left">
             <div class="add-new">
@@ -185,8 +186,13 @@
 </template>
 
 <script>
+import MsgPopup from "@/components/MsgPopup.vue";
+
 export default {
     name: "BookSetting",
+    components: {
+        MsgPopup
+    },
     data() {
         return {
             addParagraph: {
@@ -212,6 +218,12 @@ export default {
             themes: [],
             hasEdit: false,
 
+            popup: {
+                show: false,
+                type: '',
+                message: '',
+            },
+
             fillingPage: {
                 filteredThemes: [],
                 selectedSection: '',
@@ -236,14 +248,14 @@ export default {
     methods: {
         addNewParagraph(text) {
             if (text.length <= 6) {
-                this.addParagraph.error = 'Поле повинно містити щонайменше 6 символів';
-                setTimeout(() => {
-                    this.addParagraph.error = ''
-                }, 3000);
+                this.popupConfig('warning', 'Поле повинно містити щонайменше 6 символів')
                 return;
             }
 
             this.htmlContentArray.push(`<p class="description__paragraph">${text}</p>`);
+
+            this.popupConfig('success', 'Елемент успішно додано!')
+
             this.addParagraph.showPanel = false;
             this.addParagraph.inputText = ''
             this.fillingPage.emptyPage = false
@@ -253,14 +265,12 @@ export default {
         addNewImage(imageUrl) {
             this.htmlContentArray.push(`<img src="${imageUrl}" alt="image" class="description__image"/>`);
             this.fillingPage.emptyPage = false;
+            this.popupConfig('success', 'Зображення успішно додано!')
         },
 
         addNewCode(code) {
             if (code.length <= 6) {
-                this.addCode.error = 'Поле повинно містити щонайменше 6 символів';
-                setTimeout(() => {
-                    this.addCode.error = ''
-                }, 3000);
+                this.popupConfig('warning', 'Поле повинно містити щонайменше 6 символів')
                 return;
             }
             this.addCode.inputCode = this.addCode.inputCode.replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -274,10 +284,7 @@ export default {
 
         addNewSubparagraph(name) {
             if (name.length < 4) {
-                this.addSubparagraph.error = 'Поле повинно містити щонайменше 4 символів';
-                setTimeout(() => {
-                    this.addSubparagraph.error = ''
-                }, 3000);
+                this.popupConfig('warning', 'Поле повинно містити щонайменше 4 символів')
                 return;
             }
             this.htmlContentArray.push(`<h2 class="description__subparagraph">${name}</h2>`);
@@ -288,7 +295,7 @@ export default {
             this.hasEdit = true
         },
 
-        imageUpload(event) {
+        imageUpload: function (event) {
             const imageFile = event.target.files[0];
 
             const formData = new FormData();
@@ -305,6 +312,11 @@ export default {
                 })
                 .catch(error => {
                     console.log(error);
+                    const errors = error.response.data.errors;
+                    let message
+                    errors.hasOwnProperty('image') ? message = errors.image[0] : ''
+                    this.popupConfig('warning', message)
+
                 })
         },
 
@@ -316,6 +328,7 @@ export default {
                 .then(response => {
                     console.log(response);
                     this.hasEdit = false
+                    this.popupConfig('success', 'Успішно збережено!')
                 })
                 .catch(error => {
                     console.log(error);
@@ -348,11 +361,6 @@ export default {
             this.htmlContentArray.splice(index, 1);
             this.hasEdit = true
         },
-
-        beforeExit() {
-
-        },
-
 
         //// api
         getAllSections() {
@@ -464,7 +472,18 @@ export default {
         themeChange(event) {
             const themeName = event.target.value;
             this.getContent(themeName)
-        }
+        },
+
+        popupConfig(type, message) {
+            this.popup.show = true
+            this.popup.type = type
+            this.popup.message = message
+            setTimeout(() => {
+                this.popup.show = false
+                this.popup.type = ''
+                this.popup.message = ''
+            }, 2000);
+        },
     },
     created() {
         // this.beforeExit();

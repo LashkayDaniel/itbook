@@ -101,14 +101,15 @@
             <article class="bottom" v-if="!showLoader">
                 <button v-if="!showEmptyPage"
                         @click="downloadContent"
+                        title="Завантажити"
                         class="bottom__btn-download">
-                    Download
+                    Завантажити
                 </button>
 
                 <button v-if="showNextBtn"
                         class="bottom__btn-next"
                         @click="nextTheme">
-                    Далі: {{ nextThemeInfo.name }}
+                    Далі: <span>{{ nextThemeInfo.name }}</span>
                 </button>
             </article>
 

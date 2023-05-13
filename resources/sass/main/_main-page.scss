@@ -1,6 +1,6 @@
 .themes {
     height: 100%;
-    margin: 10px;
+    margin: 0 10px;
     position: sticky;
     top: 20px;
 
@@ -100,7 +100,6 @@
         font-size: 18px;
         color: #8894af;
         margin-left: 20px;
-        //border-bottom: 1px dashed #6f7b8f;
 
         &:before {
             content: '';
@@ -249,6 +248,7 @@
         border-radius: 0;
         font-size: 15px;
         color: #81a6f6;
+        padding: 5px;
 
         &:focus {
             outline: none;
@@ -260,11 +260,14 @@
         color: #4c65c0;
         font-weight: bold;
         font-size: 16px;
+        padding: 5px 10px;
+        margin-left: 5px;
 
         &:hover {
-            background-color: #3967a8;
+            background-color: #5e7da9;
             color: #bdc8e1;
-            transition: all .5s;
+            border-radius: 5px;
+            transition: all .3s;
         }
     }
 }
@@ -275,20 +278,82 @@
 
     &__btn-download {
         margin: 10px;
-        padding: 5px 10px;
-        color: #0a58ca;
+        padding: 5px 15px;
+        color: #0aa7ca;
         font-size: 18px;
+        font-weight: bold;
         border-radius: 10px;
-        border: 1px solid #9ca3af;
+        border: 1px solid #63a49c;
+
+        &:before {
+            content: '';
+            background-image: url('../../img/download-icon.png');
+            background-size: 100% 100%;
+            display: inline-block;
+            height: 25px;
+            width: 25px;
+            margin-right: 5px;
+            transform: translateY(4px);
+        }
+
+
+        &:hover {
+            background-color: #3c4c62;
+            opacity: .8;
+            transition: all 1s;
+
+            &:before {
+                animation: download-move 0.5s ease-in-out;
+            }
+        }
+
+
+        @keyframes download-move {
+            0% {
+                transform: translateY(4px);
+            }
+            50% {
+                transform: translateY(-10px) scale(1.2);
+            }
+            100% {
+                transform: translateY(4px);
+            }
+        }
     }
 
     &__btn-next {
         margin: 10px;
         padding: 5px 10px;
-        color: #0a58ca;
+        color: #3c6baf;
         font-size: 18px;
-        border-radius: 10px;
-        border: 1px solid #9ca3af;
+
+        span {
+            font-weight: bold;
+        }
+
+
+        &:hover {
+            border-bottom: solid 1px #4e6f9f;
+            transition: all 1s;
+
+            &:after {
+                content: '->';
+                margin-left: 10px;
+                color: #749cd0;
+                animation: arrow-appear 0.5s ease-in-out;
+            }
+        }
+
+        @keyframes arrow-appear {
+            0% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     }
 }
 
