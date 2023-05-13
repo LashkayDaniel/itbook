@@ -35,7 +35,7 @@
                 <hr class="break-line">
 
                 <div class="add-new__block"
-                     style="position: sticky; top:35px; background-color: rgb(132,132,164)"
+                     style="position: sticky; top:35px; background-color: rgb(132,132,164);"
                      v-if="fillingPage.selectedTheme!=='' && fillingPage.selectedSection!==''">
 
                     <button class="block__btn-add-new"

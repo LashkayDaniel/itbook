@@ -1,28 +1,8 @@
 <template>
     <to-top/>
     <div class="container">
-        <!--        <div class="block">-->
-        <!--            <h1 class="block__title">Main pageee</h1>-->
-        <!--            <p class="block__text">text text text</p>-->
-        <!--        </div>-->
 
         <aside class="themes">
-            <!--            <ol class="themes__list">-->
-            <!--                <li v-for="section in this.sections">-->
-            <!--                    <p class="list__name"> {{ section.section }} </p>-->
-            <!--                    <ol class="themes__link">-->
-            <!--                        <li v-for="theme in section.themes">-->
-            <!--                            <a class="link__name" href=""> {{ theme }}</a>-->
-            <!--                        </li>-->
-            <!--                        <hr>-->
-            <!--                        <p style="color: #a0aec0"><i>Labs:</i></p>-->
-            <!--                        <li style="list-style: '+'"><a style=" font-weight: bold">Lab 1</a></li>-->
-            <!--                        <li style="list-style: '+'"><a style=" font-weight: bold">Lab 2</a></li>-->
-            <!--                        <li style="list-style: '+'"><a style=" font-weight: bold">Lab 3</a></li>-->
-
-            <!--                    </ol>-->
-            <!--                </li>-->
-            <!--            </ol>-->
 
             <ol v-if="preloader.themes" class="themes__list--preloader">
                 <li></li>
@@ -48,11 +28,12 @@
                     </div>
 
                     <ol v-if="section.isExpand" class="themes__link">
-                        <li v-for="theme in section.themes">
+                        <li v-for="(theme,index) in section.themes">
                             <a class="link__name"
                                href=""
-                               @click.prevent="getContent(theme)"
-                               :class="{'link__name--active' : theme === selectedTheme}">
+                               @click.prevent="getContent(theme);
+                                "
+                               :class="{'link__name--active' : theme === selectedTheme.name}">
                                 {{ theme }}
                             </a>
                         </li>
@@ -84,12 +65,12 @@
                 <article class="block__panel">
                     <div class="navigation">
                         <i class="navigation__link"
-                           v-if="selectedSection!==''">
-                            {{ selectedSection }}
+                           v-if="selectedSection.name !=='' ">
+                            {{ selectedSection.name }}
                         </i>
                         <i class="navigation__link"
-                           v-if="selectedTheme!==''">
-                            {{ selectedTheme }}
+                           v-if="selectedTheme.name !=='' ">
+                            {{ selectedTheme.name }}
                         </i>
                     </div>
 
@@ -99,7 +80,7 @@
                     </div>
                 </article>
                 <article class="block__description" id="content">
-                    <h2 class="description__title">{{ selectedTheme }}</h2>
+                    <h2 class="description__title">{{ selectedTheme.name }}</h2>
                     <loader v-if="showLoader"/>
 
                     <div v-if="showEmptyPage" class="empty-page">
@@ -110,20 +91,27 @@
                     </div>
 
                     <div v-for="(item, index) in contentHtml" :key="index"
-                         v-html="item"></div>
-
-                    <!--                    <img-->
-                    <!--                        class="description__image"-->
-                    <!--                        src="https://assets.datacamp.com/production/repositories/6051/datasets/828b5e4e65e978b6ad1b1b9d19ada4c0f9e5d772/employees_db.png"-->
-                    <!--                        alt="image">-->
-
+                         v-html="item">
+                    </div>
 
                     <hr>
                 </article>
-                <button v-if="!showEmptyPage && !showLoader" @click="downloadContent" class="description__btn-download">
+            </div>
+
+            <article class="bottom" v-if="!showLoader">
+                <button v-if="!showEmptyPage"
+                        @click="downloadContent"
+                        class="bottom__btn-download">
                     Download
                 </button>
-            </div>
+
+                <button v-if="showNextBtn"
+                        class="bottom__btn-next"
+                        @click="nextTheme">
+                    Далі: {{ nextThemeInfo.name }}
+                </button>
+            </article>
+
         </section>
     </div>
 </template>
@@ -147,6 +135,8 @@ export default {
 
             showLoader: true,
             showEmptyPage: false,
+            showNextBtn: true,
+            nextThemeInfo: '',
 
             sections: [],
             contentHtml: [],
@@ -193,26 +183,52 @@ export default {
 
         getContent(themeName) {
             this.preloader.description = false
-            this.selectedTheme = themeName
             this.contentHtml = []
             this.showLoader = true
             this.showEmptyPage = false
+
+            this.selectedTheme = {
+                name: themeName,
+            }
+
 
             axios.post('api/theme/getContent', {
                 theme_name: themeName
             })
                 .then(response => {
                     const resp = response.data.content
-                    this.selectedSection = resp.section.name
 
                     if (resp.description !== "[]") {
                         this.contentHtml = JSON.parse(resp.description);
                     } else {
-                        console.log('nooooot')
-                        this.contentHtml = [];//[`<h2 class="description__title">${this.fillingPage.selectedTheme}</h2>`]
+                        this.contentHtml = []
                         this.showEmptyPage = true
                     }
+
+                    this.selectedSection = {
+                        name: resp.section.name,
+                        index: resp.section_id - 1
+                    }
+                    this.selectedTheme = {
+                        name: themeName,
+                        index: this.sections[this.selectedSection.index].themes.indexOf(this.selectedTheme.name)
+                    }
                     this.showLoader = false
+
+                    console.log('section: ' + this.selectedSection.index + ', theme: ' + this.selectedTheme.index)
+
+                    const sectionId = this.selectedSection.index;
+                    const nextThemeId = this.selectedTheme.index + 1;
+
+                    const nextThemeName = this.sections[sectionId].themes[nextThemeId];
+
+                    this.nextThemeInfo = {
+                        name: nextThemeName,
+                        index: nextThemeId,
+                        section_id: sectionId
+                    }
+                    this.showNextBtn = this.sections[this.nextThemeInfo.section_id].themes.length !== this.nextThemeInfo.index;
+
                 })
                 .catch(error => {
                     console.log(error);
@@ -243,6 +259,12 @@ export default {
             //     .save();
         },
 
+        nextTheme() {
+            const nextThemeName = this.nextThemeInfo.name
+            if (nextThemeName !== undefined) {
+                this.getContent(nextThemeName)
+            }
+        },
 
     },
 
