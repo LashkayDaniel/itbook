@@ -149,7 +149,7 @@ export default {
 
     methods: {
         getSections() {
-            axios.get('api/sections')
+            axios.get('api/section/get')
                 .then(response => {
                     let data = response.data;
                     data.forEach(item => {

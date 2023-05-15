@@ -165,17 +165,16 @@
                            v-model="newTheme.newThemeName"
                            required
                     >
-                    <select class="block__select" v-model="newTheme.selectedSection">
+                    <select class="block__select"
+                            v-model="newTheme.selectedSection"
+                            @change="newSectionChange">
                         <option value="" selected disabled>Додати до розділу:</option>
                         <option v-for="section in sections" :value="section.name">{{ section.name }}</option>
 
                     </select>
-                    <select class="block__select">
+                    <select class="block__select" v-model="newTheme.selectedThemeAfter">
                         <option value="" selected disabled>Додати після:</option>
-                        <option value="">Вступ</option>
-                        <option value="">Моделі даних</option>
-                        <option value="">Структура реляційних бд</option>
-                        <option value="">Проектування баз даних</option>
+                        <option v-for="theme in newTheme.themesList" :value="theme.title">{{ theme.title }}</option>
                     </select>
                     <button @click.prevent="addNewTheme" class="block__btn-add">Додати</button>
                 </div>
@@ -219,7 +218,6 @@ export default {
 
             htmlContentArray: [],
             sections: [],
-            themes: [],
             hasEdit: false,
             showLoader: false,
 
@@ -243,8 +241,10 @@ export default {
             },
 
             newTheme: {
+                themesList: [],
                 newThemeName: '',
                 selectedSection: '',
+                selectedThemeAfter: '',
                 addSuccess: false,
             },
 
@@ -387,16 +387,15 @@ export default {
                 })
         },
 
-        getThemes(sectionName) {
-            axios.post('api/theme/get', {
-                section_name: sectionName
-            })
-                .then(response => {
-                    this.fillingPage.filteredThemes = response.data.themes
-                })
-                .catch(error => {
-                    console.log(error);
-                })
+        async getThemes(sectionName) {
+            try {
+                const response = await axios.post('api/theme/get', {section_name: sectionName});
+                return response.data.themes;
+            } catch (error) {
+                console.log(error);
+                this.popupConfig('error', 'Невдалося отримати теми: ' + error)
+                return null;
+            }
         },
 
         getContent(themeName) {
@@ -460,19 +459,39 @@ export default {
         },
 
         addNewTheme() {
-            console.log(this.newTheme.newThemeName);
-            console.log(this.newTheme.selectedSection);
 
-            axios.post('api/theme/create', {
-                title: this.newTheme.newThemeName,
-                section_name: this.newTheme.selectedSection,
-            })
+            const themeName = this.newTheme.newThemeName
+            const selectedSection = this.newTheme.selectedSection
+            if (themeName.length < 5) {
+                this.popupConfig('warning', 'Назва теми повинна містити щонайменше 5 символів')
+                return;
+            }
+
+            if (!selectedSection) {
+                this.popupConfig('warning', 'Виберіть розділ, в який бажаєте додати нову тему')
+                return;
+            }
+
+            const data = {
+                title: themeName,
+                section_name: selectedSection
+            }
+
+            const insertAfter = this.newTheme.selectedThemeAfter;
+
+            if (insertAfter) {
+                data.insert_after = insertAfter
+            }
+
+            axios.post('api/theme/create', data)
                 .then(response => {
                     console.log(response);
                     this.newTheme.addSuccess = response.data.status;
+                    this.popupConfig('success', 'Нову тему успішно створено!')
 
                     setTimeout(() => {
                         this.newTheme.addSuccess = false
+                        this.newTheme.newThemeName = ''
                     }, 2000);
                 })
                 .catch(error => {
@@ -486,6 +505,9 @@ export default {
         sectionChange(event) {
             const sectionName = event.target.value;
             this.getThemes(sectionName)
+                .then(themes => {
+                    this.fillingPage.filteredThemes = themes
+                })
             this.fillingPage.selectedTheme = ''
             this.htmlContentArray = []
         },
@@ -494,6 +516,15 @@ export default {
             const themeName = event.target.value;
             this.getContent(themeName)
         },
+
+        newSectionChange(event) {
+            const sectionName = event.target.value;
+            this.getThemes(sectionName)
+                .then(themes => {
+                    this.newTheme.themesList = themes
+                })
+        },
+
 
         popupConfig(type, message) {
             this.popup.show = true

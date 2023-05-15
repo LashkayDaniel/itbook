@@ -25,7 +25,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // test
-Route::get('sections', [\App\Http\Controllers\SectionController::class, 'index']);
 
 // Добавьте это ↓
 Route::post('/register', [RegisterController::class, 'register'])
@@ -91,6 +90,7 @@ Route::middleware('auth:sanctum')->get('/userInfo', function (Request $request) 
 // end test
 
 Route::prefix('/section')->group(function () {
+    Route::get('get', [SectionController::class, 'index']);
     Route::get('/getAll', [SectionController::class, 'showAll']);
     Route::post('/create', [SectionController::class, 'create']);
 });

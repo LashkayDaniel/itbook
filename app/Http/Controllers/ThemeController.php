@@ -42,7 +42,9 @@ class ThemeController extends Controller
                 ]);
             }
 
-            $themes = Theme::where('section_id', $sectionId)->get();
+            $themes = Theme::where('section_id', $sectionId)
+                ->orderBy('sort_id', 'asc')
+                ->get();
 
             return response()->json([
                 'status' => true,
@@ -95,7 +97,8 @@ class ThemeController extends Controller
                 $request->all(),
                 [
                     'title' => 'required|min:5',
-                    'section_name' => 'required|min:5',
+                    'section_name' => 'required|min:5|unique:themes,title',
+                    'insert_after' => 'min:5',
                 ]
             );
 
@@ -113,7 +116,50 @@ class ThemeController extends Controller
             $theme->title = $request->input('title');
             $theme->section_id = $sectionId;
             $theme->description = '[]';
+
+            $insertAfter = Theme::where('title', $request->input('insert_after'))->first();
+
+            if ($insertAfter) {
+                $insertAfterId = $insertAfter->sort_id;
+                $othersRows = Theme::where('section_id', $sectionId)
+                    ->where('sort_id', '>', $insertAfterId)
+                    ->get();
+
+                foreach ($othersRows as $othersRow) {
+                    $newId = $othersRow->sort_id + 1;
+                    $othersRow->sort_id = $newId;
+                    $othersRow->save();
+                }
+                $theme->sort_id = $insertAfterId + 1;
+            } else {
+                $lastRow = Theme::where('section_id', $sectionId)
+                    ->latest('sort_id')
+                    ->first();
+                $theme->sort_id = $lastRow->sort_id + 1;
+            }
+
             $theme->save();
+
+//            $section = new Section();
+//            $section->name = $request->input('section_name');
+//
+//            $insertAfter = Section::where('name', $request->input('insert_after'))->first();
+//
+//            if ($insertAfter) {
+//                $insertAfterId = $insertAfter->sort_id;
+//                $othersRows = Section::where('sort_id', '>', $insertAfterId)->get();
+//
+//                foreach ($othersRows as $othersRow) {
+//                    $newId = $othersRow->sort_id + 1;
+//                    $othersRow->sort_id = $newId;
+//                    $othersRow->save();
+//                }
+//                $section->sort_id = $insertAfterId + 1;
+//            } else {
+//                $lastRow = Section::latest('sort_id')->first();
+//                $section->sort_id = $lastRow->sort_id + 1;
+//            }
+//            $section->save();
 
             return response()->json([
                 'status' => true,
@@ -236,4 +282,5 @@ class ThemeController extends Controller
             ], 500);
         }
     }
+
 }

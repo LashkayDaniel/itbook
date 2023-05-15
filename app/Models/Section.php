@@ -11,6 +11,6 @@ class Section extends Model
 
     public function themes()
     {
-        return $this->hasMany(Theme::class);
+        return $this->hasMany(Theme::class)->orderBy('sort_id', 'asc');
     }
 }
