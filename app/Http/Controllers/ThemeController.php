@@ -132,34 +132,18 @@ class ThemeController extends Controller
                 }
                 $theme->sort_id = $insertAfterId + 1;
             } else {
-                $lastRow = Theme::where('section_id', $sectionId)
-                    ->latest('sort_id')
-                    ->first();
-                $theme->sort_id = $lastRow->sort_id + 1;
+                $check = Theme::where('section_id', $sectionId)->exists();
+                if ($check) {
+                    $lastRow = Theme::where('section_id', $sectionId)
+                        ->latest('sort_id')
+                        ->first();
+                    $theme->sort_id = $lastRow->sort_id + 1;
+                } else {
+                    $theme->sort_id = 1;
+                }
             }
 
             $theme->save();
-
-//            $section = new Section();
-//            $section->name = $request->input('section_name');
-//
-//            $insertAfter = Section::where('name', $request->input('insert_after'))->first();
-//
-//            if ($insertAfter) {
-//                $insertAfterId = $insertAfter->sort_id;
-//                $othersRows = Section::where('sort_id', '>', $insertAfterId)->get();
-//
-//                foreach ($othersRows as $othersRow) {
-//                    $newId = $othersRow->sort_id + 1;
-//                    $othersRow->sort_id = $newId;
-//                    $othersRow->save();
-//                }
-//                $section->sort_id = $insertAfterId + 1;
-//            } else {
-//                $lastRow = Section::latest('sort_id')->first();
-//                $section->sort_id = $lastRow->sort_id + 1;
-//            }
-//            $section->save();
 
             return response()->json([
                 'status' => true,
@@ -168,7 +152,7 @@ class ThemeController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => false,
-                'message' => $th->getMessage(),
+                'message' => $theme//$th->getMessage(),
             ], 500);
         }
     }

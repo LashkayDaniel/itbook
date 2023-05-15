@@ -175,7 +175,7 @@ export default {
                     this.sections = data;
                     this.preloader.themes = false;
 
-                    console.log(data);
+                    // console.log(data);
                 })
                 .catch(error => {
                     console.log(error)
@@ -208,8 +208,10 @@ export default {
 
                     this.selectedSection = {
                         name: resp.section.name,
-                        index: resp.section_id - 1
+                        index: this.sections.findIndex(obj => obj.section === resp.section.name)
                     }
+
+
                     this.selectedTheme = {
                         name: themeName,
                         index: this.sections[this.selectedSection.index].themes.indexOf(this.selectedTheme.name)
