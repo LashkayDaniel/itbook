@@ -27,7 +27,7 @@ export default {
     left: 0;
     right: 0;
     bottom: 0;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(1px);
     display: flex;
     justify-content: center;
     align-items: end;
@@ -57,8 +57,8 @@ export default {
 
     &__warning {
         box-shadow: 0px 9px 25px -5px rgba(232, 229, 79, 1);
-        background-color: #e7c490;
-        color: #cc7250;
+        background-color: #dabe93;
+        color: #c25c37;
         border: solid 1px #ef8b44;
 
         &::before {

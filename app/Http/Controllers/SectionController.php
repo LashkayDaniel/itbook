@@ -15,15 +15,14 @@ class SectionController extends Controller
      */
     public function index()
     {
-        $sections = \App\Models\Section::all();
+        $sections = Section::orderBy('sort_id', 'asc')->get();
         $themes = [];
         $result = [];
         foreach ($sections as $section) {
-            $sectionName = $section['name'];
             foreach ($section->themes as $theme) {
-                $themes[] = $theme['title'];
+                $themes[] = $theme->title;
             }
-            $result[] = ['section' => $sectionName, 'themes' => $themes];
+            $result[] = ['section' => $section->name, 'themes' => $themes];
             $themes = [];
         }
         return response()->json($result);
@@ -40,8 +39,8 @@ class SectionController extends Controller
             $validateUser = Validator::make(
                 $request->all(),
                 [
-                    'section_name' => 'required',
-                    'insert_after' => 'required',
+                    'section_name' => 'required|min:5|unique:sections,name',
+                    'insert_after' => 'min:5',
                 ]
             );
 
@@ -53,16 +52,30 @@ class SectionController extends Controller
                 ], 422);
             }
 
-            $insertAfterRow = Section::where('name', $request->input('insert_after'))->first()->id;
-//            $newSection = Section::insert([
-//                'name' => $request->input('section_name'),
-//            ])->after($insertAfterRow);
+            $section = new Section();
+            $section->name = $request->input('section_name');
 
-//            DB::statement('INSERT INTO table (column1, column2) VALUES (?, ?)', [$value1, $value2]);
+            $insertAfter = Section::where('name', $request->input('insert_after'))->first();
+
+            if ($insertAfter) {
+                $insertAfterId = $insertAfter->sort_id;
+                $othersRows = Section::where('sort_id', '>', $insertAfterId)->get();
+
+                foreach ($othersRows as $othersRow) {
+                    $newId = $othersRow->sort_id + 1;
+                    $othersRow->sort_id = $newId;
+                    $othersRow->save();
+                }
+                $section->sort_id = $insertAfterId + 1;
+            } else {
+                $lastRow = Section::latest('sort_id')->first();
+                $section->sort_id = $lastRow->sort_id + 1;
+            }
+            $section->save();
 
             return response()->json([
                 'status' => true,
-//                'new_section' => $newSection,
+                'new_section' => $section,
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([
@@ -90,7 +103,7 @@ class SectionController extends Controller
      */
     public function showAll()
     {
-        return Section::all();
+        return Section::orderBy('sort_id', 'asc')->get();
     }
 
     /**

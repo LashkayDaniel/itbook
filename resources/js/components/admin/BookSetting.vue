@@ -116,6 +116,8 @@
                          title="Клікніть 2 рази, щоб видалити"
                          v-html="item"></div>
 
+                    <loader v-if="showLoader"/>
+
                     <p v-if="fillingPage.emptyPage"
                        style="text-align: center; color: #c27868; letter-spacing: 1px"
                     >Сторінка порожня. Наповніть її</p>
@@ -187,11 +189,13 @@
 
 <script>
 import MsgPopup from "@/components/MsgPopup.vue";
+import Loader from "@/components/Loader.vue";
 
 export default {
     name: "BookSetting",
     components: {
-        MsgPopup
+        MsgPopup,
+        Loader
     },
     data() {
         return {
@@ -217,6 +221,7 @@ export default {
             sections: [],
             themes: [],
             hasEdit: false,
+            showLoader: false,
 
             popup: {
                 show: false,
@@ -395,24 +400,25 @@ export default {
         },
 
         getContent(themeName) {
+            this.showLoader = true
+
             axios.post('api/theme/getContent', {
                 theme_name: themeName
             })
                 .then(response => {
                     const resp = response.data.content
-                    // console.log('response: ' + JSON.stringify(resp));
-                    // console.log('length ' + JSON.parse(resp).length);
                     const description = resp.description
 
                     if (description !== "[]") {
                         this.htmlContentArray = JSON.parse(description);
                         this.fillingPage.emptyPage = false
-
                     } else {
                         console.log('nooooot')
-                        this.htmlContentArray = []//[`<h2 class="description__title">${this.fillingPage.selectedTheme}</h2>`]
+                        this.htmlContentArray = []
                         this.fillingPage.emptyPage = true
                     }
+                    this.showLoader = false
+
                 })
                 .catch(error => {
                     console.log(error);
@@ -421,16 +427,31 @@ export default {
 
 ////test
         addNewSection() {
-            axios.post('api/section/create', {
-                section_name: this.newSection.newSectionName,
-                insert_after: this.newSection.selectedSectionAfter,
-            })
+            const sectionName = this.newSection.newSectionName;
+            if (sectionName.length < 4) {
+                this.popupConfig('warning', 'Назва розділу повинна містити щонайменше 4 символів')
+                return;
+            }
+            const data = {
+                section_name: sectionName
+            }
+
+            const insertAfter = this.newSection.selectedSectionAfter;
+
+            if (insertAfter) {
+                data.insert_after = insertAfter
+            }
+
+            axios.post('api/section/create', data)
                 .then(response => {
                     console.log(response);
                     this.newSection.addSuccess = response.data.status;
+                    this.popupConfig('success', 'Новий розділ успішно створено!')
+
 
                     setTimeout(() => {
                         this.newSection.addSuccess = false
+                        this.newSection.newSectionName = ''
                     }, 2000);
                 })
                 .catch(error => {
