@@ -152,7 +152,7 @@ class ThemeController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => false,
-                'message' => $theme//$th->getMessage(),
+                'message' => $th->getMessage(),
             ], 500);
         }
     }
@@ -258,6 +258,42 @@ class ThemeController extends Controller
             return response()->json([
                 'status' => true,
                 'image' => 'image remove successfully',
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function delete($id)
+    {
+        try {
+            $theme = Theme::find($id);
+
+            if (!$theme) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Theme not found',
+                ], 404);
+            }
+
+            $othersRows = Theme::where('section_id', $theme->section_id)
+                ->where('sort_id', '>', $theme->sort_id)->get();
+            if ($othersRows->count() > 0) {
+                foreach ($othersRows as $othersRow) {
+                    $newId = $othersRow->sort_id - 1;
+                    $othersRow->sort_id = $newId;
+                    $othersRow->save();
+                }
+            }
+
+            $theme->delete();
+
+            return response()->json([
+                'status' => true,
+                'deleted_theme' => $theme,
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([

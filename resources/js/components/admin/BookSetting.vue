@@ -122,7 +122,6 @@
                        style="text-align: center; color: #c27868; letter-spacing: 1px"
                     >Сторінка порожня. Наповніть її</p>
 
-                    <!--                    <img :src="`/storage/uploads/images/1683834356.image2.png`" alt="img">-->
                 </div>
 
                 <hr class="break-line">
@@ -180,6 +179,47 @@
                 </div>
             </div>
             <p v-if="newTheme.addSuccess" class="add-new__success">✔ Успішно додано!</p>
+
+            <hr class="break-line">
+
+            <div class="add-new">
+                <h2 class="add-new__title">Видалення розділу</h2>
+                <hr/>
+                <div class="add-new__block">
+                    <select class="block__select" v-model="deleteSection.selectedSection">
+                        <option value="" selected disabled>Виберіть розділ:</option>
+                        <option v-for="section in sections" :value="section.id">{{ section.name }}</option>
+                    </select>
+                    <button v-if="deleteSection.selectedSection" @click.prevent="deleteSectionById()"
+                            class="block__btn-remove">Видалити
+                    </button>
+                </div>
+            </div>
+            <hr class="break-line">
+
+            <div class="add-new">
+                <h2 class="add-new__title">Видалення теми</h2>
+                <hr/>
+                <div class="add-new__block">
+                    <select class="block__select"
+                            v-model="deleteTheme.selectedSection"
+                            @change="deleteThemeChange">
+                        <option value="" selected disabled>Виберіть розділ:</option>
+                        <option v-for="section in sections" :value="section.name">{{ section.name }}</option>
+                    </select>
+                    <select class="block__select" v-model="deleteTheme.selectedTheme">
+                        <option value="" selected disabled>Виберіть тему:</option>
+                        <option v-for="theme in deleteTheme.themesList"
+                                :value="theme.title">{{ theme.title }}
+                        </option>
+                    </select>
+                    <p class="block__label" v-if="deleteTheme.selectedTheme"><b>Вибрано:</b>
+                        "{{ deleteTheme.selectedSection }}" > "{{ deleteTheme.selectedTheme }}"</p>
+                    <button v-if="deleteTheme.selectedTheme" @click.prevent="deleteThemeById"
+                            class="block__btn-remove">Видалити
+                    </button>
+                </div>
+            </div>
 
         </section>
 
@@ -247,6 +287,15 @@ export default {
                 selectedThemeAfter: '',
                 addSuccess: false,
             },
+
+            deleteSection: {
+                selectedSection: ''
+            },
+            deleteTheme: {
+                selectedSection: '',
+                themesList: [],
+                selectedTheme: ''
+            }
 
         }
     },
@@ -364,6 +413,11 @@ export default {
             }
 
             this.htmlContentArray.splice(index, 1);
+
+            if (this.htmlContentArray.length === 0) {
+                this.fillingPage.emptyPage = true
+            }
+
             this.hasEdit = true
         },
 
@@ -446,11 +500,13 @@ export default {
                     console.log(response);
                     this.newSection.addSuccess = response.data.status;
                     this.popupConfig('success', 'Новий розділ успішно створено!')
+                    this.getAllSections()
 
+                    this.newSection.newSectionName = ''
+                    this.newSection.selectedSectionAfter = ''
 
                     setTimeout(() => {
                         this.newSection.addSuccess = false
-                        this.newSection.newSectionName = ''
                     }, 2000);
                 })
                 .catch(error => {
@@ -459,7 +515,6 @@ export default {
         },
 
         addNewTheme() {
-
             const themeName = this.newTheme.newThemeName
             const selectedSection = this.newTheme.selectedSection
             if (themeName.length < 5) {
@@ -488,10 +543,13 @@ export default {
                     console.log(response);
                     this.newTheme.addSuccess = response.data.status;
                     this.popupConfig('success', 'Нову тему успішно створено!')
+                    this.getAllThemes()
 
+                    this.newTheme.newThemeName = ''
+                    this.newTheme.selectedThemeAfter = ''
+                    this.newTheme.selectedSection = ''
                     setTimeout(() => {
                         this.newTheme.addSuccess = false
-                        this.newTheme.newThemeName = ''
                     }, 2000);
                 })
                 .catch(error => {
@@ -525,6 +583,56 @@ export default {
                 })
         },
 
+        deleteThemeChange(event) {
+            const sectionName = event.target.value;
+            this.getThemes(sectionName)
+                .then(themes => {
+                    if (themes.length === 0) {
+                        this.popupConfig('warning', `В розділі "${sectionName}" немає тем`)
+                        this.deleteTheme.selectedSection = ''
+                    }
+                    this.deleteTheme.themesList = themes
+                })
+
+            this.deleteTheme.selectedTheme = ''
+        },
+
+        deleteSectionById() {
+            if (!confirm(`Ви впевнені що бажаєте видалити розділ? Всі теми будуть також видалені`)) {
+                this.popupConfig('error', 'Не вдалося видалити розділ!')
+                this.deleteSection.selectedSection = ''
+                return;
+            }
+
+            const sectionId = this.deleteSection.selectedSection;
+            axios.delete('api/section/delete/' + sectionId)
+                .then(response => {
+                    this.popupConfig('success', 'Розділ успішно видалено!')
+                    this.deleteSection.selectedSection = ''
+                    this.getAllSections()
+                })
+
+        },
+        deleteThemeById() {
+            if (!confirm(`Ви впевнені що бажаєте видалити тему?`)) {
+                this.popupConfig('error', 'Не вдалося видалити тему!')
+                this.deleteTheme.selectedSection = ''
+                this.deleteTheme.selectedTheme = ''
+                this.deleteTheme.themesList = []
+                return;
+            }
+
+            const currentTheme = this.deleteTheme.themesList.find(obj => obj.title === this.deleteTheme.selectedTheme);
+            axios.delete('api/theme/delete/' + currentTheme.id)
+                .then(response => {
+                    this.popupConfig('success', 'Тему успішно видалено!')
+                    this.deleteTheme.selectedSection = ''
+                    this.deleteTheme.selectedTheme = ''
+                    this.deleteTheme.themesList = []
+
+                    this.getAllThemes()
+                })
+        },
 
         popupConfig(type, message) {
             this.popup.show = true
@@ -557,21 +665,23 @@ export default {
     },
 
     beforeUnmount() {
-        // window.addEventListener('beforeunload', function (e) {
-        //     // Відміна захоплення події, якщо користувач вибирає залишитися на сторінці
-        //     e.preventDefault();
-        //     // Встановлення тексту за замовчуванням
-        //     e.returnValue = '';
-        //     // Показуємо спливаюче вікно
+        // if (this.hasEdit) {
+        //     window.addEventListener('load', function (e) {
+        //         e.preventDefault();
+        //         if (confirm('У вас є незбережена інформація. Зберегти її?')) {
+        //             this.saveHtmlContent()
+        //         } else {
+        //             alert('no saved')
+        //         }
         //
-        // });
-        // this.beforeExit();
+        //     });
+        // }
         if (this.hasEdit) {
-            // alert('dasd');
-            return false;
-        } else {
-            alert('ok')
+            if (confirm('У вас є незбережена інформація. Зберегти її?')) {
+                this.saveHtmlContent()
+            }
         }
+
     },
 
 }

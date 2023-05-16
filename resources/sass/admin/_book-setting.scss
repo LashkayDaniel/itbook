@@ -69,7 +69,7 @@
     }
 
     &__select {
-        padding: 5px 10px;
+        padding: 10px 15px;
         border-radius: 5px;
         font-size: 16px;
         color: #c2c9e3;
@@ -82,13 +82,11 @@
         text-align: center;
     }
 
-    &__btn-add {
+    &__btn-add, &__btn-remove {
         padding: 5px 10px;
-        background-color: #3080a2;
         border-radius: 5px;
         font-size: 18px;
         font-weight: bold;
-        color: #7fb1bd;
         letter-spacing: 1px;
         opacity: .8;
 
@@ -96,6 +94,16 @@
             opacity: 1;
             transition: opacity .2s;
         }
+    }
+
+    &__btn-add {
+        background-color: #3080a2;
+        color: #96e5f8;
+    }
+
+    &__btn-remove {
+        background-color: #f56356;
+        color: #5e290a;
     }
 
 
@@ -124,6 +132,7 @@
 
 .right {
     //background-color: #0a58ca;
+    overflow: auto;
 
     &__title {
         font-size: 20px;

@@ -205,12 +205,16 @@ export default {
                         this.contentHtml = []
                         this.showEmptyPage = true
                     }
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+
 
                     this.selectedSection = {
                         name: resp.section.name,
                         index: this.sections.findIndex(obj => obj.section === resp.section.name)
                     }
-
 
                     this.selectedTheme = {
                         name: themeName,
@@ -268,6 +272,9 @@ export default {
                 this.getContent(nextThemeName)
             }
         },
+        scrollToTop() {
+
+        }
 
     },
 

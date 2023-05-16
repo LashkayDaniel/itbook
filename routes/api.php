@@ -93,6 +93,7 @@ Route::prefix('/section')->group(function () {
     Route::get('get', [SectionController::class, 'index']);
     Route::get('/getAll', [SectionController::class, 'showAll']);
     Route::post('/create', [SectionController::class, 'create']);
+    Route::delete('/delete/{id}', [SectionController::class, 'destroy']);
 });
 
 Route::prefix('/theme')->group(function () {
@@ -103,5 +104,6 @@ Route::prefix('/theme')->group(function () {
     Route::post('/createDescription', [ThemeController::class, 'createDescription']);
     Route::post('/imageUpload', [ThemeController::class, 'uploadImage']);
     Route::post('/imageRemove', [ThemeController::class, 'removeImage']);
+    Route::delete('/delete/{id}', [ThemeController::class, 'delete']);
 });
 

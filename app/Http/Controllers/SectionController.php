@@ -133,10 +133,40 @@ class SectionController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
-        //
+        try {
+            $section = Section::find($id);
+
+            if (!$section) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Section not found',
+                ], 404);
+            }
+
+            $othersRows = Section::where('sort_id', '>', $section->sort_id)->get();
+            if ($othersRows->count() > 0) {
+                foreach ($othersRows as $othersRow) {
+                    $newId = $othersRow->sort_id - 1;
+                    $othersRow->sort_id = $newId;
+                    $othersRow->save();
+                }
+            }
+
+            $section->delete();
+
+            return response()->json([
+                'status' => true,
+                'deleted_section' => $section,
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
     }
 }
