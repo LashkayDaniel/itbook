@@ -98,6 +98,8 @@
                 <router-link to="/">
                     <img class="logo__img" src="@/../img/logo.svg" alt="logo">
                 </router-link>
+
+                <p class="navbar__views">Глядачів книги: {{ this.currentCountViews }}</p>
             </div>
             <div class="navbar__items">
                 <div class="items__item" :class="{'items__item--active' : componentSwitch.showBookSetting}"
@@ -172,6 +174,7 @@ export default {
                 showLabSetting: false,
                 showUserSetting: false
             },
+            currentCountViews: 0,
         }
     },
     methods: {
@@ -204,12 +207,30 @@ export default {
                 })
         },
 
+        getViews() {
+            axios.get('api/view/getViews')
+                .then(response => {
+                    this.currentCountViews = response.data.length
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        },
+
     },
     created() {
         const token = localStorage.getItem('admin_token')
         if (token) {
             this.checkToken(token)
         }
+
+        this.getViews()
+
+    },
+    mounted() {
+        setInterval(() => {
+            this.getViews()
+        }, 5000);
     },
 };
 </script>

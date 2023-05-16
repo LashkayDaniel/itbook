@@ -22,6 +22,14 @@
         transform: scale(.8);
     }
 
+    &__views {
+        margin: 20px 0;
+        text-align: center;
+        letter-spacing: 1px;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
     &__items {
         width: 100%;
     }

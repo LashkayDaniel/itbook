@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\ThemeController;
+use App\Http\Controllers\ViewController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -107,3 +108,8 @@ Route::prefix('/theme')->group(function () {
     Route::delete('/delete/{id}', [ThemeController::class, 'delete']);
 });
 
+Route::prefix('/view')->group(function () {
+    Route::get('/getViews', [ViewController::class, 'getViews']);
+    Route::post('/create', [ViewController::class, 'create']);
+    Route::post('/delete', [ViewController::class, 'delete']);
+});

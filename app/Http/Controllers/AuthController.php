@@ -225,7 +225,7 @@ class AuthController extends Controller
             $validateUser = Validator::make(
                 $request->all(),
                 [
-                    'token' => 'required',
+                    'token' => 'required|min:10',
                 ]
             );
 
@@ -247,12 +247,12 @@ class AuthController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => 'Valid token'
+                'message' => 'Valid token',
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => false,
-                'message' => $th->getMessage()
+                'message' => $th->getMessage(),
             ], 500);
         }
     }

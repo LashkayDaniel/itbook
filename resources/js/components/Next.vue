@@ -274,17 +274,46 @@ export default {
         },
         scrollToTop() {
 
-        }
+        },
+
+        createView() {
+            axios.post('api/view/create')
+                .then(response => {
+                    console.log(response);
+                })
+                .then(error => {
+                    console.log(error);
+                })
+        },
+        deleteView() {
+            axios.post('api/view/delete')
+                .then(response => {
+                    console.log(response);
+                })
+                .then(error => {
+                    console.log(error);
+                })
+        },
 
     },
 
     created() {
         this.getSections();
-
+        window.addEventListener('unload', function () {
+            this.deleteView()
+            console.log('bye')
+        });
     },
 
 
     mounted() {
+        this.createView();
+
+
+    },
+
+    beforeUnmount() {
+        this.deleteView()
     }
 
 }
