@@ -4,7 +4,6 @@
     display: flex;
     background-color: #2e2e3b;
     color: #9ca3af;
-    font-family: 'Lora', serif;
 }
 
 .navbar {
@@ -79,9 +78,20 @@
 
 .bottom {
     &__logout {
-        background-color: #a89595;
-        padding: 15px 30px;
+        width: 100%;
+        background-color: #4a849a;
+        color: #1e464b;
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: solid 1px #41cce5;
+        font-size: 17px;
+        font-weight: bold;
+        letter-spacing: 2px;
 
+        &:hover {
+            opacity: .8;
+            transition: all .3s;
+        }
     }
 }
 

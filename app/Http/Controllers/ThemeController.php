@@ -267,6 +267,48 @@ class ThemeController extends Controller
         }
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(Request $request, $id)
+    {
+        try {
+            $validateUser = Validator::make(
+                $request->all(),
+                [
+                    'new_name' => 'required|min:5|unique:themes,title',
+                ]
+            );
+
+            if ($validateUser->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'validation error',
+                    'errors' => $validateUser->errors(),
+                ], 422);
+            }
+
+            $theme = Theme::find($id);
+            $theme->title = $request->new_name;
+
+            $theme->save();
+
+            return response()->json([
+                'status' => true,
+                'new_theme' => $theme,
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
+
     public function delete($id)
     {
         try {

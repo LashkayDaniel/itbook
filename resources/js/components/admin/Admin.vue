@@ -110,18 +110,18 @@
                             ">
                     <!--                    <img src="../../../img/admin/main-setting.png"-->
                     <!--                         alt="link icon"/>-->
-                    Розділи
+                    Книга
                 </div>
-                <div class="items__item" :class="{'items__item--active' : componentSwitch.showLabSetting}"
-                     @click="
-                            componentSwitch.showBookSetting = false;
-                            componentSwitch.showLabSetting = true;
-                            componentSwitch.showUserSetting = false;
-                            ">
-                    <!--                    <img src="../../../img/admin/product-setting.png"-->
-                    <!--                         alt="link icon"/>-->
-                    Лабораторні
-                </div>
+<!--                <div class="items__item" :class="{'items__item&#45;&#45;active' : componentSwitch.showLabSetting}"-->
+                <!--                     @click="-->
+                <!--                            componentSwitch.showBookSetting = false;-->
+                <!--                            componentSwitch.showLabSetting = true;-->
+                <!--                            componentSwitch.showUserSetting = false;-->
+                <!--                            ">-->
+                <!--                    &lt;!&ndash;                    <img src="../../../img/admin/product-setting.png"&ndash;&gt;-->
+                <!--                    &lt;!&ndash;                         alt="link icon"/>&ndash;&gt;-->
+                <!--                    Лабораторні-->
+                <!--                </div>-->
                 <div class="items__item" :class="{'items__item--active' : componentSwitch.showUserSetting}"
                      @click="
                             componentSwitch.showBookSetting = false;
@@ -210,6 +210,7 @@ export default {
         getViews() {
             axios.get('api/view/getViews')
                 .then(response => {
+                    console.log(response);
                     this.currentCountViews = response.data.length
                 })
                 .catch(error => {
@@ -228,9 +229,9 @@ export default {
 
     },
     mounted() {
-        setInterval(() => {
-            this.getViews()
-        }, 5000);
+        // setInterval(() => {
+        //     this.getViews()
+        // }, 5000);
     },
 };
 </script>

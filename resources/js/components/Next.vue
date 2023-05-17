@@ -99,7 +99,7 @@
             </div>
 
             <article class="bottom" v-if="!showLoader">
-                <button v-if="!showEmptyPage"
+                <button v-if="!showEmptyPage && hasUserToken"
                         @click="downloadContent"
                         title="Завантажити"
                         class="bottom__btn-download">
@@ -144,6 +144,7 @@ export default {
             selectedSection: '',
             selectedTheme: '',
 
+            hasUserToken: false,
         }
     },
 
@@ -242,28 +243,19 @@ export default {
                 });
         },
 
+        checkUserToken() {
+            const token = localStorage.getItem('x_xsrf_token')
+            if (token) {
+                this.hasUserToken = true;
+            }
+        },
+
         downloadContent() {
             const content = document.getElementById('content');
-            // const pdfDoc = new jsPDF();
-
-            // Отримуємо HTML контент блоку
-            // const contentHtml = content.innerHTML;
-            // pdfDoc.output('dataurlnewwindow', {encoding: 'UTF-8'});
-
-            // Додаємо HTML контент до PDF документу
-            // pdfDoc.fromHTML(contentHtml);
-
             const docx = htmlDocx.asBlob(content.innerHTML);
 
-// Save Word document
-            saveAs(docx, `${this.selectedTheme}.docx`);
+            saveAs(docx, `${this.selectedTheme.name}.docx`);
 
-            // Зберігаємо PDF документ
-            // pdfDoc.save('document.pdf');
-
-            // html2pdf()
-            //     .from(content)
-            //     .save();
         },
 
         nextTheme() {
@@ -281,7 +273,7 @@ export default {
                 .then(response => {
                     console.log(response);
                 })
-                .then(error => {
+                .catch(error => {
                     console.log(error);
                 })
         },
@@ -290,7 +282,7 @@ export default {
                 .then(response => {
                     console.log(response);
                 })
-                .then(error => {
+                .catch(error => {
                     console.log(error);
                 })
         },
@@ -299,10 +291,11 @@ export default {
 
     created() {
         this.getSections();
-        window.addEventListener('unload', function () {
-            this.deleteView()
-            console.log('bye')
-        });
+        this.checkUserToken();
+        // window.addEventListener('unload', function () {
+        //     this.deleteView()
+        //     console.log('bye')
+        // });
     },
 
 

@@ -1,9 +1,13 @@
 <template>
     <div class="container">
         <div class="block">
-            <h1 class="block__title">Title</h1>
-            <p class="block__text">text text text</p>
-            <button @click="change" class="block__btn-start">Start</button>
+            <h1 class="block__title">Ласкаво просимо до ІТ книги!</h1>
+            <p class="block__text">Ця книга призначена для тих, хто бажає оволодіти навичками роботи з базами даних.
+                Вона охоплює різноманітні аспекти баз даних, починаючи з основних концепцій і завершуючи складнішими
+                технологіями та методологіями.</p>
+            <p class="block__text">Тому запрошуємо Вас розпочати свою подорож у світ баз даних разом </p>
+            <p class="block__text">Приємного читання та успіхів у вивченні баз даних!</p>
+            <button @click="change" class="block__btn-start">Почати</button>
         </div>
     </div>
 </template>
@@ -30,36 +34,99 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400&display=swap');
+
 .container {
     max-width: 900px;
     margin: 0 auto;
 }
 
 .block {
-    text-align: center;
-    background: #3d3939;
+    background-color: transparent;
     color: antiquewhite;
-    padding: 40px 0 10px 0;
+    padding: 40px;
     border-radius: 10px;
     margin: 20px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0px 5px 53px -23px rgba(96, 151, 240, 1);
+
+
+    &:before, &:after {
+        content: '';
+        background-image: url('../../img/branch.png');
+        background-size: 100% 100%;
+        display: inline-block;
+        height: 65px;
+        width: 100px;
+        position: absolute;
+    }
+
+    &:before {
+        left: 0;
+        top: 0;
+    }
+
+    &:after {
+        right: 0;
+        bottom: 0;
+        transform: rotate(180deg);
+    }
 
     &__title {
-        font-size: 40px;
+        font-size: 35px;
+        color: #31aee5;
+        font-weight: bold;
+        animation: title-color 5s infinite;
+
+        @keyframes title-color {
+            0% {
+                text-shadow: 0 0 3px #25506b, 0 0 5px #72bcf1;
+            }
+            50% {
+                text-shadow: 0 0 10px #33beb8, 0 0 15px #47a1ec;
+            }
+            100% {
+                text-shadow: 0 0 3px #255c6b, 0 0 5px #72bcf1;
+            }
+        }
     }
 
     &__text {
-        font-size: 30px;
+        text-indent: 25px;
+        font-size: 23px;
+        text-align: justify;
+        word-break: break-word;
+        color: #2d80a6;
+        margin: 10px 0;
+
+        &:last-of-type {
+            font-weight: bold;
+            color: #6a8ac4;
+        }
+
     }
 
     &__btn-start {
         border-radius: 5px;
-        background: #000;
+        background: #1f7093;
+        color: #b4bcc7;
         margin-top: 50px;
         padding: 5px 15px;
-        font-size: 25px;
+        font-size: 23px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        position: absolute;
+        transform: translate(-50%);
 
         &:hover {
             opacity: .8;
+            transition: all .7s;
+
+            &:after {
+                content: '-->';
+                transition: 2s;
+            }
         }
     }
 }

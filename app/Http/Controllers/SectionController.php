@@ -114,7 +114,6 @@ class SectionController extends Controller
      */
     public function edit($id)
     {
-        //
     }
 
     /**
@@ -122,11 +121,41 @@ class SectionController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            $validateUser = Validator::make(
+                $request->all(),
+                [
+                    'new_name' => 'required|min:5|unique:sections,name',
+                ]
+            );
+
+            if ($validateUser->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'validation error',
+                    'errors' => $validateUser->errors(),
+                ], 422);
+            }
+
+            $section = Section::find($id);
+            $section->name = $request->new_name;
+
+            $section->save();
+
+            return response()->json([
+                'status' => true,
+                'new_section' => $section,
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
     }
 
     /**

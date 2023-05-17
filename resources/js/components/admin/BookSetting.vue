@@ -48,6 +48,11 @@
                     <label for="upload" class="block__btn-add-new">Додати зображення</label>
 
                     <button class="block__btn-add-new"
+                            @click="addImageName.showPanel = !addImageName.showPanel">
+                        Додати назву картинки
+                    </button>
+
+                    <button class="block__btn-add-new"
                             @click="addCode.showPanel = !addCode.showPanel">
                         Додати код
                     </button>
@@ -66,12 +71,20 @@
                         <label for="paragraph" class="paragraph__label">Введіть текст:</label>
                         <textarea v-model="addParagraph.inputText" name="paragraph" class="paragraph__input"
                                   placeholder="Введіть текст"/>
-                        <p class="paragraph__error"
-                           v-if="addParagraph.error.length!==0">
-                            {{ addParagraph.error }}
-                        </p>
                         <button class="paragraph__btn-add"
                                 @click="addNewParagraph(this.addParagraph.inputText)"
+                        >Додати
+                        </button>
+                    </div>
+
+                    <div v-if="this.addImageName.showPanel" class="paragraph">
+                        <label for="paragraph" class="paragraph__label">Введіть назву картинки:</label>
+                        <input v-model="addImageName.imageName"
+                               name="paragraph"
+                               class="paragraph__input-small"
+                               placeholder="Введіть назву"/>
+                        <button class="paragraph__btn-add"
+                                @click="addNewImageName(addImageName.imageName)"
                         >Додати
                         </button>
                     </div>
@@ -80,10 +93,6 @@
                         <label for="paragraph" class="paragraph__label">Введіть код:</label>
                         <textarea v-model="addCode.inputCode" name="paragraph" class="paragraph__input"
                                   placeholder="Введіть код"/>
-                        <p class="paragraph__error"
-                           v-if="addCode.error.length!==0">
-                            {{ addCode.error }}
-                        </p>
                         <button class="paragraph__btn-add"
                                 @click="addNewCode(this.addCode.inputCode)"
                         >Додати
@@ -96,10 +105,6 @@
                                name="paragraph"
                                class="paragraph__input-small"
                                placeholder="Введіть назву"/>
-                        <p class="paragraph__error"
-                           v-if="addSubparagraph.error.length!==0">
-                            {{ addSubparagraph.error }}
-                        </p>
                         <button class="paragraph__btn-add"
                                 @click="addNewSubparagraph(this.addSubparagraph.inputName)"
                         >Додати
@@ -135,7 +140,7 @@
             <div class="add-new">
                 <h2 class="add-new__title">Новий розділ</h2>
                 <hr/>
-                <form class="add-new__block">
+                <div class="add-new__block">
                     <input type="text"
                            class="block__input-name"
                            placeholder="Введіть назву"
@@ -147,9 +152,7 @@
                         <option v-for="section in sections" :value="section.name">{{ section.name }}</option>
                     </select>
                     <button @click.prevent="addNewSection" class="block__btn-add">Додати</button>
-                </form>
-
-                <p v-if="newSection.addSuccess" class="add-new__success">✔ Успішно додано!</p>
+                </div>
             </div>
 
             <hr class="break-line">
@@ -178,7 +181,59 @@
                     <button @click.prevent="addNewTheme" class="block__btn-add">Додати</button>
                 </div>
             </div>
-            <p v-if="newTheme.addSuccess" class="add-new__success">✔ Успішно додано!</p>
+
+            <hr class="break-line">
+
+            <div class="add-new">
+                <h2 class="add-new__title">Редагування назви розділу</h2>
+                <hr/>
+                <div class="add-new__block">
+                    <select class="block__select"
+                            v-model="renameSection.oldSection">
+                        <option value="" selected disabled>Виберіть розділ:</option>
+                        <option v-for="section in sections" :value="section.name">{{ section.name }}</option>
+                    </select>
+                    <input type="text"
+                           class="block__input-name"
+                           placeholder="Нова назва"
+                           v-model="renameSection.newSectionName"
+                           required
+                    >
+                    <button v-if="renameSection.oldSection" @click.prevent="renameSectionMethod()"
+                            class="block__btn-add">Змінити
+                    </button>
+                </div>
+            </div>
+
+            <hr class="break-line">
+
+            <div class="add-new">
+                <h2 class="add-new__title">Редагування назви теми</h2>
+                <hr/>
+                <div class="add-new__block">
+                    <select class="block__select"
+                            v-model="renameTheme.selectedSection"
+                            @change="renameThemeChange">
+                        <option value="" selected disabled>Виберіть розділ:</option>
+                        <option v-for="section in sections" :value="section.name">{{ section.name }}</option>
+                    </select>
+                    <select class="block__select" v-model="renameTheme.oldTheme">
+                        <option value="" selected disabled>Виберіть тему:</option>
+                        <option v-for="theme in renameTheme.themesList"
+                                :value="theme.title">{{ theme.title }}
+                        </option>
+                    </select>
+                    <input type="text"
+                           class="block__input-name"
+                           placeholder="Нова назва"
+                           v-model="renameTheme.newThemeName"
+                           required
+                    >
+                    <button v-if="renameTheme.oldTheme" @click.prevent="renameThemeMethod()"
+                            class="block__btn-add">Змінити
+                    </button>
+                </div>
+            </div>
 
             <hr class="break-line">
 
@@ -241,19 +296,21 @@ export default {
             addParagraph: {
                 showPanel: false,
                 inputText: '',
-                error: '',
+            },
+
+            addImageName: {
+                showPanel: false,
+                imageName: '',
             },
 
             addCode: {
                 showPanel: false,
                 inputCode: '',
-                error: '',
             },
 
             addSubparagraph: {
                 showPanel: false,
                 inputName: '',
-                error: '',
             },
 
             htmlContentArray: [],
@@ -277,7 +334,6 @@ export default {
             newSection: {
                 newSectionName: '',
                 selectedSectionAfter: '',
-                addSuccess: false,
             },
 
             newTheme: {
@@ -285,7 +341,18 @@ export default {
                 newThemeName: '',
                 selectedSection: '',
                 selectedThemeAfter: '',
-                addSuccess: false,
+            },
+
+            renameSection: {
+                oldSection: '',
+                newSectionName: '',
+            },
+
+            renameTheme: {
+                selectedSection: '',
+                themesList: [],
+                oldTheme: '',
+                newThemeName: '',
             },
 
             deleteSection: {
@@ -320,6 +387,19 @@ export default {
             this.htmlContentArray.push(`<img src="${imageUrl}" alt="image" class="description__image"/>`);
             this.fillingPage.emptyPage = false;
             this.popupConfig('success', 'Зображення успішно додано!')
+        },
+
+        addNewImageName(name) {
+            if (name.length < 5) {
+                this.popupConfig('warning', 'Поле повинно містити щонайменше 5 символів')
+                return;
+            }
+            this.htmlContentArray.push(`<figcaption class="description__image-name">${name}</figcaption>`);
+
+            this.addImageName.showPanel = false;
+            this.addImageName.imageName = ''
+            this.fillingPage.emptyPage = false;
+            this.hasEdit = true
         },
 
         addNewCode(code) {
@@ -595,6 +675,79 @@ export default {
                 })
 
             this.deleteTheme.selectedTheme = ''
+        },
+
+        renameThemeChange(event) {
+            const sectionName = event.target.value;
+            this.getThemes(sectionName)
+                .then(themes => {
+                    if (themes.length === 0) {
+                        this.popupConfig('warning', `В розділі "${sectionName}" немає тем`)
+                        this.renameTheme.selectedSection = ''
+                    }
+                    this.renameTheme.themesList = themes
+                })
+
+            this.renameTheme.oldTheme = ''
+        },
+
+        renameSectionMethod() {
+
+            if (!this.renameSection.oldSection) {
+                this.popupConfig('warning', 'Виберіть розділ, який бажаєте редагувати')
+                return;
+            }
+
+            const newSectionName = this.renameSection.newSectionName
+            if (newSectionName.length < 5) {
+                this.popupConfig('warning', 'Назва розділу повинна містити щонайменше 5 символів')
+                return;
+            }
+
+            const oldSection = this.sections.find(obj => obj.name === this.renameSection.oldSection);
+            axios.patch(`api/section/update/${oldSection.id}`, {
+                new_name: this.renameSection.newSectionName
+            })
+                .then(response => {
+                    this.popupConfig('success', 'Розділ успішно змінено!')
+                    this.renameSection.newSectionName = ''
+                    this.renameSection.oldSection = ''
+                    this.getAllSections()
+                })
+                .catch(error => {
+                    this.popupConfig('error', error.response.data.errors.new_name[0])
+                    this.renameSection.newSectionName = ''
+                })
+        },
+
+        renameThemeMethod() {
+            if (!this.renameTheme.oldTheme) {
+                this.popupConfig('warning', 'Виберіть тему, який бажаєте редагувати')
+                return;
+            }
+
+            const newThemeName = this.renameTheme.newThemeName
+            if (newThemeName.length < 5) {
+                this.popupConfig('warning', 'Назва теми повинна містити щонайменше 5 символів')
+                return;
+            }
+
+            const currentTheme = this.renameTheme.themesList.find(obj => obj.title === this.renameTheme.oldTheme);
+            axios.patch('api/theme/update/' + currentTheme.id, {
+                new_name: this.renameTheme.newThemeName
+            })
+                .then(response => {
+                    this.popupConfig('success', 'Тему успішно видалено!')
+                    this.renameTheme.selectedSection = ''
+                    this.renameTheme.oldTheme = ''
+                    this.renameTheme.newThemeName = ''
+                    this.getAllThemes()
+                })
+                .catch(error => {
+                    console.log(error);
+                    this.popupConfig('error', error.response.data.errors.new_name[0])
+                    this.renameTheme.newThemeName = ''
+                })
         },
 
         deleteSectionById() {
