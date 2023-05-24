@@ -107,6 +107,9 @@ Route::prefix('/theme')->group(function () {
     Route::post('/imageUpload', [ThemeController::class, 'uploadImage']);
     Route::post('/imageRemove', [ThemeController::class, 'removeImage']);
     Route::patch('/update/{id}', [ThemeController::class, 'update']);
+
+    Route::post('/search', [ThemeController::class, 'search']);
+
     Route::delete('/delete/{id}', [ThemeController::class, 'delete']);
 });
 

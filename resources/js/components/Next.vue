@@ -1,8 +1,26 @@
 <template>
     <to-top/>
+    <search
+        v-if="search.showPanel"
+        :inputText="search.inputValue"
+        @showSearch="closeSearch"
+    />
     <div class="container">
 
         <aside class="themes">
+            <div class="search" v-if="! preloader.themes">
+                <input class="search__input"
+                       type="text"
+                       name="search"
+                       v-model="search.inputValue"
+                       @keyup.enter="this.search.showPanel=true"
+                       placeholder="Пошук у книзі">
+                <button class="search__btn"
+                        type="button"
+                        @click="this.search.showPanel=true">
+                    Шукати
+                </button>
+            </div>
 
             <ol v-if="preloader.themes" class="themes__list--preloader">
                 <li></li>
@@ -17,7 +35,8 @@
             <ol v-else class="themes__list">
                 <li v-for="(section,index) in this.sections">
                     <div class="list__item"
-                         @click="section.isExpand=!section.isExpand;">
+                         @click="toggleSection(index)">
+                        <!--                         @click="section.isExpand=!section.isExpand;">-->
                         <div class="item__name"
                              :class="{'item__name--active' : section.isExpand}">
                             {{ section.section }}
@@ -33,7 +52,7 @@
                                href=""
                                @click.prevent="getContent(theme);
                                 "
-                               :class="{'link__name--active' : theme === selectedTheme.name}">
+                               :class="{'link__name--active link__name--disabled' : theme === selectedTheme.name}">
                                 {{ theme }}
                             </a>
                         </li>
@@ -46,10 +65,8 @@
                                  style="opacity: .8; margin-right: 10px"
                                  alt="lock icon">
                         </li>
-
                     </ol>
                     <hr>
-
                 </li>
             </ol>
         </aside>
@@ -74,10 +91,12 @@
                         </i>
                     </div>
 
-                    <div class="search">
-                        <input class="search__input" type="text" name="search" placeholder="Пошук у книзі">
-                        <button class="search__btn" type="button">Пошук</button>
-                    </div>
+                    <button v-if="!showEmptyPage && hasUserToken"
+                            @click="downloadContent"
+                            title="Завантажити"
+                            class="bottom__btn-download">
+                        Завантажити
+                    </button>
                 </article>
                 <article class="block__description" id="content">
                     <h2 class="description__title">{{ selectedTheme.name }}</h2>
@@ -99,13 +118,6 @@
             </div>
 
             <article class="bottom" v-if="!showLoader">
-                <button v-if="!showEmptyPage && hasUserToken"
-                        @click="downloadContent"
-                        title="Завантажити"
-                        class="bottom__btn-download">
-                    Завантажити
-                </button>
-
                 <button v-if="showNextBtn"
                         class="bottom__btn-next"
                         @click="nextTheme">
@@ -120,12 +132,14 @@
 <script>
 import ToTop from "@/components/ToTop.vue";
 import Loader from "@/components/Loader.vue";
+import Search from "@/components/Search.vue";
 
 export default {
     name: "Next",
     components: {
         ToTop,
-        Loader
+        Loader,
+        Search
     },
     data: function () {
         return {
@@ -145,6 +159,11 @@ export default {
             selectedTheme: '',
 
             hasUserToken: false,
+
+            search: {
+                showPanel: false,
+                inputValue: '',
+            },
         }
     },
 
@@ -181,6 +200,12 @@ export default {
                 .catch(error => {
                     console.log(error)
                 })
+        },
+
+        toggleSection(index) {
+            this.sections.forEach((section, i) => {
+                section.isExpand = i === index;
+            });
         },
 
         getContent(themeName) {
@@ -264,9 +289,6 @@ export default {
                 this.getContent(nextThemeName)
             }
         },
-        scrollToTop() {
-
-        },
 
         createView() {
             axios.post('api/view/create')
@@ -286,6 +308,11 @@ export default {
                     console.log(error);
                 })
         },
+
+        closeSearch() {
+            this.search.showPanel = false
+            this.search.inputValue = ''
+        }
 
     },
 

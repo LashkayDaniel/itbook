@@ -22,3 +22,14 @@
     border-radius: 15px;
 }
 
+::selection {
+    background-color: #68737e;
+    color: #98cede;
+}
+
+input {
+    &:focus {
+        outline: none;
+    }
+}
+

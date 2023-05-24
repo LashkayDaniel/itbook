@@ -142,7 +142,6 @@ class ThemeController extends Controller
                     $theme->sort_id = 1;
                 }
             }
-
             $theme->save();
 
             return response()->json([
@@ -343,6 +342,37 @@ class ThemeController extends Controller
                 'message' => $th->getMessage(),
             ], 500);
         }
+    }
+
+    public function search(Request $request)
+    {
+        $searchTerm = strtolower($request->input('searchText'));
+
+        $elements = Theme::with('section')->get();//->pluck('description');
+
+        $results = [];
+
+        foreach ($elements as $element) {
+            $matches = [];
+            preg_match_all(
+                "/<[^>]*>/",
+                $element->description,
+                $matches,
+                PREG_SET_ORDER
+            ); // Вилучити HTML теги з елементу
+            $text = strip_tags($element->description); // Вилучити HTML теги з елементу
+
+            if (mb_stripos(
+                    $text,
+                    $searchTerm,
+                    0,
+                    'UTF-8'
+                ) !== false) { // Здійснити регістронезалежний пошук з підтримкою кирилиці
+                $results[] = $element;
+            }
+        }
+
+        return response()->json($results);
     }
 
 }

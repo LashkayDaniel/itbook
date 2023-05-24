@@ -109,11 +109,11 @@ export default {
 
     &__btn-start {
         border-radius: 5px;
-        background: #1f7093;
+        background: #2a6b88;
         color: #b4bcc7;
         margin-top: 50px;
-        padding: 5px 15px;
-        font-size: 23px;
+        padding: 10px 20px;
+        font-size: 20px;
         font-weight: bold;
         letter-spacing: 1px;
         position: absolute;
@@ -124,8 +124,20 @@ export default {
             transition: all .7s;
 
             &:after {
-                content: '-->';
-                transition: 2s;
+                content: '->';
+                margin-left: 10px;
+                color: #749cd0;
+                animation: arrow-appear 0.5s ease-in-out;
+                @keyframes arrow-appear {
+                    0% {
+                        opacity: 0;
+                        transform: translateY(10px);
+                    }
+                    100% {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
             }
         }
     }

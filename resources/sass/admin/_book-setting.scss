@@ -59,7 +59,7 @@
     &__input-name {
         padding: 5px;
         border-radius: 5px;
-        font-size: 17px;
+        font-size: 16px;
         color: #2746b2;
         font-weight: bold;
         flex: auto;
@@ -67,10 +67,11 @@
     }
 
     &__select {
-        padding: 10px 15px;
+        padding: 5px 15px;
         border-radius: 5px;
         font-size: 16px;
-        color: #c2c9e3;
+        font-weight: bold;
+        color: #98a0bd;
         background-color: rgba(60, 79, 107, 0.85);
     }
 

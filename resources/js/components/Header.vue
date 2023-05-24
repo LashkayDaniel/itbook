@@ -7,14 +7,14 @@
 
                 <ul v-if="isActive" class="navigation">
                     <li v-if="!token" class="navigation__item">
-                        <router-link class="navigation__item-link" :to="{name: 'sign-in'}">Login</router-link>
+                        <router-link class="navigation__item-link" :to="{name: 'sign-in'}">Авторизація</router-link>
                     </li>
 
-                    <li class="navigation__item">
-                        <router-link class="navigation__item-link" to="example">Example</router-link>
-                    </li>
+                    <!--                    <li class="navigation__item">-->
+                    <!--                        <router-link class="navigation__item-link" to="example">Example</router-link>-->
+                    <!--                    </li>-->
 
-                    <li class="navigation__item">
+                    <li v-if="token" class="navigation__item">
                         <router-link class="navigation__item-link" to="dictionary">Словник</router-link>
                     </li>
 
@@ -25,8 +25,8 @@
                         <ul v-if="showDropdown" class="dropdown__list">
                             <li class="dropdown__item"><a href="">пункт 1</a></li>
                             <li class="dropdown__item"><a href="">пункт 1</a></li>
-                            <li class="dropdown__item">{{this.userInfo.name}}</li>
-                            <li class="dropdown__item">{{this.userInfo.email}}</li>
+                            <li class="dropdown__item">{{ this.userInfo.name }}</li>
+                            <li class="dropdown__item">{{ this.userInfo.email }}</li>
                             <li class="dropdown__item">
                                 <button @click.prevent="logout">Logout</button>
                             </li>
@@ -50,7 +50,7 @@ export default {
         return {
             showDropdown: false,
             token: false,
-            userInfo:{}
+            userInfo: {}
         }
     },
     methods: {

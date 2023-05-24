@@ -12,6 +12,8 @@
                 width: 300px;
                 height: 35px;
                 border-radius: 10px;
+                animation: scale 1.5s infinite;
+
 
                 &:before {
                     content: '';
@@ -32,6 +34,14 @@
                     to {
                         left: 80%;
                         opacity: .1;
+                    }
+                }
+                @keyframes scale {
+                    from {
+                        transform: scale(1);
+                    }
+                    to {
+                        transform: scale(1.05);
                     }
                 }
 
