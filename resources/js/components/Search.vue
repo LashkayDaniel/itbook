@@ -5,7 +5,7 @@
                    class="block__input"
                    placeholder="Введіть слово"
                    @keyup.enter="search"
-                   @input="this.results=[];this.nothingFound=false"
+                   @input="this.results=[]; this.nothingFound=false"
                    v-model="inputValue">
             <button class="block__btn" @click="search">Search</button>
             <button class="block__close-btn"
@@ -14,7 +14,8 @@
             </button>
             <ul class="block__list">
                 <li class="list__item"
-                    v-for="item in results">
+                    v-for="item in results"
+                    @click="showNextResult(item)">
                     <div class="item__content">
                         <a href="" class="item__title">{{ item.section.name }}. {{ item.title }}</a>
                         <!--                    <p class="item__subtitle"-->
@@ -24,8 +25,9 @@
                         <p class="item__subtitle">Знайдено: {{ item.countFound }}
                         </p>
                     </div>
-                    <button class="item__btn">ok</button>
+                    <button class="item__btn"></button>
                 </li>
+
                 <li v-if="inputValue.trim().length<2"
                     style="color: #f1ad46">Мінімум 2 символи
                 </li>
@@ -72,6 +74,7 @@ export default {
                     dataArray.forEach((item, index) => {
                         const description = JSON.parse(dataArray[index].description)
                         dataArray[index].countFound = this.getFindCount(description, this.inputValue);
+                        dataArray[index].searchWord = this.inputValue;
                     })
                     this.results = dataArray
                     this.nothingFound = !this.results.length > 0;
@@ -81,13 +84,6 @@ export default {
                 })
 
 
-        },
-        highlightText(text, search) {
-            if (!search) {
-                return text;
-            }
-            const regex = new RegExp(`(${search})`, 'gi');
-            return text.replace(regex, '<span style="background-color:rgba(222,222,88,0.87); color: darkred">$1</span>');
         },
         getFindCount(array, search) {
             const regex = new RegExp(`(${search.toLowerCase()})`, 'gi');
@@ -101,6 +97,11 @@ export default {
             });
 
             return count;
+        },
+
+        showNextResult(item) {
+            this.close()
+            this.$emit('showFindResult', item)
         },
     },
 
@@ -125,7 +126,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(89, 99, 110, 0.8);
+    background-color: rgba(98, 104, 112, 0.8);
 
 
     &__block {
@@ -179,18 +180,23 @@ export default {
 
     &__list {
         overflow: auto;
-        height: 100%;
+        height: 90%;
     }
 }
 
 .list {
     &__item {
-        background-color: #4b5563;
+        background-color: rgb(122, 138, 161);
         margin: 5px 0;
         padding: 5px;
         border-radius: 5px;
         display: flex;
         justify-content: space-between;
+
+        &:hover {
+            opacity: .9;
+            cursor: pointer;
+        }
     }
 }
 
@@ -199,26 +205,34 @@ export default {
     }
 
     &__title {
-        color: #a0aec0;
+        color: #a7d2ee;
         font-weight: bold;
+        font-size: 16px;
+
+        &:hover {
+            color: #68b8ee;
+            border-bottom: solid 1px #6fa6ec;
+            transition: all .4s;
+        }
 
     }
 
     &__subtitle {
+        color: #80c1e1;
 
     }
 
     &__btn {
-        background-color: #a0aec0;
+        margin: 0 10px;
 
-        &:before {
+        &:after {
             content: '';
             display: block;
-            height: 3px;
             width: 15px;
-            color: red;
-            left: 0;
-            top: 0;
+            height: 15px;
+            border-bottom: solid 2px rgb(88, 201, 231);
+            border-left: solid 2px rgb(88, 201, 231);
+            transform: rotate(220deg);
         }
 
     }

@@ -4,6 +4,7 @@
         v-if="search.showPanel"
         :inputText="search.inputValue"
         @showSearch="closeSearch"
+        @showFindResult="showFoundedTheme"
     />
     <div class="container">
 
@@ -50,8 +51,7 @@
                         <li v-for="(theme,index) in section.themes">
                             <a class="link__name"
                                href=""
-                               @click.prevent="getContent(theme);
-                                "
+                               @click.prevent="getContent(theme)"
                                :class="{'link__name--active link__name--disabled' : theme === selectedTheme.name}">
                                 {{ theme }}
                             </a>
@@ -110,7 +110,7 @@
                     </div>
 
                     <div v-for="(item, index) in contentHtml" :key="index"
-                         v-html="item">
+                         v-html="this.highlightText(item,this.search.searchWord)">
                     </div>
 
                     <hr>
@@ -163,6 +163,8 @@ export default {
             search: {
                 showPanel: false,
                 inputValue: '',
+                showHighlightedText: false,
+                searchWord: ''
             },
         }
     },
@@ -214,10 +216,11 @@ export default {
             this.showLoader = true
             this.showEmptyPage = false
 
+            this.search.showHighlightedText = false
+
             this.selectedTheme = {
                 name: themeName,
             }
-
 
             axios.post('api/theme/getContent', {
                 theme_name: themeName
@@ -312,7 +315,22 @@ export default {
         closeSearch() {
             this.search.showPanel = false
             this.search.inputValue = ''
-        }
+        },
+        showFoundedTheme(item) {
+            console.log(item.title);
+            console.log(item.searchWord);
+            this.getContent(item.title)
+            this.search.searchWord = item.searchWord
+            this.search.showHighlightedText = true
+        },
+        highlightText(text, search) {
+            if (!this.search.showHighlightedText || !search) {
+                return text;
+            }
+            const regex = new RegExp(`(${search})`, 'gi');
+            return text.replace(regex, '<span style="background-color:rgba(222,222,88,0.87); color: darkred">$1</span>');
+        },
+
 
     },
 
