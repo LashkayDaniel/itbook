@@ -5,7 +5,7 @@
                    class="block__input"
                    placeholder="Введіть слово"
                    @keyup.enter="search"
-                   @input="this.result=[];this.nothingFound=false"
+                   @input="this.results=[];this.nothingFound=false"
                    v-model="inputValue">
             <button class="block__btn" @click="search">Search</button>
             <button class="block__close-btn"
@@ -14,16 +14,24 @@
             </button>
             <ul class="block__list">
                 <li class="list__item"
-                    v-for="item in result">
-                    <a href="" class="item__title">{{ item.section.name }}. {{ item.title }}</a>
-                    <p class="item__subtitle"
-                       v-for="text in JSON.parse(item.description)"
-                       v-html="highlightText(text, this.inputValue)"
-                    ></p>
-                    <button class="item__btn"></button>
+                    v-for="item in results">
+                    <div class="item__content">
+                        <a href="" class="item__title">{{ item.section.name }}. {{ item.title }}</a>
+                        <!--                    <p class="item__subtitle"-->
+                        <!--                       v-for="text in JSON.parse(item.description)"-->
+                        <!--                       v-html="highlightText(text, this.inputValue)"-->
+                        <!--                    ></p>-->
+                        <p class="item__subtitle">Знайдено: {{ item.countFound }}
+                        </p>
+                    </div>
+                    <button class="item__btn">ok</button>
                 </li>
-                <li v-if="inputValue.trim().length<2">Мінімум 2 символи</li>
-                <li v-else-if="this.nothingFound">Нічого не знайдено за результатом: {{ inputValue }}</li>
+                <li v-if="inputValue.trim().length<2"
+                    style="color: #f1ad46">Мінімум 2 символи
+                </li>
+                <li v-else-if="this.nothingFound"
+                    style="color: #9abcc0">Нічого не знайдено за результатом: <b>{{ inputValue }}</b>
+                </li>
 
             </ul>
         </section>
@@ -39,9 +47,8 @@ export default {
     data() {
         return {
             inputValue: '',
-            result: [],
+            results: [],
             nothingFound: false,
-            findWords: 0,
         }
     },
 
@@ -50,7 +57,7 @@ export default {
             this.$emit('showSearch', false)
         },
         search() {
-            this.result = []
+            this.results = []
             this.nothingFound = false
 
             if (this.inputValue.trim().length < 2) {
@@ -61,9 +68,13 @@ export default {
                 searchText: this.inputValue
             })
                 .then(response => {
-
-                    this.result = response.data
-                    this.nothingFound = !this.result.length > 0;
+                    const dataArray = response.data;
+                    dataArray.forEach((item, index) => {
+                        const description = JSON.parse(dataArray[index].description)
+                        dataArray[index].countFound = this.getFindCount(description, this.inputValue);
+                    })
+                    this.results = dataArray
+                    this.nothingFound = !this.results.length > 0;
                 })
                 .catch(error => {
                     console.log(error);
@@ -78,12 +89,19 @@ export default {
             const regex = new RegExp(`(${search})`, 'gi');
             return text.replace(regex, '<span style="background-color:rgba(222,222,88,0.87); color: darkred">$1</span>');
         },
-        getFindCount(arrayDescription, search) {
-            const text = JSON.parse(arrayDescription)
-            console.log(text);
-            const regex = new RegExp(`(${search})`, 'gi');
-            this.findWords = (text.match(regex) || []).length;
-        }
+        getFindCount(array, search) {
+            const regex = new RegExp(`(${search.toLowerCase()})`, 'gi');
+            let count = 0;
+
+            array.forEach(item => {
+                const matches = item.toLowerCase().match(regex);
+                if (matches) {
+                    count += matches.length;
+                }
+            });
+
+            return count;
+        },
     },
 
     created() {
@@ -94,9 +112,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.highlighted {
-    color: red;
-}
+
 
 .search-wrapper {
     position: fixed;
@@ -173,20 +189,19 @@ export default {
         margin: 5px 0;
         padding: 5px;
         border-radius: 5px;
+        display: flex;
+        justify-content: space-between;
     }
 }
 
 .item {
-    &__title {
-        font-weight: bold;
-        background-color: #a0aec0;
-        width: 500px;
+    &__content {
+    }
 
-        //&:after {
-        //content: '->';
-        //position: absolute;
-        //right: 0;
-        //}
+    &__title {
+        color: #a0aec0;
+        font-weight: bold;
+
     }
 
     &__subtitle {
@@ -194,8 +209,20 @@ export default {
     }
 
     &__btn {
+        background-color: #a0aec0;
+
+        &:before {
+            content: '';
+            display: block;
+            height: 3px;
+            width: 15px;
+            color: red;
+            left: 0;
+            top: 0;
+        }
 
     }
 
 }
+
 </style>

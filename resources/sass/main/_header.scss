@@ -13,7 +13,7 @@ li {
     align-items: center;
     width: 100%;
     justify-content: center;
-    padding: 15px;
+    padding: 10px;
     text-transform: uppercase;
     background-color: #222222;
 }
@@ -85,14 +85,19 @@ li {
 
     &__item-link {
         font-weight: bold;
-        color: #7f9cd5;
-        border-radius: 10px;
-        border: solid 2px #7c99d9;
+        color: #4592c9;
+        border-radius: 7px;
+        letter-spacing: 1px;
+        border: solid 1px #135775;
         padding: 10px;
+        box-shadow: -10px 0px 18px -11px rgb(115, 194, 225);
+        transition: all .3s;
 
         &:hover {
             cursor: pointer;
-            color: rgb(209 207 220);
+            box-shadow: -5px 0px 10px -11px rgb(115, 194, 225);
+            border-color: #35485e;
+            color: rgb(94, 172, 222);
         }
     }
 }
@@ -105,8 +110,8 @@ li {
 
     &__avatar {
         vertical-align: middle;
-        width: 55px;
-        height: 55px;
+        width: 50px;
+        height: 50px;
         border-radius: 50%;
 
         &:hover {

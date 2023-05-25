@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="block">
-            <h1 class="block__title">Ласкаво просимо до ІТ книги!</h1>
+            <h1 v-text="typingText" class="block__title"></h1>
             <p class="block__text">Ця книга призначена для тих, хто бажає оволодіти навичками роботи з базами даних.
                 Вона охоплює різноманітні аспекти баз даних, починаючи з основних концепцій і завершуючи складнішими
                 технологіями та методологіями.</p>
@@ -16,7 +16,10 @@
 export default {
     name: "Start",
     data() {
-        return {}
+        return {
+            text: "Ласкаво просимо до ІТ книги!",
+            typingText: ""
+        }
     },
     mounted() {
         const token = localStorage.getItem('x_xsrf_token')
@@ -24,10 +27,22 @@ export default {
             this.change();
 
         }
+        this.type()
     },
     methods: {
         change() {
             this.$emit("nextStep")
+        },
+        type() {
+            let charIndex = 0;
+            const intervalId = setInterval(() => {
+                if (charIndex < this.text.length) {
+                    this.typingText += this.text.charAt(charIndex);
+                    charIndex++;
+                } else {
+                    clearInterval(intervalId);
+                }
+            }, 100);
         }
     }
 }
@@ -35,6 +50,7 @@ export default {
 
 <style lang="scss" scoped>
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400&display=swap');
+
 
 .container {
     max-width: 900px;
@@ -100,9 +116,20 @@ export default {
         color: #2d80a6;
         margin: 10px 0;
 
+        animation: text-anim 2s;
+
         &:last-of-type {
             font-weight: bold;
             color: #6a8ac4;
+        }
+
+        @keyframes text-anim {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
 
     }
@@ -112,16 +139,20 @@ export default {
         background: #2a6b88;
         color: #b4bcc7;
         margin-top: 50px;
-        padding: 10px 20px;
+        padding: 8px 25px;
         font-size: 20px;
         font-weight: bold;
-        letter-spacing: 1px;
+        letter-spacing: 1.5px;
         position: absolute;
         transform: translate(-50%);
+        animation: btn-show 4s;
+        transition: all .2s;
+        border: solid 2px #1a9da8;
+
 
         &:hover {
             opacity: .8;
-            transition: all .7s;
+
 
             &:after {
                 content: '->';
@@ -139,6 +170,18 @@ export default {
                     }
                 }
             }
+        }
+
+        @keyframes btn-show {
+            from {
+                transform: rotateX(180deg) translate(-50%) translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: rotateX(0) translate(-50%) translateY(0);
+                opacity: 1;
+            }
+
         }
     }
 }

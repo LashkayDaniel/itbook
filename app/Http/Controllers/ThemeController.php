@@ -346,7 +346,7 @@ class ThemeController extends Controller
 
     public function search(Request $request)
     {
-        $searchTerm = strtolower($request->input('searchText'));
+        $searchTerm = $request->input('searchText');
 
         $elements = Theme::with('section')->get();//->pluck('description');
 
@@ -370,9 +370,13 @@ class ThemeController extends Controller
                 ) !== false) { // Здійснити регістронезалежний пошук з підтримкою кирилиці
                 $results[] = $element;
             }
-        }
 
+//            $pattern = "/{$searchTerm}/i";
+//            if (preg_match($pattern, $text)) { // Здійснити регістронезалежний пошук за введеним виразом
+//                $results[] = $element;
+//            }
+        }
+//
         return response()->json($results);
     }
-
 }

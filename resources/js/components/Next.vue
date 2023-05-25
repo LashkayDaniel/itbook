@@ -8,7 +8,7 @@
     <div class="container">
 
         <aside class="themes">
-            <div class="search" v-if="! preloader.themes">
+            <div class="search" v-if="!preloader.themes">
                 <input class="search__input"
                        type="text"
                        name="search"
@@ -319,21 +319,27 @@ export default {
     created() {
         this.getSections();
         this.checkUserToken();
-        // window.addEventListener('unload', function () {
-        //     this.deleteView()
-        //     console.log('bye')
-        // });
+
     },
 
 
     mounted() {
-        this.createView();
-
-
+        // this.createView();
+        // document.addEventListener("visibilitychange", function () {
+        //     if (document.visibilityState === 'visible') {
+        //         // Код, який виконується, коли сторінка стає видимою
+        //         console.log("Користувач повернувся на сторінку");
+        //
+        //     } else {
+        //         // Код, який виконується, коли сторінка стає невидимою
+        //         console.log("Користувач покинув сторінку");
+        //         this.deleteView()
+        //     }
+        // });
     },
 
     beforeUnmount() {
-        this.deleteView()
+        // this.deleteView()
     }
 
 }
