@@ -123,6 +123,8 @@ return [
 
     'key' => env('APP_KEY'),
 
+    'charset' => 'utf-8',
+
     'cipher' => 'AES-256-CBC',
 
     /*
@@ -211,6 +213,5 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
-
 
 ];

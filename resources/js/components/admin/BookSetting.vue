@@ -751,7 +751,7 @@ export default {
         },
 
         deleteSectionById() {
-            if (!confirm(`Ви впевнені що бажаєте видалити розділ? Всі теми будуть також видалені`)) {
+            if (!confirm(`Ви впевнені, що бажаєте видалити розділ? Всі теми будуть також видалені`)) {
                 this.popupConfig('error', 'Не вдалося видалити розділ!')
                 this.deleteSection.selectedSection = ''
                 return;

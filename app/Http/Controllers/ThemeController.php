@@ -7,6 +7,7 @@ use App\Models\Theme;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use PhpOffice\PhpWord\PhpWord;
 
 class ThemeController extends Controller
 {
@@ -370,13 +371,10 @@ class ThemeController extends Controller
                 ) !== false) { // Здійснити регістронезалежний пошук з підтримкою кирилиці
                 $results[] = $element;
             }
-
-//            $pattern = "/{$searchTerm}/i";
-//            if (preg_match($pattern, $text)) { // Здійснити регістронезалежний пошук за введеним виразом
-//                $results[] = $element;
-//            }
         }
-//
+
         return response()->json($results);
     }
+
+
 }

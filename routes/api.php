@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\ThemeController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ViewController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -111,6 +112,11 @@ Route::prefix('/theme')->group(function () {
     Route::post('/search', [ThemeController::class, 'search']);
 
     Route::delete('/delete/{id}', [ThemeController::class, 'delete']);
+});
+
+Route::prefix('/user')->group(function () {
+    Route::get('/getAll', [UserController::class, 'index']);
+    Route::delete('/delete/{id}', [UserController::class, 'destroy']);
 });
 
 Route::prefix('/view')->group(function () {

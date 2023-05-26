@@ -17,11 +17,7 @@
                     v-for="item in results"
                     @click="showNextResult(item)">
                     <div class="item__content">
-                        <a href="" class="item__title">{{ item.section.name }}. {{ item.title }}</a>
-                        <!--                    <p class="item__subtitle"-->
-                        <!--                       v-for="text in JSON.parse(item.description)"-->
-                        <!--                       v-html="highlightText(text, this.inputValue)"-->
-                        <!--                    ></p>-->
+                        <h2  class="item__title">{{ item.section.name }}. {{ item.title }}</h2>
                         <p class="item__subtitle">Знайдено: {{ item.countFound }}
                         </p>
                     </div>
