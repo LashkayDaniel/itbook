@@ -2,7 +2,6 @@
     users
     <msg-popup v-if="popup.show" :message="popup.message" :type="popup.type"/>
     <section class="users-list">
-        <!--        <button @click="this.showAddProduct=true" class="products-list__btn-add">Додати товар</button>-->
         <table class="users-list__table">
             <tr>
                 <th>Id</th>

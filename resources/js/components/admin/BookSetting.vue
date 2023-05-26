@@ -63,14 +63,20 @@
                     </button>
 
                     <button class="block__btn-add-new"
-                            @click="">
+                            @click="addList.showPanel = !addList.showPanel">
                         Додати список
+                    </button>
+
+                    <button class="block__btn-add-new"
+                            @click="addNote.showPanel = !addNote.showPanel">
+                        Додати примітку
                     </button>
 
                     <div v-if="this.addParagraph.showPanel" class="paragraph">
                         <label for="paragraph" class="paragraph__label">Введіть текст:</label>
                         <textarea v-model="addParagraph.inputText" name="paragraph" class="paragraph__input"
-                                  placeholder="Введіть текст"/>
+                                  placeholder="Введіть текст"
+                                  @keydown.enter="addNewParagraph(this.addParagraph.inputText)"/>
                         <button class="paragraph__btn-add"
                                 @click="addNewParagraph(this.addParagraph.inputText)"
                         >Додати
@@ -82,7 +88,8 @@
                         <input v-model="addImageName.imageName"
                                name="paragraph"
                                class="paragraph__input-small"
-                               placeholder="Введіть назву"/>
+                               placeholder="Введіть назву"
+                               @keydown.enter="addNewImageName(addImageName.imageName)"/>
                         <button class="paragraph__btn-add"
                                 @click="addNewImageName(addImageName.imageName)"
                         >Додати
@@ -92,7 +99,8 @@
                     <div v-if="this.addCode.showPanel" class="paragraph">
                         <label for="paragraph" class="paragraph__label">Введіть код:</label>
                         <textarea v-model="addCode.inputCode" name="paragraph" class="paragraph__input"
-                                  placeholder="Введіть код"/>
+                                  placeholder="Введіть код"
+                                  @keydown.enter="addNewCode(this.addCode.inputCode)"/>
                         <button class="paragraph__btn-add"
                                 @click="addNewCode(this.addCode.inputCode)"
                         >Додати
@@ -104,13 +112,37 @@
                         <input v-model="addSubparagraph.inputName"
                                name="paragraph"
                                class="paragraph__input-small"
-                               placeholder="Введіть назву"/>
+                               placeholder="Введіть назву"
+                               @keydown.enter="addNewSubparagraph(this.addSubparagraph.inputName)"/>
                         <button class="paragraph__btn-add"
                                 @click="addNewSubparagraph(this.addSubparagraph.inputName)"
                         >Додати
                         </button>
                     </div>
 
+                    <div v-if="this.addList.showPanel" class="paragraph">
+                        <label for="paragraph" class="paragraph__label">Введіть елемент списку:</label>
+                        <input v-model="addList.inputName"
+                               name="paragraph"
+                               class="paragraph__input-small"
+                               placeholder="Введіть назву"
+                               @keydown.enter="addNewList(this.addList.inputName)"/>
+                        <button class="paragraph__btn-add"
+                                @click="addNewList(this.addList.inputName)"
+                        >Додати
+                        </button>
+                    </div>
+
+                    <div v-if="this.addNote.showPanel" class="paragraph">
+                        <label for="paragraph" class="paragraph__label">Введіть код:</label>
+                        <textarea v-model="addNote.inputText" name="paragraph" class="paragraph__input"
+                                  placeholder="Введіть код"
+                                  @keydown.enter="addNewNote(this.addNote.inputText)"/>
+                        <button class="paragraph__btn-add"
+                                @click="addNewNote(this.addNote.inputText)"
+                        >Додати
+                        </button>
+                    </div>
 
                 </div>
                 <hr class="break-line">
@@ -313,6 +345,16 @@ export default {
                 inputName: '',
             },
 
+            addList: {
+                showPanel: false,
+                inputName: '',
+            },
+
+            addNote: {
+                showPanel: false,
+                inputText: '',
+            },
+
             htmlContentArray: [],
             sections: [],
             hasEdit: false,
@@ -368,13 +410,11 @@ export default {
     },
     methods: {
         addNewParagraph(text) {
-            if (text.length <= 6) {
+            if (text.trim().length <= 6) {
                 this.popupConfig('warning', 'Поле повинно містити щонайменше 6 символів')
                 return;
             }
-
             this.htmlContentArray.push(`<p class="description__paragraph">${text}</p>`);
-
             this.popupConfig('success', 'Елемент успішно додано!')
 
             this.addParagraph.showPanel = false;
@@ -390,7 +430,7 @@ export default {
         },
 
         addNewImageName(name) {
-            if (name.length < 5) {
+            if (name.trim().length < 5) {
                 this.popupConfig('warning', 'Поле повинно містити щонайменше 5 символів')
                 return;
             }
@@ -403,7 +443,7 @@ export default {
         },
 
         addNewCode(code) {
-            if (code.length <= 6) {
+            if (code.trim().length < 6) {
                 this.popupConfig('warning', 'Поле повинно містити щонайменше 6 символів')
                 return;
             }
@@ -417,7 +457,7 @@ export default {
         },
 
         addNewSubparagraph(name) {
-            if (name.length < 4) {
+            if (name.trim().length < 4) {
                 this.popupConfig('warning', 'Поле повинно містити щонайменше 4 символів')
                 return;
             }
@@ -425,6 +465,32 @@ export default {
 
             this.addSubparagraph.showPanel = false;
             this.addSubparagraph.inputName = ''
+            this.fillingPage.emptyPage = false;
+            this.hasEdit = true
+        },
+
+        addNewList(name) {
+            if (name.trim().length < 2) {
+                this.popupConfig('warning', 'Поле повинно містити щонайменше 2 символів')
+                return;
+            }
+            this.htmlContentArray.push(`<p class="description__list-item">${name}</p>`);
+
+            this.addList.showPanel = false;
+            this.addList.inputName = ''
+            this.fillingPage.emptyPage = false;
+            this.hasEdit = true
+        },
+
+        addNewNote(text) {
+            if (text.trim().length <= 6) {
+                this.popupConfig('warning', 'Поле повинно містити щонайменше 6 символів')
+                return;
+            }
+            this.htmlContentArray.push(`<div class="description__note"><p class="description__note-text">${text}</p></div>`);
+
+            this.addNote.showPanel = false;
+            this.addNote.inputCode = ''
             this.fillingPage.emptyPage = false;
             this.hasEdit = true
         },

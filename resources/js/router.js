@@ -6,6 +6,7 @@ import Main from "./components/Main.vue";
 import Admin from "./components/admin/Admin.vue";
 import SignIn from "./components/auth/SignIn.vue";
 import SignUp from "./components/auth/SignUp.vue";
+import ResetPass from "./components/auth/ResetPass.vue";
 
 const routes = [
     {path: '/', name: 'main', component: Main},
@@ -13,6 +14,7 @@ const routes = [
     {path: '/dictionary', name: 'dictionary', component: Dictionary},
     {path: '/auth/sign-in', name: 'sign-in', component: SignIn},
     {path: '/auth/sign-up', name: 'sign-up', component: SignUp},
+    {path: '/auth/reset-password', name: 'reset-pass', component: ResetPass},
     {path: '/admin', name: 'admin', component: Admin},
 
 

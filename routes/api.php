@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\UserController;
@@ -90,6 +91,8 @@ Route::middleware('auth:sanctum')->get('/userInfo', function (Request $request) 
     ]);
 });
 // end test
+
+Route::post('/password/reset', [ResetPasswordController::class, 'sendResetLinkEmail']);
 
 Route::prefix('/section')->group(function () {
     Route::get('get', [SectionController::class, 'index']);
