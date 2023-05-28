@@ -68,6 +68,7 @@ Route::prefix('/user')->group(function () {
 Route::prefix('/dictionary')->group(function () {
     Route::get('/get', [DictionaryController::class, 'index']);
     Route::post('/create', [DictionaryController::class, 'store']);
+    Route::delete('/delete/{dictionary}', [DictionaryController::class, 'destroy']);
 });
 
 Route::prefix('/view')->group(function () {

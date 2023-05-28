@@ -50,15 +50,19 @@
         display: flex;
         align-items: center;
         margin: 15px 0;
-        padding: 10px 20px;
+        padding: 10px 25px;
         border-radius: 5px;
         font-weight: 600;
         font-size: 17px;
         color: #92aecc;
 
+        span {
+            padding-right: 20px;
+        }
+
         img {
-            width: 30px;
-            height: 30px;
+            width: 25px;
+            height: 25px;
             margin-right: 10px;
         }
 
@@ -74,6 +78,7 @@
             box-shadow: 0px 0px 10px 3px rgba(98, 113, 117, 0.75);
         }
     }
+
 }
 
 .bottom {

@@ -97,8 +97,8 @@ class ThemeController extends Controller
             $validateUser = Validator::make(
                 $request->all(),
                 [
-                    'title' => 'required|min:5',
-                    'section_name' => 'required|min:5|unique:themes,title',
+                    'title' => 'required|min:5|unique:themes,title',
+                    'section_name' => 'required|min:5',
                     'insert_after' => 'min:5',
                 ]
             );
@@ -375,6 +375,5 @@ class ThemeController extends Controller
 
         return response()->json($results);
     }
-
 
 }

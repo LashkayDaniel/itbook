@@ -1,0 +1,44 @@
+.words-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px 0;
+
+    &__row {
+        display: flex;
+        background-color: rgba(156, 163, 175, 0.37);
+        margin: 0 5px;
+        padding: 5px;
+        border-radius: 5px;
+    }
+
+}
+
+.row {
+    &__title {
+        flex: auto;
+        text-align: start;
+        padding: 0 10px;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #658fcb;
+        font-size: 16px;
+
+        &:after {
+            content: '—';
+            padding: 0 20px;
+        }
+    }
+
+
+    &__description {
+        width: 60%;
+        color: #7790b2;
+    }
+
+    &__btn-remove {
+        margin-left: 10px;
+        color: #e12e2e;
+        font-weight: bold;
+    }
+}

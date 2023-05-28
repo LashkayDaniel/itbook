@@ -121,10 +121,22 @@ class DictionaryController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \App\Models\Dictionary $dictionary
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Dictionary $dictionary)
     {
-        //
+        try {
+            $dictionary->deleteOrFail();
+
+            return response()->json([
+                'status' => true,
+                'deleted_dictionary' => $dictionary,
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
     }
 }

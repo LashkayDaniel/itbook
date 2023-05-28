@@ -643,7 +643,6 @@ export default {
 
             axios.post('api/section/create', data)
                 .then(response => {
-                    console.log(response);
                     this.newSection.addSuccess = response.data.status;
                     this.popupConfig('success', 'Новий розділ успішно створено!')
                     this.getAllSections()
@@ -656,7 +655,9 @@ export default {
                     }, 2000);
                 })
                 .catch(error => {
-                    console.log(error);
+                    if (error.response.data.errors.section_name[0]) {
+                        this.popupConfig('warning', `Назва "${sectionName}" уже існує!`);
+                    }
                 })
         },
 
@@ -686,7 +687,6 @@ export default {
 
             axios.post('api/theme/create', data)
                 .then(response => {
-                    console.log(response);
                     this.newTheme.addSuccess = response.data.status;
                     this.popupConfig('success', 'Нову тему успішно створено!')
                     this.getAllThemes()
@@ -699,7 +699,7 @@ export default {
                     }, 2000);
                 })
                 .catch(error => {
-                    console.log(error);
+                    this.popupConfig('warning', error.response.data.errors.title[0]);
                 })
         },
 
@@ -810,7 +810,6 @@ export default {
                     this.getAllThemes()
                 })
                 .catch(error => {
-                    console.log(error);
                     this.popupConfig('error', error.response.data.errors.new_name[0])
                     this.renameTheme.newThemeName = ''
                 })
@@ -829,6 +828,9 @@ export default {
                     this.popupConfig('success', 'Розділ успішно видалено!')
                     this.deleteSection.selectedSection = ''
                     this.getAllSections()
+                })
+                .catch(error => {
+                    console.log(error);
                 })
 
         },
@@ -851,6 +853,9 @@ export default {
 
                     this.getAllThemes()
                 })
+                .catch(error => {
+                    console.log(error);
+                })
         },
 
         popupConfig(type, message) {
@@ -865,44 +870,18 @@ export default {
         },
     },
     created() {
-        // this.beforeExit();
-        // window.addEventListener('beforeunload', function (e) {
-        //     // Відміна захоплення події, якщо користувач вибирає залишитися на сторінці
-        //     e.preventDefault();
-        //     // Встановлення тексту за замовчуванням
-        //     e.returnValue = '';
-        //     // Показуємо спливаюче вікно
-        //     var confirmationMessage = 'Are you sure you want to leave?';
-        //     (e || window.event).returnValue = confirmationMessage;
-        //     return confirmationMessage;
-        // });
-
-        //// api call
         this.getAllSections();
         this.getAllThemes();
 
     },
 
     beforeUnmount() {
-        // if (this.hasEdit) {
-        //     window.addEventListener('load', function (e) {
-        //         e.preventDefault();
-        //         if (confirm('У вас є незбережена інформація. Зберегти її?')) {
-        //             this.saveHtmlContent()
-        //         } else {
-        //             alert('no saved')
-        //         }
-        //
-        //     });
-        // }
         if (this.hasEdit) {
             if (confirm('У вас є незбережена інформація. Зберегти її?')) {
                 this.saveHtmlContent()
             }
         }
-
     },
-
 }
 </script>
 
