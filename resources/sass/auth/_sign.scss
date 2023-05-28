@@ -139,7 +139,12 @@
         &:focus {
             outline: none;
         }
+    }
 
+    &__pass-field {
+        position: relative;
+        display: inline-block;
+        width: 100%;
     }
 
     &__button {
@@ -161,7 +166,20 @@
 
         }
     }
+}
 
+.pass-field {
+    &__input {
+        padding-right: 80px;
+    }
+
+    &__btn-show {
+        font-size: 13px;
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        transform: translateY(-85%);
+    }
 }
 
 .links {

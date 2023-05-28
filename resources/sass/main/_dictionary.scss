@@ -1,0 +1,117 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    color: #a0aec0;
+
+    &__line {
+        background-color: #34578c;
+        width: 5px;
+        height: 100%;
+        border-radius: 5px;
+        position: absolute;
+        top: 65px;
+    }
+
+    &__items {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        row-gap: 30px;
+        padding: 20px 0;
+    }
+
+
+    &__title {
+        font-size: 30px;
+        text-align: center;
+        font-weight: bold;
+        letter-spacing: 1px;
+        margin: 20px 0;
+        border-radius: 10px;
+        border-bottom: solid 3px #759dbe;
+        color: #90b1cc;
+        padding: 0 5px 5px 5px;
+    }
+}
+
+.items {
+    &__row {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        column-gap: 20px;
+    }
+
+
+    &__line {
+        //background-color: #9ca3af;
+        background: #30CACF;
+        background: radial-gradient(circle farthest-side at right center, #30CACF 0%, #306fde 100%);
+        width: 100px;
+        max-width: 200px;
+        height: 2px;
+        //transform: rotate(90deg);
+        position: relative;
+        transform: translateX(5px);
+
+        &:after {
+            content: '';
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border: solid 2px #0dcaf0;
+            border-radius: 50%;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translate(100%, -50%);
+        }
+    }
+
+
+    &__title {
+        margin: 0 20px;
+        font-size: 20px;
+        text-align: end;
+        color: #1572ab;
+        font-weight: bold;
+        letter-spacing: .4px;
+    }
+
+    &__description {
+        margin: 0 30px;
+        padding: 5px 10px;
+        border-radius: 15px;
+        border: solid 2px;
+        border-color: radial-gradient(circle farthest-corner at center center, #30CACF 0%, #1B5DCF 100%);
+        color: #4595a8;
+        max-width: 400px;
+        flex: auto;
+
+    }
+}
+
+.btn-to-main {
+    color: #5d90cb;
+    position: fixed;
+    top: 25px;
+    left: 20px;
+    font-size: 18px;
+
+    &:hover {
+        color: #249bce;
+        transition: .3s;
+    }
+
+    &:before {
+        content: '<';
+        margin-right: 10px;
+        font-size: 20px;
+        color: #9ca3af;
+    }
+}
+

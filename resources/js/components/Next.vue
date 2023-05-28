@@ -37,12 +37,13 @@
                 <li v-for="(section,index) in this.sections">
                     <div class="list__item"
                          @click="toggleSection(index)">
-                        <!--                         @click="section.isExpand=!section.isExpand;">-->
                         <div class="item__name"
                              :class="{'item__name--active' : section.isExpand}">
                             {{ section.section }}
                         </div>
-                        <div class="item__icon" :class="{'item__icon--active':section.isExpand}">
+                        <div class="item__icon"
+                             :class="{'item__icon--active':section.isExpand}"
+                             @click="section.isExpand=false">
                             <span></span>
                         </div>
                     </div>
@@ -55,15 +56,6 @@
                                :class="{'link__name--active link__name--disabled' : theme === selectedTheme.name}">
                                 {{ theme }}
                             </a>
-                        </li>
-                        <hr v-if="false">
-                        <p v-if="false" class="labs__title">Лабораторні роботи:</p>
-                        <li v-if="false" class="labs__item" v-for="labs in section.labs">
-                            <a class="">{{ labs.title }}</a>
-                            <img src="@/../../resources/img/lock-icon.png"
-                                 width="20"
-                                 style="opacity: .8; margin-right: 10px"
-                                 alt="lock icon">
                         </li>
                     </ol>
                     <hr>
@@ -141,7 +133,7 @@ export default {
         Loader,
         Search
     },
-    data: function () {
+    data() {
         return {
             preloader: {
                 themes: true,
@@ -175,29 +167,12 @@ export default {
                 .then(response => {
                     let data = response.data;
                     data.forEach(item => {
-                        item.labs = [
-                            {
-                                id: 1,
-                                title: 'lab 1'
-                            },
-                            {
-                                id: 2,
-                                title: 'lab 2'
-                            }, {
-                                id: 3,
-                                title: 'lab 3'
-                            },
-                        ];
-
                         item.isExpand = false;
-                        item.computedHeight = 0;
-
                     })
 
                     this.sections = data;
                     this.preloader.themes = false;
 
-                    // console.log(data);
                 })
                 .catch(error => {
                     console.log(error)
@@ -208,6 +183,11 @@ export default {
             this.sections.forEach((section, i) => {
                 section.isExpand = i === index;
             });
+
+        },
+        hideSection(index) {
+            this.sections[index].isExpand = false
+            console.log(this.sections[index].isExpand);
         },
 
         getContent(themeName) {

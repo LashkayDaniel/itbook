@@ -14,9 +14,21 @@
                        required>
 
                 <label for="password" class="form__label">Пароль</label>
-                <input v-model="password" class="form__input" name="password" type="password"
-                       placeholder="Введіть пароль"
-                       required>
+                <div class="form__pass-field">
+                    <input v-model="password"
+                           ref="password"
+                           class="pass-field__input form__input"
+                           name="password"
+                           :type="passwordType"
+                           placeholder="Введіть пароль"
+                    >
+                    <button v-if="password.length>0"
+                            type="button"
+                            class="pass-field__btn-show"
+                            @click.prevent="showPassword">
+                        {{ passwordType === 'password' ? 'Показати' : 'Приховати' }}
+                    </button>
+                </div>
 
                 <p v-if="loginError" class="form__label-warning">{{ this.loginError }}</p>
 
@@ -27,7 +39,7 @@
             </form>
 
             <div v-if="!forAdmin" class="block__links">
-                <a class="links__link" href="#">Забули пароль?</a>
+                <router-link class="links__link" :to="{name: 'reset-pass'}">Забули пароль?</router-link>
                 <router-link class="links__link" :to="{name: 'sign-up'}">Реєстрація</router-link>
             </div>
         </div>
@@ -48,12 +60,16 @@ export default {
         return {
             email: '',
             password: '',
+            passwordType: 'password',
             loginError: '',
             loginSuccess: false,
         }
     },
 
     methods: {
+        showPassword() {
+            this.passwordType = this.passwordType === 'password' ? 'text' : 'password';
+        },
         loginUser() {
             console.log('log from user login')
             if (this.email === '' || this.password === '') {

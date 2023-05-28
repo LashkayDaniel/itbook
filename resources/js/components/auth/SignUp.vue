@@ -30,12 +30,21 @@
 
 
                 <label for="password" class="form__label">Пароль</label>
-                <input type="password"
-                       id="password"
-                       v-model="password"
-                       class="form__input"
-                       placeholder="Введіть пароль"
-                       required/>
+                <div class="form__pass-field">
+                    <input v-model="password"
+                           ref="password"
+                           class="pass-field__input form__input"
+                           name="password"
+                           :type="passwordType"
+                           placeholder="Введіть пароль"
+                    >
+                    <button v-if="password.length>0"
+                            type="button"
+                            class="pass-field__btn-show"
+                            @click.prevent="showPassword">
+                        {{ passwordType === 'password' ? 'Показати' : 'Приховати' }}
+                    </button>
+                </div>
                 <p class="form__label-error">{{ errors.password }}</p>
 
 
@@ -71,6 +80,7 @@ export default {
             name: '',
             email: '',
             password: '',
+            passwordType: 'password',
             confirmPassword: '',
 
             signUpSuccess: false,
@@ -79,6 +89,10 @@ export default {
         };
     },
     methods: {
+
+        showPassword() {
+            this.passwordType = this.passwordType === 'password' ? 'text' : 'password';
+        },
         register() {
             this.errors = {}
 

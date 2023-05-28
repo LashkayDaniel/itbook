@@ -1,5 +1,4 @@
 <template>
-    users
     <msg-popup v-if="popup.show" :message="popup.message" :type="popup.type"/>
     <section class="users-list">
         <table class="users-list__table">
