@@ -122,9 +122,9 @@
 </template>
 
 <script>
-import ToTop from "@/components/ToTop.vue";
-import Loader from "@/components/Loader.vue";
-import Search from "@/components/Search.vue";
+import ToTop from "@/components/more/ToTop.vue";
+import Loader from "@/components/more/Loader.vue";
+import Search from "@/components/more/Search.vue";
 
 export default {
     name: "Next",

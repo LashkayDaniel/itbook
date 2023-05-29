@@ -8,12 +8,10 @@
 import Main from "./Main.vue";
 
 export default {
-
     name: "App",
     components: {
         main: Main
     }
-
 }
 </script>
 

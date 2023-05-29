@@ -314,8 +314,8 @@
 </template>
 
 <script>
-import MsgPopup from "@/components/MsgPopup.vue";
-import Loader from "@/components/Loader.vue";
+import MsgPopup from "../more/MsgPopup.vue";
+import Loader from "../more/Loader.vue";
 
 export default {
     name: "BookSetting",

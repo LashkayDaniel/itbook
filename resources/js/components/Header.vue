@@ -1,18 +1,13 @@
 <template>
     <header>
-        <nav class="navigation-wrapper" :class="{'nav-animation' : isActive}">
-            <div class="container">
+        <nav class="navigation-wrapper" >
+            <div class="container" :class="{'nav-animation' : isActive}">
                 <img class="logo" src="../../img/itbook.svg" alt=logo>
-
 
                 <ul v-if="isActive" class="navigation">
                     <li v-if="!token" class="navigation__item">
                         <router-link class="navigation__item-link" :to="{name: 'sign-in'}">Авторизація</router-link>
                     </li>
-
-                    <!--                    <li class="navigation__item">-->
-                    <!--                        <router-link class="navigation__item-link" to="example">Example</router-link>-->
-                    <!--                    </li>-->
 
                     <li v-if="token" class="navigation__item">
                         <router-link class="navigation__item-link" to="dictionary">Словник</router-link>
@@ -23,12 +18,10 @@
                              @click="showDropdown = !showDropdown"
                              :class="{'dropdown__avatar-active' : this.showDropdown}">
                         <ul v-if="showDropdown" class="dropdown__list">
-                            <li class="dropdown__item"><a href="">пункт 1</a></li>
-                            <li class="dropdown__item"><a href="">пункт 1</a></li>
                             <li class="dropdown__item">{{ this.userInfo.name }}</li>
                             <li class="dropdown__item">{{ this.userInfo.email }}</li>
                             <li class="dropdown__item">
-                                <button @click.prevent="logout">Logout</button>
+                                <button @click.prevent="logout">Вихід</button>
                             </li>
                         </ul>
                     </li>

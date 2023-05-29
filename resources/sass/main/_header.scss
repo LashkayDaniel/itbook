@@ -22,30 +22,27 @@ li {
     max-width: 1600px;
     margin: 0 auto;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
 }
 
 .nav-animation {
-    animation: logo 1.5s linear 1 normal running 0s forwards;
+    animation: logo 1s linear 1 normal running 0s forwards;
 }
 
 
 @keyframes logo {
-
     50% {
         justify-content: space-around;
-        transition: all 2s ease 0s;
+        transition: justify-content 0.5s ease;
     }
     80% {
         justify-content: space-evenly;
-        transition: all 2s ease 0s;
-
+        transition: justify-content 0.5s ease;
     }
     100% {
         justify-content: space-between;
-        transition: all 2s ease 0s;
-
+        transition: justify-content 0.5s ease;
     }
 }
 
@@ -65,10 +62,6 @@ li {
 .logo {
     //animation: logo-rotate 10s ease-out infinite;
     height: 55px;
-
-    &:hover {
-        opacity: 0.8;
-    }
 }
 
 .navigation {
@@ -121,6 +114,7 @@ li {
 
         &-active {
             box-shadow: rgb(50, 208, 208) 0px 20px 20px 0px;
+            border: solid 2px #3fa4e3;
         }
     }
 
@@ -128,21 +122,23 @@ li {
     &__list {
         position: absolute;
         top: 100%;
-        min-width: 140px;
+        min-width: 150px;
         right: 0;
         width: 100%;
         text-align: center;
-        background-color: #fff;
+        background-color: #c2d9ef;
         list-style: none;
         padding: 0;
         margin: 5px 0;
-        border: 1px solid #ccc;
-        border-radius: 3px;
+        border: 2px solid #2174b0;
+        border-radius: 5px;
+
     }
 
     &__item {
-        padding: 5px;
-        border-bottom: 1px solid #ccc;
+        padding: 5px 10px;
+        color: #7493d9;
+        border-bottom: 1px solid #4291be;
 
         &:last-child {
             border-bottom: none;

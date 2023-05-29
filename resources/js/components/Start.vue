@@ -49,9 +49,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400&display=swap');
-
-
 .container {
     max-width: 900px;
     margin: 0 auto;
@@ -182,6 +179,38 @@ export default {
                 opacity: 1;
             }
 
+        }
+    }
+
+
+    //// adaptive media queries
+    @media (max-width: 780px) {
+        .block {
+            &__title {
+                font-size: 30px;
+            }
+
+            &__text {
+                font-size: 20px;
+            }
+        }
+    }
+
+    @media (max-width: 460px) {
+        .block {
+            &__title {
+                font-size: 25px;
+            }
+
+            &__text {
+                font-size: 16px;
+            }
+
+            &__btn-start {
+                font-size: 18px;
+                padding: 5px 20px;
+
+            }
         }
     }
 }

@@ -39,7 +39,6 @@
             </form>
 
             <div v-if="!forAdmin" class="block__links">
-                <router-link class="links__link" :to="{name: 'reset-pass'}">Забули пароль?</router-link>
                 <router-link class="links__link" :to="{name: 'sign-up'}">Реєстрація</router-link>
             </div>
         </div>

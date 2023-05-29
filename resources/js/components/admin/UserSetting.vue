@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import MsgPopup from "@/components/MsgPopup.vue";
+import MsgPopup from "../more/MsgPopup.vue";
 
 export default {
     name: "UserSetting",
