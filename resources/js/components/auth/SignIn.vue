@@ -8,7 +8,6 @@
             </div>
             <div class="block__title">Авторизація</div>
             <form class="block__form" method="post">
-
                 <label for="login" class="form__label">Email</label>
                 <input v-model="email" class="form__input" name="login" type="email" placeholder="Введіть email"
                        required>
