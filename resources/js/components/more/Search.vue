@@ -7,7 +7,7 @@
                    @keyup.enter="search"
                    @input="this.results=[]; this.nothingFound=false"
                    v-model="inputValue">
-            <button class="block__btn" @click="search">Search</button>
+            <button class="block__btn" @click="search">Пошук</button>
             <button class="block__close-btn"
                     @click="close">
                 ✖
@@ -17,7 +17,7 @@
                     v-for="item in results"
                     @click="showNextResult(item)">
                     <div class="item__content">
-                        <h2  class="item__title">{{ item.section.name }}. {{ item.title }}</h2>
+                        <h2 class="item__title">{{ item.section.name }}. {{ item.title }}</h2>
                         <p class="item__subtitle">Знайдено: {{ item.countFound }}
                         </p>
                     </div>
@@ -137,10 +137,10 @@ export default {
 }
 
 .block {
-
     &__input {
         padding: 5px 10px;
         border-radius: 5px;
+        margin-bottom: 7px;
     }
 
     &__btn {
@@ -210,12 +210,10 @@ export default {
             border-bottom: solid 1px #6fa6ec;
             transition: all .4s;
         }
-
     }
 
     &__subtitle {
         color: #80c1e1;
-
     }
 
     &__btn {
@@ -230,9 +228,54 @@ export default {
             border-left: solid 2px rgb(88, 201, 231);
             transform: rotate(220deg);
         }
-
     }
+}
 
+@media (max-width: 1000px) {
+    .search-wrapper__block {
+        width: 70%;
+        min-height: 300px;
+        max-height: 50%;
+    }
+}
+
+@media (max-width: 600px) {
+    .search-wrapper__block {
+        width: 80%;
+    }
+    .item {
+        &__subtitle {
+            font-size: 14px;
+        }
+    }
+}
+
+@media (max-width: 450px) {
+    .search-wrapper__block {
+        width: 90%;
+    }
+    .item {
+        &__title {
+            font-size: 15px;
+        }
+
+        &__subtitle {
+            font-size: 14px;
+        }
+
+        &__btn {
+            &:after {
+                width: 12px;
+                height: 12px;
+            }
+        }
+    }
+}
+
+@media (max-width: 400px) {
+    .search-wrapper__block {
+        padding: 20px;
+    }
 }
 
 </style>

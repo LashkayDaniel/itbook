@@ -70,6 +70,24 @@ export default {
         color: #47b6a9;
         transition: all .3s;
     }
+}
 
+@media (max-width: 850px) {
+
+    .logo {
+        transform: scale(.9);
+    }
+    .title {
+        font-size: 40px;
+    }
+
+    .subtitle {
+        font-size: 20px;
+    }
+
+    .btn {
+        bottom: -30px;
+        font-size: 16px;
+    }
 }
 </style>
