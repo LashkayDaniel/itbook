@@ -7,16 +7,17 @@
         @showFindResult="showFoundedTheme"
     />
     <div class="container">
-        <aside v-if="!preloader.description && windowWidth<=1100 && showAsideMenu"
-               class="themes-menu"
-               @click="this.showAsideMenu = !this.showAsideMenu">
+        <aside class="themes-menu"
+               :class="{'themes-menu--active' : !preloader.description}"
+               @click="showMenu">
             <div class="themes-menu__btn">ok</div>
             <div class="themes-menu__word">Зміст</div>
             <div class="themes-menu__btn">ок</div>
         </aside>
 
-        <aside v-else
-               class="themes">
+        <aside ref="themes" class="themes"
+               :class="[{'themes--hide' : !preloader.description && showAsideMenu},
+               {'themes--active' : !showAsideMenu}]">
             <div class="search" v-if="!preloader.themes">
                 <input class="search__input"
                        type="text"
@@ -179,6 +180,11 @@ export default {
     },
 
     methods: {
+        showMenu() {
+            this.showAsideMenu = !this.showAsideMenu
+            console.log(this.showAsideMenu);
+        },
+
         getSections() {
             axios.get('api/section/get')
                 .then(response => {
@@ -217,6 +223,15 @@ export default {
 
             this.selectedTheme = {
                 name: themeName,
+            }
+
+            console.log('show Side Menu: ' + this.showAsideMenu);
+            console.log('preloader: ' + this.preloader.description);
+
+            if (this.windowWidth < 1100 && !this.showAsideMenu) {
+                this.$refs.themes.className = 'themes--hide';
+                console.log(this.$refs.themes.className);
+
             }
 
             axios.post('api/theme/getContent', {

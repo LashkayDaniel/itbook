@@ -62,11 +62,9 @@ export default {
     methods: {
         showBurger() {
             this.activeBurger = !this.activeBurger;
-            console.log(this.activeBurger);
         },
         hideBurger() {
-            // console.log(this.hide);
-            this.activeBurger = false//!this.hide;
+            this.activeBurger = false
         },
         checkToken(token) {
             axios.post('/api/auth/checkToken', {
