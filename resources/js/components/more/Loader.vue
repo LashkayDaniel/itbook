@@ -14,7 +14,7 @@ export default {
     height: 40px;
     margin: 40px auto;
     display: grid;
-    border: 3px solid #0000;
+    border: 3px solid;
     border-radius: 50%;
     border-color: #61c2ee #0000;
     animation: rotate 2s infinite linear;
@@ -43,6 +43,16 @@ export default {
 @keyframes rotate {
     100% {
         transform: rotate(1turn)
+    }
+}
+
+@media (max-width: 700px) {
+    .loader {
+        width: 30px;
+        height: 30px;
+        border: 2px solid;
+        border-color: #61c2ee #0000;
+
     }
 }
 </style>

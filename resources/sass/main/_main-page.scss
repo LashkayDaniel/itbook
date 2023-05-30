@@ -39,11 +39,14 @@
     background-color: #7f8fa8;
     flex-direction: column;
     justify-content: space-between;
-    padding: 10px 5px;
+    padding: 10px 8px;
     align-items: center;
 
     &__btn {
-
+        &:after {
+            content: '>>>';
+            font-weight: bold;
+        }
     }
 
     &__word {
@@ -313,7 +316,6 @@
 
     &__input {
         background-color: #47576b;
-        //border-bottom: 1px solid #9ca3af;
         border-radius: 5px 0 0 5px;
         font-size: 15px;
         color: #81a6f6;
@@ -459,8 +461,6 @@
     }
 
     .themes {
-
-
         &--hide {
             position: absolute;
             left: -1000px;
@@ -473,9 +473,6 @@
             bottom: 5%;
             height: 500px;
             overflow: scroll;
-            //
-            ////position: sticky;
-            //
             padding-top: 10px;
             z-index: 1;
             border-radius: 10px;
@@ -485,6 +482,11 @@
     }
 
     .themes-menu {
+
+        &__btn--active::after {
+            content: '<<<';
+        }
+
         &--active {
             display: flex;
         }
@@ -492,7 +494,92 @@
 }
 
 
-//@media (max-width: 1350px) {
-//
-//}
+@media (max-width: 780px) {
 
+    .themes-menu {
+        padding: 8px 5px;
+
+        &__word {
+            font-size: 18px;
+        }
+    }
+
+    ::v-deep .description {
+        &__title {
+            font-size: 25px;
+        }
+
+        &__paragraph, &__list-item, &__note-text {
+            font-size: 15px;
+        }
+
+        &__image {
+            max-width: 80%;
+        }
+
+        &__image-name {
+            font-size: 13px;
+        }
+
+        &__code {
+            font-size: 15px;
+        }
+
+        &__subparagraph {
+            font-size: 18px;
+        }
+
+        &__note {
+            &:before {
+                font-size: 25px;
+                width: 40px;
+                height: 40px;
+            }
+        }
+    }
+
+    .navigation {
+        &__link {
+            font-size: 13px;
+        }
+    }
+}
+
+@media (max-width: 650px) {
+    .item {
+        &__name {
+            font-size: 16px;
+        }
+    }
+
+    .link {
+        &__name {
+            font-size: 14px;
+        }
+    }
+
+    .search {
+        &__input {
+            font-size: 14px;
+        }
+
+        &__btn {
+            font-size: 14px;
+        }
+    }
+}
+
+@media (max-width: 450px) {
+    .themes {
+        margin: 0;
+        width: 100%;
+    }
+
+    .block {
+        padding: 0 10px;
+    }
+
+    .container {
+        padding: 0 10px;
+    }
+}

@@ -201,6 +201,53 @@
         &__text {
             font-size: 14px;
         }
+    }
+}
 
+@media (max-width: 768px) {
+    .block {
+        &__first-arrow {
+            max-width: 50px;
+            transform: scale(.5);
+        }
+
+        &__book-icon {
+            transform: scale(.6);
+        }
+
+        &__text {
+            font-size: 12px;
+        }
+    }
+
+    .empty-page {
+        &__image {
+            transform: scale(.8);
+        }
+
+        &__title {
+            font-size: 25px;
+        }
+
+        &__subtitle {
+            font-size: 12px;
+        }
+    }
+
+    .themes {
+        &__list--preloader {
+            li {
+                background-color: rgba(122, 127, 133, 0.31);
+                width: 250px;
+                height: 30px;
+            }
+        }
+    }
+}
+
+
+@media (max-width: 620px) {
+    .block {
+        display: none;
     }
 }

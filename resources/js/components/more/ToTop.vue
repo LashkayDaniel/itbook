@@ -88,40 +88,18 @@ export default {
 
 @media (max-width: 1025px) {
     .btn-to-top {
-        width: 45px;
-        height: 45px;
         right: 30px;
         bottom: 30px;
 
-        &:before {
-            width: 20px;
-            height: 20px;
-            transform: rotate(135deg) translate(-20%, -60%);
-        }
     }
 }
 
 @media (max-width: 768px) {
     .btn-to-top {
-        width: 40px;
-        height: 40px;
+        width: 45px;
+        height: 45px;
 
-        &:before {
-            transform: rotate(135deg) translate(-10%, -60%);
-        }
     }
 }
 
-@media (max-width: 508px) {
-    .btn-to-top {
-        width: 35px;
-        height: 35px;
-
-        &:before {
-            width: 15px;
-            height: 15px;
-            transform: rotate(135deg) translate(-30%, -60%);
-        }
-    }
-}
 </style>

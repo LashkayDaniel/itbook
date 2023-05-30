@@ -291,6 +291,14 @@ li {
         }
     }
 
+    .logo {
+        transform: scale(.9);
+    }
 }
 
-//// start end
+@media (max-width: 400px) {
+    .logo {
+        height: 50px;
+    }
+}
+

@@ -10,9 +10,11 @@
         <aside class="themes-menu"
                :class="{'themes-menu--active' : !preloader.description}"
                @click="showMenu">
-            <div class="themes-menu__btn">ok</div>
+            <div class="themes-menu__btn"
+                 :class="{'themes-menu__btn--active': !showAsideMenu}"></div>
             <div class="themes-menu__word">Зміст</div>
-            <div class="themes-menu__btn">ок</div>
+            <div class="themes-menu__btn"
+                 :class="{'themes-menu__btn--active': !showAsideMenu}"></div>
         </aside>
 
         <aside ref="themes" class="themes"
@@ -72,7 +74,7 @@
             </ol>
         </aside>
 
-        <section class="block">
+        <section ref="content-block" class="block">
             <article v-if="preloader.description" class="block__start">
                 <div class="block__first-arrow">
                     <span></span>
@@ -225,13 +227,10 @@ export default {
                 name: themeName,
             }
 
-            console.log('show Side Menu: ' + this.showAsideMenu);
-            console.log('preloader: ' + this.preloader.description);
-
+            this.$refs["content-block"].style.display = 'flex';
             if (this.windowWidth < 1100 && !this.showAsideMenu) {
                 this.$refs.themes.className = 'themes--hide';
-                console.log(this.$refs.themes.className);
-
+                this.showAsideMenu = true
             }
 
             axios.post('api/theme/getContent', {
@@ -263,7 +262,6 @@ export default {
                     }
                     this.showLoader = false
 
-                    console.log('section: ' + this.selectedSection.index + ', theme: ' + this.selectedTheme.index)
 
                     const sectionId = this.selectedSection.index;
                     const nextThemeId = this.selectedTheme.index + 1;
@@ -392,5 +390,10 @@ export default {
     justify-content: space-between;
 }
 
+@media (max-width: 450px) {
+    .container {
+        padding: 5px;
+    }
+}
 
 </style>
