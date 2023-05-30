@@ -392,7 +392,7 @@ export default {
 
 @media (max-width: 450px) {
     .container {
-        padding: 5px;
+        padding: 0;
     }
 }
 

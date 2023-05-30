@@ -223,6 +223,7 @@
             background-color: #528b9d;
             border-radius: 50%;
             margin-right: 7px;
+            transform: translateY(-20%);
         }
     }
 
@@ -482,7 +483,6 @@
     }
 
     .themes-menu {
-
         &__btn--active::after {
             content: '<<<';
         }
@@ -514,7 +514,7 @@
         }
 
         &__image {
-            max-width: 80%;
+            max-width: 90%;
         }
 
         &__image-name {
@@ -543,6 +543,11 @@
             font-size: 13px;
         }
     }
+    .bottom {
+        &__btn-next {
+            font-size: 16px;
+        }
+    }
 }
 
 @media (max-width: 650px) {
@@ -567,19 +572,87 @@
             font-size: 14px;
         }
     }
+    .bottom {
+        &__btn-download {
+            font-size: 14px;
+            padding: 4px 10px;
+        }
+    }
 }
 
 @media (max-width: 450px) {
     .themes {
         margin: 0;
         width: 100%;
+
+        &--active {
+            top: 11%;
+            left: 30px;
+            width: calc(100% - 35px);
+            height: 500px;
+            overflow: scroll;
+            padding-top: 10px;
+            z-index: 1;
+            border-radius: 10px;
+            background-color: rgb(60, 69, 84);
+
+        }
     }
 
     .block {
         padding: 0 10px;
     }
+    ::v-deep .description {
+        &__code {
+            padding: 20px 10%;
+        }
 
-    .container {
-        padding: 0 10px;
+        &__note {
+            padding: 10px 20px;
+
+            &:before {
+                font-size: 25px;
+                min-width: 30px;
+                min-height: 30px;
+            }
+        }
+
+        &__list-item {
+            font-size: 14px;
+
+            &:before {
+                width: 6px;
+                height: 6px;
+            }
+        }
+
+        &__note-text {
+            font-size: 14px;
+        }
     }
+
+    .themes-menu {
+        padding: 0;
+
+        &__btn {
+            &:after {
+                content: '>>';
+            }
+
+            &--active {
+                &:after {
+                    content: '<<';
+                }
+            }
+        }
+
+        .navigation__link {
+            &:first-child:before {
+                height: 15px;
+                width: 15px;
+                transform: translateY(1px);
+            }
+        }
+    }
+
 }
