@@ -41,6 +41,7 @@
 
                     <button class="block__btn-add-new"
                             @click="addParagraph.showPanel = !addParagraph.showPanel"
+                            :class="{'block__btn-add-new--active':addParagraph.showPanel}"
                     >Додати текст
                     </button>
 
@@ -48,27 +49,32 @@
                     <label for="upload" class="block__btn-add-new">Додати зображення</label>
 
                     <button class="block__btn-add-new"
-                            @click="addImageName.showPanel = !addImageName.showPanel">
+                            @click="addImageName.showPanel = !addImageName.showPanel"
+                            :class="{'block__btn-add-new--active':addImageName.showPanel}">
                         Додати назву картинки
                     </button>
 
                     <button class="block__btn-add-new"
-                            @click="addCode.showPanel = !addCode.showPanel">
+                            @click="addCode.showPanel = !addCode.showPanel"
+                            :class="{'block__btn-add-new--active':addCode.showPanel}">
                         Додати код
                     </button>
 
                     <button class="block__btn-add-new"
-                            @click="addSubparagraph.showPanel = !addSubparagraph.showPanel">
+                            @click="addSubparagraph.showPanel = !addSubparagraph.showPanel"
+                            :class="{'block__btn-add-new--active':addSubparagraph.showPanel}">
                         Додати підпункт
                     </button>
 
                     <button class="block__btn-add-new"
-                            @click="addList.showPanel = !addList.showPanel">
+                            @click="addList.showPanel = !addList.showPanel"
+                            :class="{'block__btn-add-new--active':addList.showPanel}">
                         Додати список
                     </button>
 
                     <button class="block__btn-add-new"
-                            @click="addNote.showPanel = !addNote.showPanel">
+                            @click="addNote.showPanel = !addNote.showPanel"
+                            :class="{'block__btn-add-new--active':addNote.showPanel}">
                         Додати примітку
                     </button>
 

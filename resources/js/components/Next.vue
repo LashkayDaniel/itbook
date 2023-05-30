@@ -7,8 +7,16 @@
         @showFindResult="showFoundedTheme"
     />
     <div class="container">
+        <aside v-if="!preloader.description && windowWidth<=1100 && showAsideMenu"
+               class="themes-menu"
+               @click="this.showAsideMenu = !this.showAsideMenu">
+            <div class="themes-menu__btn">ok</div>
+            <div class="themes-menu__word">Зміст</div>
+            <div class="themes-menu__btn">ок</div>
+        </aside>
 
-        <aside class="themes">
+        <aside v-else
+               class="themes">
             <div class="search" v-if="!preloader.themes">
                 <input class="search__input"
                        type="text"
@@ -65,9 +73,16 @@
 
         <section class="block">
             <article v-if="preloader.description" class="block__start">
-                <img src="@/../../resources/img/book-icon.png" alt="book icon">
-                <div class="">Оберіть розділ, який Вас цікавить найбільше</div>
-                <img id="arrow" src="@/../../resources/img/img_4.png" alt="book icon">
+                <div class="block__first-arrow">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <img class="block__book-icon" src="@/../../resources/img/book-icon.png" alt="book icon">
+                <div class="block__text">Оберіть розділ, який Вас цікавить найбільше</div>
+                <img class="block__last-arrow" src="@/../../resources/img/img_4.png" alt="book icon">
             </article>
 
             <div v-else>
@@ -116,7 +131,6 @@
                     Далі: <span>{{ nextThemeInfo.name }}</span>
                 </button>
             </article>
-
         </section>
     </div>
 </template>
@@ -139,6 +153,9 @@ export default {
                 themes: true,
                 description: true,
             },
+
+            windowWidth: 0,
+            showAsideMenu: true,
 
             showLoader: true,
             showEmptyPage: false,
@@ -317,7 +334,9 @@ export default {
     created() {
         this.getSections();
         this.checkUserToken();
-
+        window.addEventListener('resize', () => {
+            this.windowWidth = window.innerWidth
+        });
     },
 
 
@@ -338,7 +357,10 @@ export default {
 
     beforeUnmount() {
         // this.deleteView()
-    }
+        window.removeEventListener('resize', () => {
+            this.windowWidth = 0
+        });
+    },
 
 }
 </script>

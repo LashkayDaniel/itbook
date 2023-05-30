@@ -1,35 +1,47 @@
 <template>
     <header>
-        <nav class="navigation-wrapper" >
+        <nav class="navigation-wrapper">
             <div class="container" :class="{'nav-animation' : isActive}">
                 <img class="logo" src="../../img/itbook.svg" alt=logo>
 
                 <ul v-if="isActive" class="navigation">
                     <li v-if="!token" class="navigation__item">
-                        <router-link class="navigation__item-link" :to="{name: 'sign-in'}">Авторизація</router-link>
+                        <router-link class="navigation__item-link" :to="{name: 'sign-in'}"
+                                     :class="{'navigation__item-link--active' : activeBurger}">
+                            Авторизація
+                        </router-link>
                     </li>
 
                     <li v-if="token" class="navigation__item">
-                        <router-link class="navigation__item-link" to="dictionary">Словник</router-link>
+                        <router-link class="navigation__item-link" :to="{name: 'dictionary'}"
+                                     :class="{'navigation__item-link--active' : activeBurger}">
+                            Словник
+                        </router-link>
                     </li>
 
                     <li v-if="token" class="navigation__item dropdown">
                         <img src="https://www.w3schools.com/howto/img_avatar.png" alt="avatar" class="dropdown__avatar"
                              @click="showDropdown = !showDropdown"
-                             :class="{'dropdown__avatar-active' : this.showDropdown}">
-                        <ul v-if="showDropdown" class="dropdown__list">
-                            <li class="dropdown__item">{{ this.userInfo.name }}</li>
-                            <li class="dropdown__item">{{ this.userInfo.email }}</li>
+                             :class="{'dropdown__avatar--active' : this.showDropdown}">
+                        <ul class="dropdown__list"
+                            :class="[{'dropdown__list--show' : showDropdown} ,{'dropdown__list--active' : activeBurger}]">
+                            <li class="dropdown__item"> Ваше ім'я: <span>{{ this.userInfo.name }}</span></li>
+                            <li class="dropdown__item"> Ваш email: <span>{{ this.userInfo.email }}</span></li>
                             <li class="dropdown__item">
                                 <button @click.prevent="logout">Вихід</button>
                             </li>
                         </ul>
                     </li>
                 </ul>
+            </div>
 
+            <div v-if="isActive" class="burger" @click="showBurger"
+                 :class="{'burger__active': activeBurger}">
+                <span></span>
             </div>
         </nav>
     </header>
+    <div class="menu" @click.prevent="hideBurger" :class="{'menu__active': activeBurger}"></div>
 </template>
 
 <script>
@@ -43,10 +55,19 @@ export default {
         return {
             showDropdown: false,
             token: false,
-            userInfo: {}
+            userInfo: {},
+            activeBurger: false,
         }
     },
     methods: {
+        showBurger() {
+            this.activeBurger = !this.activeBurger;
+            console.log(this.activeBurger);
+        },
+        hideBurger() {
+            // console.log(this.hide);
+            this.activeBurger = false//!this.hide;
+        },
         checkToken(token) {
             axios.post('/api/auth/checkToken', {
                 token: token

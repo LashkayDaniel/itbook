@@ -134,6 +134,15 @@
             opacity: 1;
             transition: opacity .2s;
         }
+
+        &--active {
+            border: solid 2px #3cd5be;
+            background-color: rgba(156, 172, 175, 0.86);
+
+            &:before {
+                opacity: .1;
+            }
+        }
     }
 
 }
@@ -209,6 +218,22 @@
         margin-top: 20px;
         margin-bottom: 10px;
         letter-spacing: 1px;
+    }
+
+    &__list-item {
+        text-indent: 40px;
+        margin: 2px 15px;
+        font-size: 16px;
+
+        &:before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #528b9d;
+            border-radius: 50%;
+            margin-right: 7px;
+        }
     }
 
     &__note {

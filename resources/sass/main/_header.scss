@@ -16,6 +16,7 @@ li {
     padding: 10px;
     text-transform: uppercase;
     background-color: #222222;
+    z-index: 5;
 }
 
 .container {
@@ -99,7 +100,7 @@ li {
 .dropdown {
     position: relative;
     display: inline-block;
-    z-index: 1;
+    z-index: 10;
 
     &__avatar {
         vertical-align: middle;
@@ -112,7 +113,7 @@ li {
             cursor: pointer;
         }
 
-        &-active {
+        &--active {
             box-shadow: rgb(50, 208, 208) 0px 20px 20px 0px;
             border: solid 2px #3fa4e3;
         }
@@ -120,11 +121,11 @@ li {
 
 
     &__list {
+        display: none;
         position: absolute;
         top: 100%;
-        min-width: 150px;
         right: 0;
-        width: 100%;
+        width: auto;
         text-align: center;
         background-color: #c2d9ef;
         list-style: none;
@@ -133,15 +134,24 @@ li {
         border: 2px solid #2174b0;
         border-radius: 5px;
 
+        &--show {
+            display: block;
+        }
     }
 
     &__item {
+        width: 100%;
         padding: 5px 10px;
         color: #7493d9;
         border-bottom: 1px solid #4291be;
 
         &:last-child {
             border-bottom: none;
+        }
+
+        span {
+            font-weight: bold;
+
         }
 
         button {
@@ -156,3 +166,132 @@ li {
         }
     }
 }
+
+.burger {
+    display: none;
+}
+
+@media (max-width: 780px) {
+
+    .navigation {
+        &__item-link {
+            position: relative;
+            top: -100px;
+            color: rgba(55, 75, 180, 0.73);
+            background-color: rgba(163, 204, 241, 0.66);
+            border: solid 1px #275498;
+            box-shadow: -10px 0px 18px -11px rgb(115, 194, 225);
+
+            &:hover {
+                box-shadow: -5px 0px 10px -11px rgb(115, 194, 225);
+                border-color: #1a6681;
+                color: #0a53be;
+            }
+
+            &--active {
+                position: absolute;
+                top: 100px;
+                left: 50%;
+                transform: translateX(-50%);
+                transition: all .6s ease 0s;
+            }
+        }
+    }
+
+    .dropdown {
+        &__avatar {
+            position: relative;
+            top: -100px;
+        }
+
+        &__list {
+            position: absolute;
+            top: -200px;
+
+
+            &--active {
+                position: fixed;
+                top: 180px;
+                display: block;
+                left: 50%;
+                transform: translateX(-50%);
+                transition: all .6s ease 0s;
+
+            }
+        }
+    }
+
+    .burger {
+        position: absolute;
+        right: 10px;
+        z-index: 50;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        width: 30px;
+        height: 20px;
+        cursor: pointer;
+
+        span {
+            transition: all .3s ease 0s;
+            display: block;
+            width: 70%;
+            height: 3px;
+            background-color: #1b90b4;
+        }
+
+        &::before, &::after {
+            content: '';
+            position: absolute;
+            height: 3px;
+            width: 100%;
+            background-color: #507ccc;
+            transition: all .3s ease 0s;
+        }
+
+        &::before {
+            top: 0;
+        }
+
+        &::after {
+            bottom: 0;
+
+        }
+
+        &__active {
+            span {
+                transform: scale(0);
+            }
+
+            &::before {
+                top: 50%;
+                transform: rotate(45deg);
+            }
+
+            &::after {
+                top: 50%;
+                transform: rotate(-45deg);
+            }
+        }
+    }
+
+    .menu {
+        left: 100%;
+
+        &__active {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 4;
+            background-color: #5e8fb6;
+            overflow: hidden;
+            transition: all .6s ease 0s;
+
+        }
+    }
+
+}
+
+//// start end

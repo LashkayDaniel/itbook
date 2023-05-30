@@ -51,7 +51,6 @@
 }
 
 .block {
-
     &__start {
         color: #8f9dbe;
         padding: 20px;
@@ -62,17 +61,58 @@
         justify-content: center;
         align-items: center;
         position: relative;
+    }
 
-        img {
-            opacity: .5;
+    &__book-icon, &__last-arrow {
+        opacity: .5;
+    }
+
+    &__first-arrow {
+        display: none;
+        column-gap: 5px;
+        animation: fade-in 3s ease forwards infinite;
+
+        span {
+            width: 10px;
+            height: 2px;
+            background-color: #93aeb4;
+            border-radius: 5px;
+            opacity: 1;
         }
 
-        #arrow {
+        &:before, &:after {
+            content: '';
             position: absolute;
-            top: 20px;
-            transform: scale(.9);
+            left: -20px;
+            border-radius: 15px;
+            width: 15px;
+            height: 4px;
+            background-color: #72acb9;
+        }
+
+        &:before {
+            transform: rotate(45deg) translate(50%, -2px);
+        }
+
+        &:after {
+            transform: rotate(135deg) translate(-50%, -2px);
+        }
+
+        @keyframes fade-in {
+            to {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
         }
     }
+
+
+    &__last-arrow {
+        position: absolute;
+        top: 30px;
+        transform: scale(.9);
+    }
+
 }
 
 .empty-page {
@@ -95,6 +135,72 @@
     }
 }
 
+@media (max-width: 1485px) {
+    .block {
+        &__last-arrow {
+            top: 40px;
+        }
+    }
+}
 
 
+@media (max-width: 1390px) {
+    .block {
+        &__last-arrow {
+            top: 50px;
+            transform: translateX(30px);
+        }
+    }
+}
 
+@media (max-width: 1290px) {
+    .block {
+        &__book-icon {
+            transform: scale(.85);
+        }
+
+        &__last-arrow {
+            top: 60px;
+            transform: translateX(40px);
+        }
+
+    }
+}
+
+
+@media (max-width: 1220px) {
+    .block {
+        &__start {
+            display: flex;
+        }
+
+        &__text {
+            font-size: 16px;
+        }
+
+        &__last-arrow {
+            display: none;
+        }
+
+        &__first-arrow {
+            display: flex;
+        }
+    }
+}
+
+@media (max-width: 950px) {
+    .block {
+        &__first-arrow {
+            transform: scale(.8);
+        }
+
+        &__book-icon {
+            transform: scale(.7);
+        }
+
+        &__text {
+            font-size: 14px;
+        }
+
+    }
+}
