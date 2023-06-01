@@ -48,13 +48,11 @@
 
 
     &__line {
-        //background-color: #9ca3af;
         background: #30CACF;
         background: radial-gradient(circle farthest-side at right center, #30CACF 0%, #306fde 100%);
         width: 100px;
         max-width: 200px;
         height: 2px;
-        //transform: rotate(90deg);
         position: relative;
         transform: translateX(5px);
 
@@ -113,5 +111,138 @@
         font-size: 20px;
         color: #9ca3af;
     }
+
+    &:after {
+        content: 'Повернутись назад';
+    }
 }
 
+
+@media (max-width: 1050px) {
+    .root {
+        &__title {
+            font-size: 28px;
+        }
+
+    }
+    .btn-to-main {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 900px) {
+    .root {
+        &__title {
+            font-size: 25px;
+        }
+    }
+    .btn-to-main {
+        font-size: 16px;
+
+        &:after {
+            content: '';
+            width: 15px;
+            height: 2px;
+            background-color: #6999a2;
+            display: inline-block;
+            transform: translateY(-5px) translateX(-10px);
+        }
+    }
+
+    .items {
+        &__title {
+            font-size: 17px;
+        }
+
+        &__description {
+            font-size: 14px;
+        }
+    }
+}
+
+@media (max-width: 850px) {
+    .items {
+        &__description {
+            max-width: 350px;
+        }
+    }
+}
+
+@media (max-width: 760px) {
+    .items {
+        &__title {
+            text-align: center;
+        }
+
+        &__description {
+            max-width: 300px;
+        }
+    }
+}
+
+@media (max-width: 650px) {
+
+    .root {
+        &__title {
+            font-size: 22px;
+        }
+    }
+    .items {
+        &__title {
+            flex: auto;
+        }
+
+        &__description {
+            flex: auto;
+            font-size: 13px;
+        }
+    }
+}
+
+@media (max-width: 550px) {
+
+    .root {
+        &__title {
+            font-size: 20px;
+            border-bottom: solid 2px #759dbe;
+        }
+    }
+    .items {
+        &__row {
+            flex-direction: column;
+        }
+
+        &__line {
+            transform: rotate(90deg);
+            width: 40px;
+            margin: 35px;
+        }
+
+        &__title {
+            font-size: 18px;
+        }
+
+        &__description {
+            font-size: 14px;
+            text-align: center;
+        }
+    }
+}
+
+@media (max-width: 550px) {
+    .root {
+        &__title {
+            font-size: 18px;
+        }
+    }
+
+    .btn-to-main {
+        position: absolute;
+        top: 20px;
+        left: 10px;
+
+        &:after {
+            display: none;
+        }
+    }
+}

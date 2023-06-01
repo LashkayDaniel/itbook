@@ -207,14 +207,13 @@ li {
             position: absolute;
             top: -200px;
 
-
             &--active {
                 position: fixed;
                 top: 180px;
                 display: block;
                 left: 50%;
+                transform: translateX(-50%);
                 transition: all .6s ease 0s;
-
             }
         }
     }

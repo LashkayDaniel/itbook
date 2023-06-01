@@ -7,8 +7,6 @@
                 <router-link to="/">
                     <img class="logo__img" src="@/../img/logo.svg" alt="logo">
                 </router-link>
-
-                <p class="navbar__views">Глядачів книги: {{ this.currentCountViews }}</p>
             </div>
             <div class="navbar__items">
                 <div class="items__item" :class="{'items__item--active' : componentSwitch.showBookSetting}"

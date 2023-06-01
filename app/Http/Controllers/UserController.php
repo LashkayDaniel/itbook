@@ -19,7 +19,7 @@ class UserController extends Controller
         if (!$roleId) {
             return response()->json('role_id not found', 404);
         }
-        return User::where('role_id', $roleId)->orderBy('id', 'desc')->paginate(5);
+        return User::where('role_id', $roleId)->orderBy('id', 'desc')->paginate(10);
     }
 
     /**

@@ -303,25 +303,6 @@ export default {
             }
         },
 
-        createView() {
-            axios.post('api/view/create')
-                .then(response => {
-                    console.log(response);
-                })
-                .catch(error => {
-                    console.log(error);
-                })
-        },
-        deleteView() {
-            axios.post('api/view/delete')
-                .then(response => {
-                    console.log(response);
-                })
-                .catch(error => {
-                    console.log(error);
-                })
-        },
-
         closeSearch() {
             this.search.showPanel = false
             this.search.inputValue = ''
@@ -354,22 +335,9 @@ export default {
 
 
     mounted() {
-        // this.createView();
-        // document.addEventListener("visibilitychange", function () {
-        //     if (document.visibilityState === 'visible') {
-        //         // Код, який виконується, коли сторінка стає видимою
-        //         console.log("Користувач повернувся на сторінку");
-        //
-        //     } else {
-        //         // Код, який виконується, коли сторінка стає невидимою
-        //         console.log("Користувач покинув сторінку");
-        //         this.deleteView()
-        //     }
-        // });
     },
 
     beforeUnmount() {
-        // this.deleteView()
         window.removeEventListener('resize', () => {
             this.windowWidth = 0
         });

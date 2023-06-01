@@ -26,6 +26,8 @@
 
             <h2 class="add-new__title">Перелік всіх слів</h2>
             <div class="words-list">
+                <p style="text-align: center; color:#6692a9" v-if="words.length===0">Наразі немає слів в
+                    словнику</p>
                 <div class="words-list__row"
                      v-for="item in words">
                     <p class="row__title">{{ item.title }}</p>
@@ -83,8 +85,8 @@ export default {
             const title = this.newWord.wordName
             const description = this.newWord.description
 
-            if (title.length < 5) {
-                this.popupConfig('warning', 'Поле "Назва" повинно містити щонайменше 5 символів')
+            if (title.length < 4) {
+                this.popupConfig('warning', 'Поле "Назва" повинно містити щонайменше 4 символів')
                 return;
             }
             if (description.length < 10) {

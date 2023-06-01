@@ -7,7 +7,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Sanctum\PersonalAccessToken;
 
@@ -21,7 +20,6 @@ class AuthController extends Controller
     public function register(Request $request): \Illuminate\Http\JsonResponse
     {
         try {
-            //Validated
             $validateUser = Validator::make(
                 $request->all(),
                 [
@@ -83,7 +81,6 @@ class AuthController extends Controller
     public function registerAdmin(Request $request): \Illuminate\Http\JsonResponse
     {
         try {
-            //Validated
             $validateUser = Validator::make(
                 $request->all(),
                 [
@@ -123,7 +120,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Login The User
+     * Login for User
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -172,7 +169,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Login The Admin
+     * Login for Admin
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -260,23 +257,9 @@ class AuthController extends Controller
     public function logout(Request $request): \Illuminate\Http\JsonResponse
     {
         $request->user()->tokens()->delete();
-//        auth()->user()->tokens()->delete();
 
         return response()->json([
             'message' => 'Successfully logged out',
         ]);
-    }
-
-    public function forgotPassword(Request $request): \Illuminate\Http\JsonResponse
-    {
-        $request->validate(['email' => 'required|email']);
-
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
-
-        return $status === Password::RESET_LINK_SENT
-            ? response()->json(['message' => 'We have emailed your password reset link!'])
-            : response()->json(['message' => 'Failed to send reset link!'], 500);
     }
 }

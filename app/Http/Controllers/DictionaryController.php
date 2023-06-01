@@ -52,7 +52,7 @@ class DictionaryController extends Controller
             $validateUser = Validator::make(
                 $request->all(),
                 [
-                    'title' => 'required|min:5|unique:dictionaries,title',
+                    'title' => 'required|min:4|unique:dictionaries,title',
                     'description' => 'required|min:10',
                 ]
             );

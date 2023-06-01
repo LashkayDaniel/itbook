@@ -1,25 +1,10 @@
 <template>
-    <router-link class="btn-to-main" :to="{name: 'main'}">Повернутись назад</router-link>
+    <router-link class="btn-to-main" :to="{name: 'main'}"></router-link>
 
     <div class="root">
         <h2 class="root__title">Короткий словник термінів</h2>
-
+        <loader v-if="showLoader"></loader>
         <div class="root__items">
-
-            <div class="items__row">
-                <p class="items__title">База даних (Database)</p>
-                <div class="items__line"></div>
-                <p class="items__description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut cum eaque
-                    iusto odio odit optio porro quae quaerat rem vitae?</p>
-            </div>
-
-            <div class="items__row">
-                <p class="items__title">Таблиця (Table)</p>
-                <div class="items__line"></div>
-                <p class="items__description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut cum eaque
-                    iusto odio odit optio porro quae quaerat rem vitae?</p>
-            </div>
-
             <div v-for="item in dictionaryItems"
                  class="items__row">
                 <p class="items__title">{{ item.title }}</p>
@@ -35,11 +20,17 @@
 </template>
 
 <script>
+import Loader from "@/components/more/Loader.vue";
+
 export default {
     name: "Dictionary",
+    components: {
+        Loader
+    },
     data() {
         return {
             dictionaryItems: [],
+            showLoader: true,
         }
     },
     methods: {
@@ -47,7 +38,7 @@ export default {
             axios.get('api/dictionary/get')
                 .then(response => {
                     this.dictionaryItems = response.data.items
-                    console.log(this.dictionaryItems);
+                    this.showLoader = false;
                 })
                 .catch(error => {
                     console.log(error);
