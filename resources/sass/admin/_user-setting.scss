@@ -148,3 +148,51 @@
         }
     }
 }
+
+@media (max-width: 680px) {
+    .users-list {
+        &__table {
+
+            td, th {
+                padding: 4px;
+            }
+
+            th {
+                font-size: 13px;
+            }
+
+            td {
+                font-size: 13px;
+            }
+
+            th {
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+        }
+    }
+
+    .items {
+        &__btn {
+            font-size: 14px;
+            padding: 4px 10px;
+        }
+    }
+}
+
+@media (max-width: 680px) {
+    .users-list {
+        &__table {
+            td {
+                font-size: 12px;
+                text-align: center;
+            }
+        }
+    }
+
+    .buttons {
+        &__remove {
+            padding: 5px;
+        }
+    }
+}

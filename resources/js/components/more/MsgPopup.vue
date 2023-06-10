@@ -80,5 +80,24 @@ export default {
     }
 }
 
+@media (max-width: 700px) {
+    .block {
+        div {
+            font-size: 18px;
+            max-width: 90%;
+
+        }
+    }
+}
+
+@media (max-width: 500px) {
+    .block {
+        div {
+            padding: 5px 7px;
+            font-size: 16px;
+        }
+    }
+}
+
 
 </style>

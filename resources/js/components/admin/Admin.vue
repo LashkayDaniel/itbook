@@ -41,7 +41,7 @@
                 </div>
             </div>
             <div class="navbar__bottom">
-                <button class="bottom__logout" @click.prevent="this.logout">Logout</button>
+                <button class="bottom__logout" @click.prevent="this.logout"><span>Logout</span></button>
             </div>
         </aside>
 

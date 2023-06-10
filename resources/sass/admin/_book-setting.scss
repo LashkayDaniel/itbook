@@ -333,3 +333,47 @@
     }
 }
 
+
+//media
+
+@media (max-width: 1170px) {
+    .main-block {
+        flex-direction: column;
+        row-gap: 50px;
+        overflow: auto;
+    }
+
+    .right, .left {
+        margin: 0 auto;
+        width: 95%;
+        min-height: 90vh;
+    }
+}
+
+@media (max-width: 800px) {
+    .block {
+        &__label {
+            font-size: 16px;
+        }
+
+        &__select, &__input-name, &__btn-add, &__btn-add-new, &__btn-remove {
+            font-size: 15px;
+        }
+
+        &__select {
+            padding: 5px;
+        }
+    }
+
+    .paragraph {
+        &__label {
+            font-size: 16px;
+        }
+
+        &__input {
+            font-size: 15px;
+        }
+    }
+}
+
+

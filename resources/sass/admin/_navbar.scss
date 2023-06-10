@@ -105,4 +105,58 @@
     padding: 10px;
 }
 
+@media (max-width: 750px) {
+    .navbar {
+        &__logo {
+            display: none;
+        }
 
+        &__items {
+            margin: auto;
+        }
+    }
+
+    .bottom__logout {
+        padding: 8px;
+
+        &:before {
+            content: url("https://img.icons8.com/metro/20/000000/exit.png");
+            display: inline;
+            width: 15px;
+            height: 15px;
+        }
+
+        span {
+            display: none;
+        }
+    }
+
+    .items {
+        &__item {
+            flex: auto;
+
+            padding: 5px 5px;
+
+            span {
+                display: none;
+                padding-right: 0px;
+            }
+
+            img {
+                margin: 0px;
+            }
+        }
+    }
+}
+
+@media (max-width: 450px) {
+    .navbar {
+        width: 40px;
+        padding: 5px;
+
+
+        &__items {
+        }
+    }
+
+}

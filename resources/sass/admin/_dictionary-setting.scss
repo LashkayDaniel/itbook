@@ -42,3 +42,15 @@
         font-weight: bold;
     }
 }
+
+@media (max-width: 500px) {
+    .row {
+        &__title {
+            font-size: 14px;
+        }
+
+        &__description {
+            font-size: 13px;
+        }
+    }
+}
