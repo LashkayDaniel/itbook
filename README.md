@@ -1,66 +1,134 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<!-- PROJECT SHIELDS -->
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/LashkayDaniel/itbook">
+    <img src="resources/img/itbook.svg" alt="Logo" width="350">
+  </a>
+</div>
 
-## About Laravel
+<!-- ABOUT THE PROJECT -->
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## About The Project
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+![Product Name Screen Shot](resources/img/product_preview.png)
+The project "IT Book. Database" is an online resource that provides access to collected and structured information about
+various aspects of databases. Its goal is to provide users with access to useful and up-to-date information about
+concepts, methods, tools, and technologies related to databases.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Here's why:
 
-## Learning Laravel
+* **Search Functionality:** The search feature allows users to quickly find specific information they are looking for
+  within
+  the vast database of materials. This enhances user experience and efficiency in accessing relevant content.
+* **Authentication and Registration:**  Registered users have access to material storage.
+* **Convenient Admin Panel:** The convenient admin panel streamlines the management of the platform for administrators.
+  It
+  provides tools for content management, user management, and other administrative tasks, making it easier to
+  maintain and update the platform.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Built With
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+The application was developed using these tools:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+* [![Vue][Vue.js]][Vue-url]
+* [![Laravel][Laravel.com]][Laravel-url]
+* [![MySql][MySql.com]][MySql-url]
 
-## Laravel Sponsors
+<!-- GETTING STARTED -->
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## Getting Started
 
-### Premium Partners
+A brief step-by-step description of how to install all dependencies for the application to work correctly
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+### Requirements
 
-## Contributing
+Before getting started, make sure your environment meets the following requirements:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- PHP >= 8.0
+- Composer
+- Node.js >= 21.x
+- NPM >= 9.x
+- MySQL
 
-## Code of Conduct
+### Installation
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+1. Clone the repository to your local machine:
+    ```bash
+    git clone https://github.com/LashkayDaniel/itbook.git
+    ```
 
-## Security Vulnerabilities
+2. Navigate to the project directory:
+    ```bash
+    cd itbook-labs
+    ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+3. Install PHP dependencies using Composer:
+    ```bash
+    composer install
+    ```
 
-## License
+4. Install JavaScript dependencies using NPM:
+    ```bash
+    npm install
+    ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+5. Create the `.env` configuration file and generate the application key:
+    ```bash
+    cp .env.example .env
+    php artisan key:generate
+    ```
+
+6. Configure the database connection in the `.env` file.
+
+7. Run the migrations to create the necessary tables in the database:
+    ```bash
+    php artisan migrate
+    ```
+
+8. Start the local server using Artisan:
+    ```bash
+    php artisan serve
+    ```
+
+9. In another terminal window, start the Vue development server using NPM:
+    ```bash
+    npm run dev
+    ```
+
+10. Open your browser and go to `http://localhost:8000`.
+
+<!-- MARKDOWN LINKS & IMAGES -->
+
+[contributors-shield]: https://img.shields.io/github/contributors/LashkayDaniel/itbook.svg?style=for-the-badge
+
+[contributors-url]: https://github.com/LashkayDaniel/itbook-labs/graphs/contributors
+
+[forks-shield]: https://img.shields.io/github/forks/LashkayDaniel/itbook?style=for-the-badge
+
+[forks-url]: https://github.com/LashkayDaniel/itbook-labs/network/members
+
+[stars-shield]: https://img.shields.io/github/stars/LashkayDaniel/itbook.svg?style=for-the-badge
+
+[stars-url]: https://github.com/LashkayDaniel/itbook/stargazers
+
+[issues-shield]: https://img.shields.io/github/issues/LashkayDaniel/itbook.svg?style=for-the-badge
+
+[issues-url]: https://github.com/LashkayDaniel/itbook/issues
+
+[Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
+
+[Vue-url]: https://vuejs.org/
+
+[Laravel.com]: https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
+
+[Laravel-url]: https://laravel.com
+
+[MySql.com]: https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white
+
+[MySql-url]: https://www.mysql.com/
